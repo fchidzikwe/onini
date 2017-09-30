@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+
+<head>
+    <title>Lexware || Reports</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link href="css/registration.css"
+          th:href="@{/css/registration.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="css/cuppa-datepicker-styles.css" rel="stylesheet">
+    <script type="text/javascript" src="js/lib/moment.js"></script>
+    <script type="text/javascript" src="js/cuppa-calendar.js"></script>
+
+</head>
+
+<body>
+
+<div class="bs-example">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" >
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse"
+                        data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <form>
+                    <img th:src="@{/user/profile-picture}" class="img-responsive center-block" width="100" height="100" alt="Logo"/>
+                </form>
+                <a href="/home" class="navbar-brand glyphicon glyphicon-home" th:utext="${facilityConfigurations?.name}">APPOINTMENTS</a>
+                <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
+            </div>
+
+            <!-- Collection of nav links and other content for toggling -->
+            <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/registration"><span
+                            class="glyphicon glyphicon-pencil"></span>Add User</a></li>
+
+                    <li><a href="/reportform"><span
+                            class="glyphicon glyphicon-book"></span>Report </a></li>
+
+
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-off"></span>Logout </a></li>
+                </ul>
+            </div>
+            <div style="float: right; width: 50%; text-align: right">
+                <img th:src="@{/images/digitblank.gif}"   border=0 name="hourstens"/>
+                <img  th:src="@{/images/digitblank.gif}" border=0 name="hoursones" />
+                <img th:src="@{/images/digitblank.gif}"  border=0 name="colon" />
+                <img th:src="@{/images/digitblank.gif}"  border=0 name="minstens" />
+                <img th:src="@{/images/digitblank.gif}"  border=0 name="minsones" />
+                <img th:src="@{/images/digitblank.gif}" border=0 name="ampm" />
+            </div>
+            <div sec:authorize="hasAuthority('SECRETARY')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{'/edituser/id'(id=${userId})}"><span
+                            class="glyphicon glyphicon-user"></span>Update Profile</a></li>
+                    <!-- Button trigger modal -->
+
+                    <li><a href="/getreportform"><span
+                            class="glyphicon glyphicon-book"></span>Reports </a></li>
+
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-off"></span>Logout </a></li>
+                </ul>
+            </div>
+
+            <div sec:authorize="hasAuthority('PRACTITIONER')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{'/edituser/id'(id=${userId})}"><span
+                            class="glyphicon glyphicon-user"></span>Update Profile</a></li>
+
+                    <li><a href="/getreportform"><span
+                            class="glyphicon glyphicon-book"></span>Reports </a></li>
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-off"></span>Logout </a></li>
+                </ul>
+            </div>
+
+            <div sec:authorize="hasAuthority('CITIZEN')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{'/edituser/id'(id=${userId})}"><span
+                            class="glyphicon glyphicon-user"></span>Update Profile</a></li>
+
+                    <li><a th:href="@{'/appointment'}"><span
+                            class="glyphicon glyphicon-pencil"></span>Make Appointment</a></li>
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-off"></span>Logout </a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+<div >
+
+    <form th:action="@{/pdf}" method="GET" class="form-signin">
+        <h3 class="form-signin-heading" th:text="Reports"></h3>
+        <p class="text-warning">*If left blank, all appointments report will be generated</p>
+
+        <br/>
+
+        <label>Start :</label> <input  id="startdate" name="start"
+               class="form-control"/> <br/>
+
+
+
+        <label>End :</label><input id="enddate" name="end"
+               class="form-control"/> <br/>
+
+
+
+        <label>Report Type :</label> <select name="reportType" class="form-control">
+            <option>
+            </option>
+            <option>
+                PDF
+            </option>
+            <option>
+                CSV
+            </option>
+        </select>
+        <br/>
+
+        <button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit"
+                th:text="GENERATE"></button>
+
+
+    </form>
+</div>
+
+<script>
+
+    $('#csv').click(function (e) {
+
+        // prevent the default event behaviour
+        e.preventDefault();
+
+        $.ajax({
+            url: "/csv",
+            type: "GET",
+            success: function (data) {
+
+                // perform your save call here
+
+                if (data.status == "Success") {
+                    alert("Done");
+                } else {
+                    alert("Error occurs on the Database level!");
+                }
+            },
+            error: function () {
+                alert("An error has occured!!!");
+            }
+        });
+    });
+</script>
+
+<SCRIPT LANGUAGE="JavaScript">
+
+    if (document.images) {
+        digit1 = new Image;
+        digit1.src = "images/digit1.gif";
+        digit2 = new Image;
+        digit2.src = "images/digit2.gif";
+        digit3 = new Image;
+        digit3.src = "images/digit3.gif";
+        digit4 = new Image;
+        digit4.src = "images/digit4.gif";
+        digit5 = new Image;
+        digit5.src = "images/digit5.gif";
+        digit6 = new Image;
+        digit6.src = "images/digit6.gif";
+        digit7 = new Image;
+        digit7.src = "images/digit7.gif";
+        digit8 = new Image;
+        digit8.src = "images/digit8.gif";
+        digit9 = new Image;
+        digit9.src = "images/digit9.gif";
+        digit0 = new Image;
+        digit0.src = "images/digit0.gif";
+        digitam = new Image;
+        digitam.src = "images/digitam.gif";
+        digitpm = new Image;
+        digitpm.src = "images/digitpm.gif";
+        digitcolon = new Image;
+        digitcolon.src = "images/digitcolon.gif";
+        digitblank = new Image;
+        digitblank.src = "images/digitblank.gif";
+    }
+
+    function UpdateClock(){
+        var time= new Date();
+        hours = time.getHours();
+        mins = time.getMinutes();
+        if (!document.images) return;
+        digit = mins % 10;
+        document.images.minsones.src=eval("digit"+digit+".src");
+        digit = (mins - (mins % 10))/10;
+        document.images.minstens.src=eval("digit"+digit+".src");
+        if (hours > 12)
+            document.images.ampm.src=digitpm.src;
+        else
+            document.images.ampm.src=digitam.src;
+        if (hours > 12) hours = hours - 12;
+        digit = hours % 10;
+        document.images.hoursones.src=eval("digit"+digit+".src");
+        digit = (hours - (hours % 10))/10;
+        document.images.hourstens.src=eval("digit"+digit+".src");
+        document.images.colon.src=digitcolon.src;
+        setTimeout("UpdateClock()",30000);
+
+    }
+
+    UpdateClock();
+</SCRIPT>
+
+<script>
+    $(document).ready(function(){
+        var date_input=$('input[name="start"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker(
+
+            {
+            format: 'dd-mm-yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        });
+    });
+
+    $(document).ready(function(){
+
+
+
+       // $("#enddate").datepicker("setDate", new Date());
+        var date_input=$('input[name="end"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+            defaultDate:true,
+            format: 'dd-mm-yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        });
+    });
+</script>
+
+</body>
+</html>

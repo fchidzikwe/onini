@@ -64,7 +64,7 @@
 
 
 
-                        <h3 style="text-align:left">REGISTRATION</h3>
+                        <h3 style="text-align:left">USER REGISTRATION</h3>
 
 
                         <div class="form-group">
@@ -90,7 +90,7 @@
                             <div class="col-sm-9">
                                 <label th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"
                                        class="validation-message"></label>
-                                <input type="text" th:field="*{gender}"
+                                <select  th:field="*{gender}"
                                        placeholder="Gender" class="form-control"/>
                             </div>
                         </div>

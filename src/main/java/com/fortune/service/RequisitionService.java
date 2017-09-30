@@ -8,6 +8,8 @@ public interface RequisitionService {
 
     void save(Requisition requisition);
 
+    Requisition findByID(Long id);
+
     void delete(Requisition requisition);
 
     List<Requisition> findAllRequisition();

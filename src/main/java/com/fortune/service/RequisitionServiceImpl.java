@@ -20,6 +20,11 @@ public class RequisitionServiceImpl implements RequisitionService{
     }
 
     @Override
+    public Requisition findByID(Long id) {
+        return requisitionRepository.findOne(id);
+    }
+
+    @Override
     public void delete(Requisition requisition) {
         requisitionRepository.delete(requisition);
     }

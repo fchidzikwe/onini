@@ -58,13 +58,14 @@
 
         <table class="display" cellspacing="0" width="100%">
             <span th:utext="${successMessage}" class="text-success"></span>
-            <caption>Requisitions</caption>
+            <caption>Manage Requisitions</caption>
             <thead>
             <tr style="background-color: transparent">
                 <th scope="col">Lawyer</th>
                 <th scope="col">Client</th>
                 <th scope="col">Requisation Date</th>
                 <th scope="col">Requistion Amount</th>
+                <th scope="col">Available Account Balance</th>
                 <th scope="col">Payee</th>
                 <th scope="col">Status</th>
                 <th scope="col">Manage</th>
@@ -86,6 +87,9 @@
                 <td>
                     <span th:utext="${requisition.amount}" class="text-success"></span>
                 </td>
+                <td>
+                    <span th:utext="${balance}" class="text-success"></span>
+                </td>
 
                 <td>
                     <span th:utext="${requisition.payee}" class="text-success"></span>
@@ -94,20 +98,17 @@
                     <span th:utext="${requisition.status}" class="text-success"></span>
                 </td>
                 <td>
-                    <a th:if="${pending}" th:href="@{'/managerequsition/id'(id=${requisition.id})}">
+
+
+                    <a th:if="${pending}" th:href="@{'/acceptrequsition/id'(id=${requisition.id})}" }>
                         <span class="glyphicon glyphicon-pencil"></span>
-                        Manage
+                        Accept
                     </a>
 
-                    <!--<a th:if="${accepted}" th:href="@{'/archiverequsition/id'(id=${requisition.id})}" }>-->
-                        <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                        <!--Archive-->
-                    <!--</a>-->
-
-                    <!--<a th:if="${declined}" th:href="@{'/archiverequsition/id'(id=${requisition.id})}" }>-->
-                        <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                        <!--Archive-->
-                    <!--</a>-->
+                    <a th:if="${pending}" th:href="@{'/declinerequsition/id'(id=${requisition.id})}" }>
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        Decline
+                    </a>
 
                 </td>
             </tr>

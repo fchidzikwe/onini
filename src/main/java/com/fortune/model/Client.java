@@ -43,14 +43,6 @@ public class Client {
   @NotEmpty(message = "*Please provide an email")
   private String skypeId;
 
-  @Column(name = "cell")
-  @NotEmpty(message = "*Please provide an email")
-  private String cell;                                                                                                                                                                                                                                       ;
-
-  @Column(name = "tel")
-  @NotEmpty(message = "*Please provide an email")
-  private String tel;
-
 
   @Column(name = "residentialAddress")
   @NotEmpty(message = "*Please provide your residentialAddress")
@@ -77,13 +69,7 @@ public class Client {
   private int active;
 
 
-  public String getTel() {
-        return tel;
-    }
 
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
 
     public String getResidentialAddress() {
         return residentialAddress;
@@ -125,13 +111,7 @@ public class Client {
     this.skypeId = skypeId;
   }
 
-  public String getCell() {
-    return cell;
-  }
 
-  public void setCell(String cell) {
-    this.cell = cell;
-  }
 
 
   public Long getId() {

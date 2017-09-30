@@ -138,14 +138,7 @@ if(clientCaseList != null) {
     }
 
 
-    @RequestMapping(value = "/viewpendingrequisitions", method = RequestMethod.GET)
-    public String viewPendingRequisition(Model model){
 
-        List<Requisition> pendingrequisitionList = requisitionService.findRequisitionByRequisitionStatus(RequisitionStatus.PENDING);
-        model.addAttribute("list", pendingrequisitionList);
-        return "requisitionlist";
-        
-    }
 
         
     @RequestMapping(value = "/client/transaction", method = RequestMethod.POST)
