@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Lexware || Accounts</title>
+        <link href="css/registration.css"
+              th:href="@{/css/registration.css}" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel = "stylesheet" href = "bootstrap.css" />
+    </head>
+    <body>
+
+        <header class="jumbotron hero-spacer">
+            <div align="center">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+
+                            <span th:utext="${successMessage}"></span>
+                            <form autocomplete="off" action="#" th:action="@{/client/transaction}"
+                                  th:object="${transaction}" method="post" class="form-horizontal"
+                                  role="form">
+
+                                <h3 >Accounts Registration</h3>
+                                <span th:utext="${message}"></span>
+
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        <input type="hidden" th:field="*{account}"/>
+                                        <input type="hidden"  name ="accountId" th:value="${accountId}"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                                               class="validation-message"></label>
+                                        <input type="text" th:field="*{description}" placeholder="Description"
+                                               class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
+                                               class="validation-message"></label>
+
+                                            Deposit: <input type="number" th:field="*{amount}" placeholder=""
+                                                            class="form-control"/>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+
+                                        <select name="transactionType" class="form-control">
+                                            <option>
+                                                CHOOSE TRANSACTION TYPE
+                                            </option>
+                                            <option>
+                                                DEPOSIT
+                                            </option>
+                                            <option>
+                                                WITHDRAWAL
+                                            </option>
+                                        </select>
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        <button type="submit" class="btn btn-primary btn-block">Make Transaction</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </header>
+
+
+
+
+
+    </body>
+</html>

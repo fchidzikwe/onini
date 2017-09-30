@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Lexware || Recorder</title>
+
+ <link href="css/stopwatch.css" rel="stylesheet">
+    <link rel="stylesheet" th:href ="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="bs-example" >
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse"
+                        data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                <a href="/home" class="navbar-brand">LEXWARE</a>
+                <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
+            </div>
+
+            <!-- Collection of nav links and other content for toggling -->
+            <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                </ul>
+            </div>
+
+
+
+        </div>
+    </nav>
+</div>
+<br/>
+<br/>
+<br/>
+<div class="jumbotron">
+    <form autocomplete="off"  th:action="@{/addcase}"
+          method="get">
+
+        <div class="controls">
+            <a href="#" class="button" onClick="stopwatch.start();">Start/Pause</a>
+            <!--<a href="#" class="button" onClick="stopwatch.lap();">Lap</a>-->
+            <a href="#" class="button" onClick="stopwatch.stop();">Stop</a>
+            <a href="#" class="button" onClick="stopwatch.restart();">Restart</a>
+
+            <!--<a href="#" class="button" onClick="stopwatch.clear();">Clear Laps</a>-->
+        </div>
+        <br/>
+        <div id="time" class="stopwatch"></div>
+        <br/>
+        <input type="hidden"  name ="id" th:value="${client.id}"/>
+        <div class="controls">
+            <button type="submit" class="btn btn-primary glyphicon glyphicon-play">Submit</button>
+        </div>
+
+    </form>
+</div>
+<script>
+class Stopwatch {
+    constructor(display, results) {
+        this.running = false;
+        this.display = display;
+        this.results = results;
+        this.laps = [];
+        this.reset();
+        this.print(this.times);
+    }
+    
+    reset() {
+        this.times = [0, 0, 0, 0 ];
+    }
+    
+    start() {
+        if (!this.time) this.time = performance.now();
+        if (!this.running) {
+            this.running = true;
+            requestAnimationFrame(this.step.bind(this));
+        }
+    }
+    
+    lap() {
+        let times = this.times;
+        let li = document.createElement('li');
+        li.innerText = this.format(times);
+        this.results.appendChild(li);
+    }
+    
+    stop() {
+        this.running = false;
+        this.time = null;
+        var timeDiv = document.getElementById("time");
+
+        sessionStorage.setItem("time", timeDiv.innerText); //saves to the database, key/value
+
+    }
+
+    restart() {
+        if (!this.time) this.time = performance.now();
+        if (!this.running) {
+            this.running = true;
+            requestAnimationFrame(this.step.bind(this));
+        }
+        this.reset();
+    }
+    
+    clear() {
+        clearChildren(this.results);
+    }
+    
+    step(timestamp) {
+        if (!this.running) return;
+        this.calculate(timestamp);
+        this.time = timestamp;
+        this.print();
+        requestAnimationFrame(this.step.bind(this));
+    }
+    
+    calculate(timestamp) {
+        var diff = timestamp - this.time;
+        // Hundredths of a second are 100 ms
+        this.times[3] += diff / 10;
+        // Seconds are 100 hundredths of a second
+        if (this.times[3] >= 100) {
+            this.times[2] += 1;
+            this.times[3] -= 100;
+        }
+        // Minutes are 60 seconds
+        if (this.times[2] >= 60) {
+            this.times[1] += 1;
+            this.times[2] -= 60;
+        }
+
+
+  // Hour is 60 minutes
+        if (this.times[1] >= 60) {
+            this.times[0] += 1;
+            this.times[1] -= 60;
+        }
+    }
+    
+    print() {
+        this.display.innerText = this.format(this.times);
+    }
+    
+    format(times) {
+        return `\
+${pad0(times[0], 2)}:\
+${pad0(times[1], 2)}:\
+${pad0(Math.floor(times[2]), 2)}`;
+    }
+}
+
+function pad0(value, count) {
+    var result = value.toString();
+    for (; result.length < count; --count)
+        result = '0' + result;
+    return result;
+}
+
+function clearChildren(node) {
+    while (node.lastChild)
+        node.removeChild(node.lastChild);
+}
+
+let stopwatch = new Stopwatch(
+    document.querySelector('.stopwatch'),
+    document.querySelector('.results'));
+</script>
+</body>
+</html>

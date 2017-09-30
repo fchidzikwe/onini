@@ -1,0 +1,93 @@
+package com.fortune.model;
+
+
+import javax.persistence.*;
+import java.util.Date;
+
+/**
+ * Created by fortune on 7/14/17.
+ */
+
+@Entity
+@Table(name = "requisition")
+public class Requisition {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "requisitiondate")
+    private Date requisitionDate;
+
+    @OneToOne
+    Case aCase;
+
+    @Column(name = "amount")
+    private Double amount;
+
+    @Column(name = "payee")
+    private String payee;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private RequisitionStatus status;
+
+    @OneToOne
+    private User madeby;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getRequisitionDate() {
+        return requisitionDate;
+    }
+
+    public void setRequisitionDate(Date requisitionDate) {
+        this.requisitionDate = requisitionDate;
+    }
+
+    public Case getaCase() {
+        return aCase;
+    }
+
+    public void setaCase(Case aCase) {
+        this.aCase = aCase;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getPayee() {
+        return payee;
+    }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    public RequisitionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RequisitionStatus status) {
+        this.status = status;
+    }
+
+    public User getMadeby() {
+        return madeby;
+    }
+
+    public void setMadeby(User madeby) {
+        this.madeby = madeby;
+    }
+}

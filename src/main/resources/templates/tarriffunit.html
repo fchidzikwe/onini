@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Lexware || Tarrif  Units</title>
+
+    <link href="css/registration.css"
+          th:href="@{/css/registration.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script	src="/js/bootstrap-formhelpers-countries.js"></script>
+    <link rel = "stylesheet" href = "bootstrap.css" />
+
+</head>
+<body>
+<div class="bs-example">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse"
+                        data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                l;nb<a href="/home" class="navbar-brand">LEXWARE</a>
+                <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
+            </div>
+
+            <!-- Collection of nav links and other content for toggling -->
+            <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/registration"><span
+                            class="glyphicon glyphicon-pencil"></span>Add User</a></li>
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                </ul>
+            </div>
+
+
+        </div>
+    </nav>
+</div>
+<br/>
+<br/>
+<br/>
+
+<div class = "container-fluid">
+    <header class="jumbotron hero-spacer">
+        <div align="center">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <span th:utext="${successMessage}"></span>
+                        <form autocomplete="off"  th:action="@{/addtarrifunit}"
+                              th:object="${tarriffunit}" method="post" class="form-horizontal"
+                              role="form">
+
+                            <div class="form-group">
+                                <div class="col-sm-9">
+                                    <input type="text" th:field="*{name}" placeholder="Name"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-9">
+                                    <button type="submit" class="btn btn-primary btn-block">SUBMIT</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+    </header>
+
+    <br/>
+</div>
+
+</body>
+</html>

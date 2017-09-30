@@ -1,0 +1,362 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+
+<head>
+    <title>Lexware || Home</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.dataTables.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <meta charset='utf-8' content="Cory Sanoy" name="Author"/>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<br/>
+<br/>
+<br/>
+
+<div class="bs-example">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse"
+                        data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                <a href="/home" class="navbar-brand">LEXWARE</a>
+                <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
+            </div>
+
+            <!-- Collection of nav links and other content for toggling -->
+            <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/registration"><span
+                            class="glyphicon glyphicon-pencil"></span>Add User</a></li>
+                    <li><a href="/settings"><span
+                            class="glyphicon glyphicon-cog"></span>Configurations </a></li>
+
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                </ul>
+            </div>
+
+            <div sec:authorize="hasAuthority('LAWYER')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="/rate"><span
+                            class="glyphicon glyphicon-cog"></span>Configure Rate </a></li>
+
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                </ul>
+            </div>
+
+
+        </div>
+    </nav>
+</div>
+
+<br/>
+<br/>
+
+<div sec:authorize="hasAuthority('ADMIN')" class="container">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">SYSTEM USERS</a></li>
+        <li><a data-toggle="tab" href="#config"> SYSTEM CONFIGURATIONS</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <h3>ACTIVE USERS</h3>
+            <div sec:authorize="hasAuthority('ADMIN')">
+                <p class="text-center">
+                    <a href="/registration"
+                       class="btn btn-primary glyphicon glyphicon-user btn-block">Add User</a>
+
+                </p>
+
+
+                <table class="display" cellspacing="0" width="100%">
+                    <br/>
+                    <span th:utext="${successMessage}" class="text-success"></span>
+                    <caption>Site Users</caption>
+                    <thead>
+                    <tr style="background-color: mediumpurple">
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Manage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${userList}">
+                        <td th:text="${user.name}">George</td>
+                        <td th:text="${user.lastName}">Washington</td>
+                        <td th:text="${user.email}">gwash</td>
+                        <td th:text="${user.isActive}">Yes</td>
+                        <td th:text="${user.roles}">Yes</td>
+                        <td>
+                            <a th:href="@{'/edituser/id'(id=${user.id})}"><span
+                                    class="glyphicon glyphicon-pencil"></span>Edit</a>
+                            <a th:href="@{'/deleteuser/id'(id=${user.id})}"><span
+                                    class="glyphicon glyphicon-remove"></span>Delete</a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div id="config" class="tab-pane fade">
+            <div class="container">
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="/countryform">Country</a></li>
+                    <li><a href="/cityform">City</a></li>
+                    <li><a href="/getnationalityform">Nationality</a></li>
+                    <li><a href="/gettarrifunitform">Tariff Unit</a></li>
+                    <li><a href="/gettarifform">Tariff</a></li>
+                    <li><a href="/getpostinggroupform">Posting Group</a></li>
+                    <li><a href="/getmatterform">Matter</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div sec:authorize="hasAuthority('LAWYER')" class="container">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#client">CLIENT MODULE</a></li>
+
+    </ul>
+    <br/>
+    <br/>
+    <br/>
+    <div class="tab-content">
+        <a href="/createclient"><span
+                class="glyphicon glyphicon-user"></span>Add Client</a>
+        <div id="client" class="tab-pane fade in active">
+            <table class="display" cellspacing="0" width="100%">
+                <span th:utext="${successMessage}" class="text-success"></span>
+                <caption>Clients</caption>
+                <thead>
+                <tr style="background-color: transparent">
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    >
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Manage</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="client : ${clientList}">
+                    <td th:text="${client.name}">George</td>
+                    <td th:text="${client.lastName}">Washington</td>
+                    <td th:text="${client.mobile}">George</td>
+                    <td th:text="${client.email}">Washington</td>
+                    <td>
+
+                        <a th:href="@{'/viewclient/id'(id=${client.id})}"><span
+                                class="glyphicon glyphicon-remove"></span>View</a>
+
+                        <a th:href="@{'/editclient/id'(id=${client.id})}"><span
+                                class="glyphicon glyphicon-pencil"></span>Edit</a>
+                        <a th:href="@{'/deleteclient/id'(id=${client.id})}"><span
+                                class="glyphicon glyphicon-remove"></span>Delete</a>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div sec:authorize="hasAuthority('ACCOUNTANT')" class="container">
+    <div class="row">
+
+
+        <div class="col-sm-4">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <a href="/viewpendingrequisitions" th:utext="${pendingRequisitionSize}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <a href="/viewpendingappointments" th:utext="${acceptedRequisitionSize}"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <a href="/viewpendingappointments" th:utext="${declinedRequisitionSize}"></a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#requisition">REQUISATION</a></li>
+        <li><a data-toggle="tab" href="#accounts">ACCOUNTS</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="requisition" class="tab-pane fade in active">
+
+            <div id="client" class="tab-pane fade in active">
+                <table class="display" cellspacing="0" width="100%">
+                    <span th:utext="${successMessage}" class="text-success"></span>
+                    <caption>Requisitions</caption>
+                    <thead>
+                    <tr style="background-color: transparent">
+                        <th scope="col">Lawyer</th>
+                        <th scope="col">Client</th>
+                        >
+                        <th scope="col">Requisation Date</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Payee</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Manage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="requisition : ${allRequisutions}">
+                        <td>
+                            <span th:utext="${requisition.madeby.name}" class="text-success"></span>
+                            <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
+                        </td>
+                        <td>
+                            <span th:utext="${requisition.aCase.client.name}" class="text-success"></span>
+                            <span th:utext="${requisition.aCase.client.lastName}" class="text-success"></span>
+                        </td>
+                        <td>
+                            <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
+                        </td>
+                        <td>
+                            <span th:utext="${requisition.amount}" class="text-success"></span>
+                        </td>
+                        <td>
+                            <span th:utext="${requisition.payee}" class="text-success"></span>
+                        </td>
+                        <td>
+                            <span th:utext="${requisition.status}" class="text-success"></span>
+                        </td>
+                        <td>
+
+                            <a th:href="@{'/viewrequisation/id'(id=${requisition.id})}"><span
+                                    class="glyphicon glyphicon-remove"></span>View</a>
+
+                            <a th:href="@{'/editrequisation/id'(id=${requisition.id})}"><span
+                                    class="glyphicon glyphicon-pencil"></span>Edit</a>
+                            <a th:href="@{'/deleterequisation/id'(id=${requisition.id})}"><span
+                                    class="glyphicon glyphicon-remove"></span>Delete</a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
+
+        <div id="accounts" class="tab-pane fade">
+            <div class="container-fluid">
+             <br/>
+                <br/>
+                <br/>
+
+
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="row">
+
+                                <form autocomplete="off"  th:action="@{/utils}"
+                                      method="get">
+                                    <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Add Account</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="jumbotron">
+                    <div th:if="${not #lists.isEmpty(accountList)}">
+                        <p style="text-align: center; color: #08088A; font-size: 16px;">Registered Clients</p>
+                        <table id="deplist" class="display" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Account Number</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Account Name</th>
+                                <th>Manager</th>
+                            </tr>
+                            </thead>
+                            <tr th:each="account : ${accountList}">
+                                <td th:text="${account.accountNumber}">Id</td>
+                                <td th:text="${account.client.name}">First Name</td>
+                                <td th:text="${account.client.lastName}">Last Name</td>
+                                <td th:text="${account.accountName}">Gender</td>
+                                <td>
+
+                                    <a th:href="${'/deleteaccount/' + account.id}" >Delete Account</a>
+
+                                    <a th:href="@{'/client/transaction/id'(id=${account.id})}"><span
+                                            class="glyphicon glyphicon-remove"></span>Make Transaction</a>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<!--Initialsing data table-->
+<script>
+    $(document).ready(function () {
+        $('table.display').DataTable();
+    });
+
+</script>
+
+</body>
+</html>

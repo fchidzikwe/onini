@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head lang="en" th:fragment="head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title></title>
+
+        <link href="css/bootstrap.min.css"
+              th:href="@{/css/bootstrap.min.css}"
+              rel="stylesheet" media="screen" />
+
+        <link href="css/jquery.dataTables.min.css"
+              th:href="@{/css/jquery.dataTables.min.css}"
+              rel="stylesheet" media="screen" />
+
+        <link href="css/signin.css"
+              th:href="@{/css/signin.css}" rel="stylesheet" media="screen"/>
+
+        <link href="css/errors.css"
+              th:href="@{/css/errors.css}" rel="stylesheet" media="screen"/>
+
+        <link href="css/jquery-ui.min.css"
+              th:href="@{/css/jquery-ui.min.css}" rel="stylesheet" media="screen"/>    
+        
+        <link href="css/mainStyle.css"
+              th:href="@{/css/mainStyle.css}" rel="stylesheet" media="screen"/>    
+
+        <script src="js/jquery.min.js"
+        th:src="@{/js/jquery.min.js}"></script>
+
+        <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+
+
+        <script src="js/jquery-ui.min.js"
+        th:src="@{/js/jquery-ui.min.js}"></script>
+
+        <script src="js/bootstrap.min.js"
+        th:src="@{/js/bootstrap.min.js}"></script>
+
+        <script src="js/jquery.dataTables.min.js"
+        th:src="@{/js/jquery.dataTables.min.js}"></script>
+
+        <script src="js/functions.js" th:src="@{/js/functions.js}"></script>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+
+    </head>
+    <body>
+    <div class="bs-example" >
+        <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse"
+                            data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span> <span
+                            class="icon-bar"></span> <span class="icon-bar"></span> <span
+                            class="icon-bar"></span>
+                    </button>
+                    <a href="/home" class="navbar-brand">LEXWARE</a>
+                    <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
+                </div>
+
+                <!-- Collection of nav links and other content for toggling -->
+                <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ><a href="/registration"><span
+                                class="glyphicon glyphicon-pencil"></span>Add User</a></li>
+
+                        <li><a href="/logout"><span
+                                class="glyphicon glyphicon-user"></span>Logout </a></li>
+                    </ul>
+                </div>
+
+
+
+            </div>
+        </nav>
+    </div>
+    <br/>
+    <br/>
+
+    </body>
+</html>
