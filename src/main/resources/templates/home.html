@@ -21,7 +21,7 @@
 <br/>
 
 <div class="bs-example">
-    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
 
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -39,14 +39,14 @@
             <!-- Collection of nav links and other content for toggling -->
             <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/registration"><span
-                            class="glyphicon glyphicon-pencil"></span>Add User</a></li>
-                    <li><a href="/settings"><span
-                            class="glyphicon glyphicon-cog"></span>Configurations </a></li>
+                    <li><a style="color: white" href="/registration"><span
+                            class="glyphicon glyphicon-pencil"></span> Add User</a></li>
+                    <li><a style="color: white" href="/settings"><span
+                            class="glyphicon glyphicon-cog"></span> Configurations </a></li>
 
 
-                    <li><a href="/logout"><span
-                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                    <li><a style="color: white" href="/logout"><span
+                            class="glyphicon glyphicon-log-out"></span> Logout </a></li>
                 </ul>
             </div>
 
@@ -55,18 +55,6 @@
 
                     <li><a href="/rate"><span
                             class="glyphicon glyphicon-cog"></span>Configure Rate </a></li>
-
-
-                    <li><a href="/logout"><span
-                            class="glyphicon glyphicon-user"></span>Logout </a></li>
-                </ul>
-            </div>
-
-            <div sec:authorize="hasAuthority('ACCOUNTANT')" id="navbarCollapse" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-
-                    <li><a href="/reportform"><span
-                            class="glyphicon glyphicon-cog"></span>Report</a></li>
 
 
                     <li><a href="/logout"><span
@@ -111,7 +99,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Active</th>
                         <th scope="col">Role</th>
-                        <!--<th scope="col">Manage</th>-->
+                        <th scope="col">Manage</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -121,13 +109,13 @@
                         <td th:text="${user.email}">gwash</td>
                         <td th:text="${user.isActive}">Yes</td>
                         <td th:text="${user.roles}">Yes</td>
-                        <!--<td>-->
-                            <!--<a th:href="@{'/edituser/id'(id=${user.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-pencil"></span>Edit</a>-->
-                            <!--<a th:href="@{'/deleteuser/id'(id=${user.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-remove"></span>Delete</a>-->
+                        <td>
+                            <a th:href="@{'/edituser/id'(id=${user.id})}"><span
+                                    class="glyphicon glyphicon-pencil"></span>Edit</a>
+                            <a th:href="@{'/deleteuser/id'(id=${user.id})}"><span
+                                    class="glyphicon glyphicon-remove"></span>Delete</a>
 
-                        <!--</td>-->
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -171,7 +159,6 @@
                 <tr style="background-color: transparent">
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
-                    >
                     <th scope="col">Mobile</th>
                     <th scope="col">Email</th>
                     <th scope="col">Manage</th>
@@ -219,7 +206,7 @@
         <div class="col-sm-4">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <a href="/viewacceptedrequisitions" th:utext="${acceptedRequisitionSize}"></a>
+                    <a href="/viewpendingappointments" th:utext="${acceptedRequisitionSize}"></a>
                 </div>
             </div>
         </div>
@@ -228,7 +215,7 @@
 
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    <a href="/viewdeclinedrequisitions" th:utext="${declinedRequisitionSize}"></a>
+                    <a href="/viewpendingappointments" th:utext="${declinedRequisitionSize}"></a>
                 </div>
             </div>
         </div>
@@ -256,7 +243,7 @@
                         <th scope="col">Amount</th>
                         <th scope="col">Payee</th>
                         <th scope="col">Status</th>
-                        <!--<th scope="col">Manage</th>-->
+                        <th scope="col">Manage</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -281,17 +268,17 @@
                         <td>
                             <span th:utext="${requisition.status}" class="text-success"></span>
                         </td>
-                        <!--<td>-->
+                        <td>
 
-                            <!--<a th:href="@{'/viewrequisation/id'(id=${requisition.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-remove"></span>View</a>-->
+                            <a th:href="@{'/viewrequisation/id'(id=${requisition.id})}"><span
+                                    class="glyphicon glyphicon-remove"></span>View</a>
 
-                            <!--<a th:href="@{'/editrequisation/id'(id=${requisition.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-pencil"></span>Edit</a>-->
-                            <!--<a th:href="@{'/deleterequisation/id'(id=${requisition.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-remove"></span>Delete</a>-->
+                            <a th:href="@{'/editrequisation/id'(id=${requisition.id})}"><span
+                                    class="glyphicon glyphicon-pencil"></span>Edit</a>
+                            <a th:href="@{'/deleterequisation/id'(id=${requisition.id})}"><span
+                                    class="glyphicon glyphicon-remove"></span>Delete</a>
 
-                        <!--</td>-->
+                        </td>
                     </tr>
                     </tbody>
                 </table>

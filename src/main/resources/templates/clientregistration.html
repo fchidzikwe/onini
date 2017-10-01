@@ -17,7 +17,7 @@
 <body>
 
 <div class="bs-example" >
-    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
 
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -37,8 +37,8 @@
                 <ul class="nav navbar-nav navbar-right">
 
 
-                    <li><a href="/logout"><span
-                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                    <li><a style="color: white" href="/logout"><span
+                            class="glyphicon glyphicon-log-out"></span>Logout </a></li>
                 </ul>
             </div>
 
@@ -55,121 +55,118 @@
 <header class="jumbotron hero-spacer">
     <div align="center">
 
+        <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
-                    <div class ="panel panel-default">
-                        <div class="panel-heading">
-                            <div align="center"><strong>CLIENT REGISTRATION</strong></div>
+                    <form autocomplete="off" action="#" th:action="@{/createclient}"
+                          th:object="${client}" method="post" class="form-horizontal"
+                          role="form">
+
+
+                        <h3 style="text-align:left">CLIENT REGISTRATION</h3>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                       class="validation-message"></label>
+                                <input type="text" th:field="*{name}" placeholder="Name"
+                                       class="form-control"/>
+                                <input type="hidden" th:field="*{id}"/>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <form align="center" autocomplete="off" action="#" th:action="@{/createclient}"
-                                  th:object="${client}" method="post" class="form-horizontal"
-                                  role="form">
 
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                                               class="validation-message"></label>
-                                        <input type="text" th:field="*{name}" placeholder="Name"
-                                               class="form-control"/>
-                                        <input type="hidden" th:field="*{id}"/>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
-                                               class="validation-message"></label>
-                                        <input type="text" th:field="*{lastName}"
-                                               placeholder="Last Name" class="form-control"/>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <label th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"
-                                               class="validation-message"></label>
-
-                                        <select class="form-control" th:field="*{gender}">
-                                            <option value="MALE">MALE</option>
-                                            <option value="FEMALE">FEMALE</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <label th:if="${#fields.hasErrors('residentialAddress')}" th:errors="*{residentialAddress}"
-                                               class="validation-message"></label>
-                                        <input type="text" th:field="*{residentialAddress}"
-                                               placeholder="Residental Adress" class="form-control"/>
-                                    </div>
-                                </div>
-
-                                <div class="form-group ">
-                                    <div class="col-sm-9">
-                                        <select class="form-control" th:field="*{city}">
-                                            <option th:each="city : ${cityList}"
-                                                    th:value="${{city}}"
-                                                    th:text="${city.name}">
-                                                Cinema
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <input type="text" th:field="*{email}" placeholder="Email"
-                                               class="form-control"/> <label
-                                            th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                                            class="validation-message"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <input type="text" th:field="*{mobile}" placeholder="Mobile"
-                                               class="form-control"/> <label
-                                            th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"
-                                            class="validation-message"></label>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <input type="text" th:field="*{skypeId}" placeholder="Skype ID"
-                                               class="form-control"/> <label
-                                            th:if="${#fields.hasErrors('skypeId')}" th:errors="*{skypeId}"
-                                            class="validation-message"></label>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <input type="text" th:field="*{nationalID}" placeholder="National ID"
-                                               class="form-control"/> <label
-                                            th:if="${#fields.hasErrors('nationalID')}" th:errors="*{nationalID}"
-                                            class="validation-message"></label>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary btn-block">Register User</button>
-                                    </div>
-                                </div>
-                                <span th:utext="${successMessage}"></span>
-                            </form>
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                                       class="validation-message"></label>
+                                <input type="text" th:field="*{lastName}"
+                                       placeholder="Last Name" class="form-control"/>
+                            </div>
                         </div>
-                    </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <label th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"
+                                       class="validation-message"></label>
+                                <select  class="form-control" th:field="*{gender}">
+                                    <option value="">--SELECT GENDER--</option>
+                                    <option value="MALE">MALE</option>
+                                    <option value="FEMALE">FEMALE</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <label th:if="${#fields.hasErrors('residentialAddress')}" th:errors="*{residentialAddress}"
+                                       class="validation-message"></label>
+                                <input type="text" th:field="*{residentialAddress}"
+                                       placeholder="Residental Adress" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <div class="col-sm-9">
+                                <select class="form-control" th:field="*{city}">
+                                    <option th:each="city : ${cityList}"
+                                            th:value="${{city}}"
+                                            th:text="${city.name}">
+                                        Cinema
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <input type="text" th:field="*{email}" placeholder="Email"
+                                       class="form-control"/> <label
+                                    th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <input type="text" th:field="*{mobile}" placeholder="Mobile"
+                                       class="form-control"/> <label
+                                    th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <input type="text" th:field="*{skypeId}" placeholder="Skype ID"
+                                       class="form-control"/> <label
+                                    th:if="${#fields.hasErrors('skypeId')}" th:errors="*{skypeId}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <input type="text" th:field="*{nationalID}" placeholder="National ID"
+                                       class="form-control"/> <label
+                                    th:if="${#fields.hasErrors('nationalID')}" th:errors="*{nationalID}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-9">
+                                <button type="submit" class="btn btn-primary btn-block">Register User</button>
+                            </div>
+                        </div>
+                        <span th:utext="${successMessage}"></span>
+                    </form>
                 </div>
             </div>
-
+        </div>
 
 
 

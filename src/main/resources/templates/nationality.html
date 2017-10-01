@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="bs-example">
-    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
 
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -32,11 +32,11 @@
             <!-- Collection of nav links and other content for toggling -->
             <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/registration"><span
-                            class="glyphicon glyphicon-pencil"></span>Add User</a></li>
+                    <li><a style="color: white" href="/registration"><span
+                            class="glyphicon glyphicon-registration-mark"></span> Add User</a></li>
 
-                    <li><a href="/logout"><span
-                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                    <li><a style="color: white" href="/logout"><span
+                            class="glyphicon glyphicon-user"></span> Logout </a></li>
                 </ul>
             </div>
 

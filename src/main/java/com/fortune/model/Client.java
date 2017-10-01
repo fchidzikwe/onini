@@ -68,26 +68,23 @@ public class Client {
   @Column(name = "active")
   private int active;
 
-
-
-
-    public String getResidentialAddress() {
+  public String getResidentialAddress() {
         return residentialAddress;
     }
 
-    public void setResidentialAddress(String residentialAddress) {
+  public void setResidentialAddress(String residentialAddress) {
         this.residentialAddress = residentialAddress;
     }
 
-    public City getCity() {
+  public City getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+  public void setCity(City city) {
         this.city = city;
     }
 
-    public String getGender() {
+  public String getGender() {
     return gender;
   }
 

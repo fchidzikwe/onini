@@ -19,7 +19,7 @@
     <body>
 
         <div class="bs-example" >
-            <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+            <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
 
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
@@ -40,8 +40,8 @@
                             <li ><a href="/registration"><span
                                         class="glyphicon glyphicon-pencil"></span>Add User</a></li>
 
-                            <li><a href="/logout"><span
-                                        class="glyphicon glyphicon-user"></span>Logout </a></li>
+                            <li><a style="color: white" href="/logout"><span
+                                        class="glyphicon glyphicon-log-out"></span>Logout </a></li>
                         </ul>
                     </div>
 
@@ -80,7 +80,7 @@
 
 
                                 <input type="hidden"  name ="id" th:value="${client.id}"/>
-                                <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Add New Case</button>
+                                <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Add Case</button>
                             </form>
                         </td>
 
@@ -88,7 +88,7 @@
                             <form autocomplete="off"  th:action="@{/addnewcase}"
                                   method="get">
                                 <input type="hidden"  name ="id" th:value="${client.id}"/>
-                                <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Add  Case</button>
+                                <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Record new Case</button>
                             </form>
                         </td>
                     </tr>
@@ -111,7 +111,7 @@
                         <caption>Cases</caption>
                         <thead>
                             <tr style="background-color: transparent">
-                                <th scope="col">Case Name</th>>
+                                <th scope="col">Case Name</th>
                                 <th scope="col">Case Type</th>
                                 <th scope="col">Time Spend In Minutes</th>
                                 <th scope="col">Amount(VAT incl)</th>

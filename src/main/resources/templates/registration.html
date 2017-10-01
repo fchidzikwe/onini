@@ -17,7 +17,7 @@
 <body>
 
 <div class="bs-example" >
-    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #50a3a2">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
 
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -28,7 +28,7 @@
                         class="icon-bar"></span> <span class="icon-bar"></span> <span
                         class="icon-bar"></span>
                 </button>
-                <a href="/home" class="navbar-brand">LEXWARE</a>
+                <a style="color: white" href="/home" class="navbar-brand">LEXWARE</a>
                 <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
             </div>
 
@@ -37,7 +37,7 @@
                 <ul class="nav navbar-nav navbar-right">
 
 
-                    <li><a href="/logout"><span
+                    <li><a style="color: white" href="/logout"><span
                             class="glyphicon glyphicon-user"></span>Logout </a></li>
                 </ul>
             </div>
@@ -64,7 +64,7 @@
 
 
 
-                        <h3 style="text-align:left">USER REGISTRATION</h3>
+                        <h3 style="text-align:left">REGISTRATION</h3>
 
 
                         <div class="form-group">
@@ -90,7 +90,7 @@
                             <div class="col-sm-9">
                                 <label th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"
                                        class="validation-message"></label>
-                                <select  th:field="*{gender}"
+                                <input type="text" th:field="*{gender}"
                                        placeholder="Gender" class="form-control"/>
                             </div>
                         </div>
