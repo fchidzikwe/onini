@@ -11,6 +11,7 @@
     <script src="/js/jquery.js"></script>
     <script src="/js/jquery.dataTables.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
@@ -68,13 +69,14 @@
 
         <table class="display" cellspacing="0" width="100%">
             <span th:utext="${successMessage}" class="text-success"></span>
-            <caption>Requisitions</caption>
+            <caption>Manage Requisitions</caption>
             <thead>
             <tr style="background-color: transparent">
                 <th scope="col">Lawyer</th>
                 <th scope="col">Client</th>
-                <th scope="col">Requisation Date</th>
-                <th scope="col">Requistion Amount</th>
+                <th scope="col">Req Date</th>
+                <th scope="col">Req Amount</th>
+                <th scope="col">AvailAcc Bal</th>
                 <th scope="col">Payee</th>
                 <th scope="col">Status</th>
                 <th scope="col">Manage</th>
@@ -97,66 +99,9 @@
                     <span th:utext="${requisition.amount}" class="text-success"></span>
                 </td>
                 <td>
-                    <span th:utext="${requisition.payee}" class="text-success"></span>
+                    <span th:utext="${balance}" class="text-success"></span>
                 </td>
-                <td>
-                    <span th:utext="${requisition.status}" class="text-success"></span>
-                </td>
-                <td>
-                    <a th:if="${pending}" th:href="@{'/managerequsition/id'(id=${requisition.id})}"
-                        class="btn  btn-primary btn-sm">
-                        Manage
-                    </a>
 
-                    <!--<a th:if="${accepted}" th:href="@{'/archiverequsition/id'(id=${requisition.id})}" }>-->
-                        <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                        <!--Archive-->
-                    <!--</a>-->
-
-                    <!--<a th:if="${declined}" th:href="@{'/archiverequsition/id'(id=${requisition.id})}" }>-->
-                        <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                        <!--Archive-->
-                    <!--</a>-->
-
-                </td>
-            </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-    <div sec:authorize="hasAuthority('LAWYER')">
-
-        <table class="display" cellspacing="0" width="100%">
-            <span th:utext="${successMessage}" class="text-success"></span>
-            <caption>Requisitions</caption>
-            <thead>
-            <tr style="background-color: transparent">
-                <th scope="col">Lawyer</th>
-                <th scope="col">Client</th>
-                <th scope="col">Requisation Date</th>
-                <th scope="col">Requistion Amount</th>
-                <th scope="col">Payee</th>
-                <th scope="col">Status</th>
-                <th scope="col">Manage</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="requisition : ${list}">
-                <td>
-                    <span th:utext="${requisition.madeby.name}" class="text-success"></span>
-                    <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
-                </td>
-                <td>
-                    <span th:utext="${requisition.aCase.client.name}" class="text-success"></span>
-                    <span th:utext="${requisition.aCase.client.lastName}" class="text-success"></span>
-                </td>
-                <td>
-                    <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
-                </td>
-                <td>
-                    <span th:utext="${requisition.amount}" class="text-success"></span>
-                </td>
                 <td>
                     <span th:utext="${requisition.payee}" class="text-success"></span>
                 </td>
@@ -164,26 +109,17 @@
                     <span th:utext="${requisition.status}" class="text-success"></span>
                 </td>
                 <td>
-                    <a th:if="${accepted}" th:href="@{'/managerequsition/id'(id=${requisition.id})}"
-                       class="btn  btn-primary btn-sm">
-                        Manage
+
+
+                    <a th:if="${pending}" th:href="@{'/acceptrequsition/id'(id=${requisition.id})}" }
+                       class="btn btn-success btn-sm">
+                        Accept
                     </a>
 
-                    <a th:if="${notpend}" th:href="@{'/readrequsition/id'(id=${requisition.id})}"
-                       class="btn  btn-primary btn-sm">
-                        Mark as Read
+                    <a th:if="${pending}" th:href="@{'/declinerequsition/id'(id=${requisition.id})}" }
+                       class="btn btn-danger btn-sm">
+                        Decline
                     </a>
-
-
-                    <!--<a th:if="${accepted}" th:href="@{'/archiverequsition/id'(id=${requisition.id})}" }>-->
-                    <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                    <!--Archive-->
-                    <!--</a>-->
-
-                    <!--<a th:if="${declined}" th:href="@{'/archiverequsition/id'(id=${requisition.id})}" }>-->
-                    <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                    <!--Archive-->
-                    <!--</a>-->
 
                 </td>
             </tr>
@@ -199,7 +135,6 @@
     $(document).ready(function () {
         $('table.display').DataTable();
     });
-
 </script>
 </body>
 </html>

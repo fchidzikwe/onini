@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class RequisitionController {
@@ -29,6 +28,8 @@ public class RequisitionController {
 
     @Autowired
     CaseService caseService;
+
+
 
     @Autowired
     UserService userService;
@@ -39,14 +40,30 @@ public class RequisitionController {
 
     @RequestMapping(value = "/getgrequistionform/caseId" ,method = RequestMethod.GET)
     public String getRequisitionForm(Model model, @RequestParam("caseId") Long caseId){
+        Case clientCase = caseService.findCaseById(caseId);
 
-
+        Client client =  clientCase.getClient();
+        model.addAttribute("client", client);
         model.addAttribute("requisition", new Requisition());
         model.addAttribute("caseId",caseId );
 
         return "requisition";
     }
 
+
+
+    @RequestMapping(value = "/viewinbox" ,method = RequestMethod.GET)
+    public String viewInbox(Model model){
+        List<Requisition> notpending = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING);
+
+        Boolean notpend =true;
+        model.addAttribute("notpend", notpend);
+
+        model.addAttribute("list", notpending);
+
+
+        return "requisitionlist";
+    }
 
 
 
@@ -59,8 +76,10 @@ public class RequisitionController {
         User loggedInUser = userService.findUserByEmail(auth.getName());
 
         Case aCase = caseService.findCaseById(caseId);
+        aCase.setRequisitionmade(Boolean.TRUE);
 
         Date dateOfRequisition = DateConveter.stringToDate(requisitionDate);
+
         requisition.setaCase(aCase);
         requisition.setRequisitionDate(dateOfRequisition);
         requisition.setMadeby(loggedInUser);
@@ -69,7 +88,8 @@ public class RequisitionController {
         model.addAttribute("requisition", new Requisition());
         model.addAttribute("caseId",caseId );
 
-        return "requisition";
+
+        return "redirect:/viewclient/id?id="+ aCase.getClient().getId();
     }
 
     @RequestMapping(value = "/viewpendingrequisitions", method = RequestMethod.GET)
@@ -110,6 +130,35 @@ public class RequisitionController {
     public String acceptAppointment(Model model, @RequestParam(value = "id", required = true) Long id) {
         Requisition requisition = requisitionService.findByID(id);
         requisition.setStatus(RequisitionStatus.ACCEPTED);
+        List<Transaction> transactionList = transactionService.findTransactionByClient(requisition.getaCase().getClient());
+
+
+        Double balance =0.0;
+        Double requestedAmount =requisition.getAmount();
+        int t=0;
+        for(Transaction transaction: transactionList){
+            t= t+1;
+
+          balance =   transaction.getAmount() ;
+            if(balance < requestedAmount && t< transactionList.size() ){
+                requestedAmount =    (requestedAmount-balance);
+                transaction.setAmount(0.0);
+                transactionService.save(transaction);
+            }else{
+                balance =  balance - requestedAmount;
+                transaction.setAmount(balance);
+                transactionService.save(transaction);
+                break;
+            }
+
+//            if(t==transactionList.size() && balance < requestedAmount ){
+//                balance =  balance - requestedAmount;
+//                transaction.setAmount(balance);
+//                transactionService.save(transaction);
+//            }
+
+        }
+
         requisitionService.save(requisition);
         Boolean accepted = true;
         model.addAttribute("accepted",accepted);

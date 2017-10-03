@@ -20,6 +20,10 @@ public interface RequisitionService {
 
     List<Requisition> findRequisitionMadeByLawyer(User user);
 
+    List<Requisition> findRequisitionsByStatusAndLawyer(RequisitionStatus requisitionStatus);
+
+    List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus requisitionStatus);
+
     List<Requisition> findRequisitionByRequisitionStatus(RequisitionStatus requisitionStatus);
 
 

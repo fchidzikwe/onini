@@ -3,6 +3,7 @@ package com.fortune.repository;
 import com.fortune.model.Case;
 import com.fortune.model.Client;
 import com.fortune.model.Matter;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,4 +15,9 @@ public interface CaseRepository extends JpaRepository<Case, Long> {
     List<Case> findByClient(Client client);
 
     List<Case> findCaseByMatter(Matter matter);
+
+    List<Case> findCaseByRequisitionmadeAndClient(Boolean  aBoolean, Client client);
+
+
+    List<Case> findCaseByRequisitionmade(Boolean  aBoolean);
 }

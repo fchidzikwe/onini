@@ -24,6 +24,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public List<Client> findByLastNameLike(String lastName) {
+        String searchTerm = "%"+lastName+"%";
+        return clientRepository.findByLastNameLike(searchTerm);
+    }
+
+    @Override
     public Client findClientById(Long id) {
         return clientRepository.findOne(id);
     }
@@ -41,5 +47,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Client> findAll() {
         return clientRepository.findAll();
+    }
+
+    @Override
+    public List<Client> findByNameOrLastName(String searchTerm) {
+        String searchingTerm = "%"+searchTerm+"%";
+        return clientRepository.findByLastNameOrNameLike(searchingTerm);
     }
 }

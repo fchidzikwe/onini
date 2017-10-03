@@ -76,7 +76,7 @@ public class ClientController {
         model.addAttribute("userList", userService.findAll());
         model.addAttribute("clientList" , clientService.findAll());
         model.addAttribute("sucessMessage", "client added");
-        return "clientregistration";
+        return "redirect:/home";
     }
 
 
@@ -88,12 +88,15 @@ public class ClientController {
 
 
         Client client = clientService.findClientById(id);
-        List<Case> clientCaseList = caseService.findAllCasesByClient(client);
+        List<Case> clientCaseList = caseService.findAllCasesWithoutReqisitionAndClient(Boolean.FALSE,client);
 if(clientCaseList != null) {
     clientCaseList.forEach(aCase -> {
-
+        Double amount = 0.0;
         Rate lawyerRate = rateService.findByUser(lawyer);
-        Double amount = lawyerRate.getAmount() / 60;
+        if(lawyerRate!=null){
+            amount = lawyerRate.getAmount() / 60;
+        }
+         
         aCase.setAmount(((15 / 100) * amount * aCase.getTimeSpent()) + amount * aCase.getTimeSpent());
 
     });
@@ -112,7 +115,7 @@ if(clientCaseList != null) {
         model.addAttribute("clientId", clientId);
         model.addAttribute("client", client);
         model.addAttribute("account", new Account());
-        model.addAttribute("message", "adding account for "+client.getName()+" "+ client.getLastName());
+        model.addAttribute("message", "ADDING ACCOUNT FOR "+(client.getName()+" "+ client.getLastName()).toUpperCase());
         return "accounts";
     }
 
@@ -133,7 +136,7 @@ if(clientCaseList != null) {
         model.addAttribute("transaction", new Transaction());
         model.addAttribute("accountId", accountId);
         model.addAttribute("account", account);
-        model.addAttribute("message", "adding account for "+account.getClient().getName()+" "+ account.getClient().getLastName());
+        model.addAttribute("message", "TRANSACTION FOR "+(account.getClient().getName()+" "+ account.getClient().getLastName()).toUpperCase());
         return "transaction";
     }
 
@@ -186,6 +189,7 @@ if(clientCaseList != null) {
         Client client = clientService.findClientById(clientId);
         Long duration = RateFormater.convertToMinutes(timeSpent);
         aCase.setClient(client);
+        aCase.setRequisitionmade(Boolean.FALSE);
         aCase.setTimeSpent(duration);
         caseService.save(aCase);
         model.addAttribute("successMessage", "saved!");

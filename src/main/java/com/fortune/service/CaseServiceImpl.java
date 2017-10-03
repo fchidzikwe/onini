@@ -31,6 +31,16 @@ public class CaseServiceImpl implements  CaseService{
     }
 
     @Override
+    public List<Case> findAllCasesWithoutReqisition(Boolean aBoolean) {
+        return caseRepository.findCaseByRequisitionmade(aBoolean);
+    }
+
+    @Override
+    public List<Case> findAllCasesWithoutReqisitionAndClient(Boolean aBoolean, Client client) {
+        return caseRepository.findCaseByRequisitionmadeAndClient(aBoolean,client);
+    }
+
+    @Override
     public Case findCaseById(Long id) {
         return caseRepository.findOne(id);
     }

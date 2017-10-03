@@ -51,64 +51,97 @@
 <br/>
 <br/>
 
-<header class="jumbotron hero-spacer">
+<div class="jumbotron hero-spacer">
     <div align="center">
 
         <div class="container">
+
+            <div class="row" th:object="${client}">
+
+
+
+
+                <table class="table table-striped" style="width:600px;">
+                    <tr>
+                        <th>
+                            Client
+                        </th>
+                        <td>
+
+                            <span th:utext="${client.name}" class="text-success"></span>
+                            <span th:utext="${client.lastName}" class="text-success"></span>
+
+                        </td>
+                        <th></th>
+
+
+                    </tr>
+
+                </table>
+            </div>
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <form autocomplete="off" action="#" th:action="@{/saverequisition}"
-                          th:object="${requisition}" method="post" class="form-horizontal"
-                          role="form">
-                        <!--     <h2 align="center">Registration Form</h2>-->
+
+                <div class="col-sm-6 col-md-4 col-md-offset-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div align="center"><strong>Make Requisition</strong></div>
+                        </div>
+                        <div class="panel-body">
+
+                                   <form autocomplete="off" action="#" th:action="@{/saverequisition}"
+                          th:object="${requisition}" method="post" class="form-horizontal">
 
                         <span th:utext="${successMessage}"></span>
-                        <h3 style="text-align:left">Make Requisition</h3>
 
-                            <div class="form-group">
-                                <div class="col-sm-9">
+                        <fieldset>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                    <div class="form-group">
 
-                                    <input type="date" th:field="*{requisitionDate}" name="requisitionDate"
-                                           placeholder="" class="form-control"/>
+                                        <label>Requisation Date: </label>
+                                        <input type="date" th:field="*{requisitionDate}" name="requisitionDate"
+                                               placeholder="" class="form-control"/>
 
-                                    <input type="hidden" th:field="*{aCase}"/>
-                                    <input type="hidden"  name ="caseId" th:value="${caseId}"/>
+                                        <input type="hidden" th:field="*{aCase}"/>
+                                        <input type="hidden"  name ="caseId" th:value="${caseId}"/>
+
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Requisition Amount: </label>
+                                        <input type="text" th:field="*{amount}"
+                                               placeholder="US$0.00" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Payee: </label>
+                                        <input type="text" th:field="*{payee}"
+                                               placeholder="Payee" class="form-control"/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <button type="submit" class="btn btn-primary btn-block">Submit Requisition</button>
+                                        </div>
+                                    </div>
                                 </div>
+
+
                             </div>
 
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
-                                       class="validation-message"></label>
-                                <input type="text" th:field="*{amount}"
-                                       placeholder="US$0.00" class="form-control"/>
-                            </div>
-                        </div>
+                        </fieldset>
 
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <label th:if="${#fields.hasErrors('payee')}" th:errors="*{payee}"
-                                       class="validation-message"></label>
-                                <input type="text" th:field="*{payee}"
-                                       placeholder="Payee" class="form-control"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <button type="submit" class="btn btn-primary btn-block">Submit Requisition</button>
-                            </div>
-                        </div>
 
                     </form>
+
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
-
-
-
     </div>
-</header>
+</div>
 
 <script>
     $(document).ready(function () {

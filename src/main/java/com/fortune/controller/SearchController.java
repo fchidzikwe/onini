@@ -56,7 +56,7 @@ public class SearchController {
     System.out.println("@@@@@@@@@@@@user passed in call user is: "+client);
     model.addAttribute("user", client);
 
-    model.addAttribute("search", clientService.findClientByLastName(client.getLastName()));
+    model.addAttribute("search", clientService.findByLastNameLike(client.getLastName()));
 
     return "searchuser";
   }
@@ -65,7 +65,7 @@ public class SearchController {
   @ResponseBody
   public List<Client> getClientList(@RequestParam String lastName) {
 
-    List<Client> clientList = clientService.findClientByLastName(lastName);
+    List<Client> clientList = clientService.findByLastNameLike(lastName);
     List<Client> arrayList = new ArrayList();
     arrayList.addAll(clientList);
     clientList.clear();

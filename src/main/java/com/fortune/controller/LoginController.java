@@ -71,13 +71,18 @@ public class LoginController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User lawyer = userService.findUserByEmail(authentication.getName());
 
-
+        // for accountant
         List<Requisition> allRequisutions = requisitionService.findAllRequisition();
         List<Requisition> allRequisitionsMadeByLawyer = requisitionService.findRequisitionMadeByLawyer(lawyer);
         List<Requisition> pendingRequisition = requisitionService.findRequisitionByRequisitionStatus(RequisitionStatus.PENDING);
         List<Requisition> acceptedRequisition = requisitionService.findRequisitionByRequisitionStatus(RequisitionStatus.ACCEPTED);
         List<Requisition> declinedRequisition = requisitionService.findRequisitionByRequisitionStatus(RequisitionStatus.DECLINED);
 
+        //for lawyer
+
+        List<Requisition> inboxReq = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING);
+
+        model.addAttribute("inboxReqSize", "INBOX(" +inboxReq.size() + ")");
 
         List<Role> roleList = roleService.findAll();
         Role adminRole = roleService.findByRole("ADMIN");

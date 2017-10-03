@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/xhtml">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
 
@@ -18,26 +19,76 @@
 </head>
 
 <body>
+<div class="bs-example" >
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
+
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" data-target="#navbarCollapse"
+                        data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                <a href="/home" class="navbar-brand">LEXWARE</a>
+                <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
+            </div>
+
+            <!-- Collection of nav links and other content for toggling -->
+            <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+
+                    <li><a style="color: white" href="/logout"><span
+                            class="glyphicon glyphicon-log-out"></span>Logout </a></li>
+                </ul>
+            </div>   <div sec:authorize="hasAuthority('ACCOUNTANT')" id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+
+                <li><a href="/reportform"><span
+                        class="glyphicon glyphicon-cog"></span>Report</a></li>
+
+
+                <li><a href="/logout"><span
+                        class="glyphicon glyphicon-user"></span>Logout </a></li>
+            </ul>
+        </div>
+
+
+
+
+        </div>
+    </nav>
+</div>
+<br/>
+<br/>
+<br/>
 
 <div class="container">
     <div class="bgc">
-        <h2>Search Utility</h2>
+        <h2>ADD ACCOUNTS</h2>
+        <p>Search for Client Below</p>
         <div>
             <form class="form-horizontal" th:object="${client}" th:action="@{/utils}" method="post">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Employee LastName:</label>
-                    <div class="col-sm-10">
+                <div class="row">
+
+                    <label class="col-sm-2 control-label">Client LastName:</label>
+                    <div class="col-sm-8">
                         <input type="text" autofocus="true" required="true"
                                id="auto" th:title="#{UserIdAuto}"
-                               placeholder="Type a user last name, if there are many choose one of them"
+                               placeholder="Type last name, if there are many choose one of them"
                                class="form-control" th:field="*{lastName}" onkeyup="loadUsers()"/>
+
                     </div>
+                    <button  value="Search" th:value="Search"
+                             class="btn btn-lg btn-primary" ><span class="glyphicon glyphicon-search"></span></button>
                 </div>
 
-                <div class="row">
-                    <input type="submit" value="Search" th:value="Search"
-                           class="btn btn-default" />
-                </div>
+                <!--<div class="row">-->
+                    <!--<input type="submit" value="Search" th:value="Search"-->
+                           <!--class="btn btn-default" />-->
+                <!--</div>-->
             </form>
             <div th:if="${not #lists.isEmpty(search)}">
                 <p style="text-align: center; color: #08088A; font-size: 16px;">Registered Clients</p>
@@ -57,8 +108,8 @@
                         <td th:text="${client.lastName}">Last Name</td>
                         <td th:text="${client.email}">Gender</td>
                         <td>
-                            <a th:href="@{'/client/addaccount/id'(id=${client.id})}"><span
-                                    class="glyphicon glyphicon-pencil"></span>Add Client</a>
+                            <a th:href="@{'/client/addaccount/id'(id=${client.id})}"
+                                    class="glyphicon glyphicon-plus btn btn-primary">Add Account</a>
                         </td>
 
 
@@ -114,7 +165,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             source: function (request, response) {
-                $.getJSON("/utils/getEmployees/", {lastName: request.term}, function (result) {
+                $.getJSON("/utils/getClients/", {lastName: request.term}, function (result) {
                     response($.map(result, function (employee) {
                         return {
                             label: employee.lastName,

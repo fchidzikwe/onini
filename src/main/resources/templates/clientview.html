@@ -128,18 +128,18 @@
                                 </td>
                                 <td th:text="${clientCase.matter.name}">George</td>
                                 <td th:text="${clientCase.timeSpent}">Washington</td>
-                                <td  th:text="${clientCase.amount}">
+                                <td  th:text="${clientCase.amount + (0.15*clientCase.amount)}">
                                 </td>
 
                                 <td>
 
-                                    <a th:href="@{'/getgrequistionform/caseId'(caseId=${clientCase.id})}"><span
-                                            class="glyphicon glyphicon-remove"></span>Make Requisition</a>
+                                    <a th:href="@{'/getgrequistionform/caseId'(caseId=${clientCase.id})}"
+                                            class="btn btn-primary">Make Requisition</a>
 
-                                    <a th:href="@{'/editclient/id'(id=${clientCase.id})}"><span
-                                            class="glyphicon glyphicon-pencil"></span>Edit</a>
-                                    <a th:href="@{'/deleteclient/id'(id=${clientCase.id})}"><span
-                                            class="glyphicon glyphicon-remove"></span>Delete</a>
+                                    <a th:href="@{'/editclient/id'(id=${clientCase.id})}"
+                                            class="btn btn-warning">Edit</a>
+                                    <a th:href="@{'/deleteclient/id'(id=${clientCase.id})}"
+                                            class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         </tbody>

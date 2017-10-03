@@ -11,6 +11,8 @@ public interface ClientService {
 
      List<Client> findClientByLastName(String lastName);
 
+     List<Client> findByLastNameLike(String lastName);
+
     Client findClientById(Long id);
 
      void saveClient(Client client);
@@ -18,5 +20,7 @@ public interface ClientService {
     void deleteClient(Client client);
 
      List<Client> findAll();
+
+     List<Client> findByNameOrLastName(String searchTerm);
 
 }

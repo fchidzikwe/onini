@@ -24,5 +24,7 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
     @Query("select r from Requisition r where r.status =:status")
     List<Requisition>findRequisitionByStatus(@Param("status")RequisitionStatus status);
 
+    List<Requisition> findRequisitionByStatusAndMadeby(RequisitionStatus status, User user);
 
+    List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus status, User user);
 }

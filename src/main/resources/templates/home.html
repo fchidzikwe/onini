@@ -53,11 +53,29 @@
             <div sec:authorize="hasAuthority('LAWYER')" id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
 
-                    <li><a href="/rate"><span
+                    <li><a style="color: white" href="/viewinbox"><span th:utext="${inboxReqSize}"
+                            class="glyphicon glyphicon-envelope"  >
+                        ${inboxReqSize}
+
+                    </span></a></li>
+
+                    <li><a style="color: white" href="/rate"><span
                             class="glyphicon glyphicon-cog"></span>Configure Rate </a></li>
 
 
-                    <li><a href="/logout"><span
+                    <li><a style="color: white" href="/logout"><span
+                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                </ul>
+            </div>
+
+            <div sec:authorize="hasAuthority('ACCOUNTANT')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a style="color: white" href="/reportform"><span
+                            class="glyphicon glyphicon-cog"></span>Report</a></li>
+
+
+                    <li><a style="color: white" href="/logout"><span
                             class="glyphicon glyphicon-user"></span>Logout </a></li>
                 </ul>
             </div>
@@ -99,7 +117,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Active</th>
                         <th scope="col">Role</th>
-                        <th scope="col">Manage</th>
+                        <!--<th scope="col">Manage</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -109,13 +127,13 @@
                         <td th:text="${user.email}">gwash</td>
                         <td th:text="${user.isActive}">Yes</td>
                         <td th:text="${user.roles}">Yes</td>
-                        <td>
-                            <a th:href="@{'/edituser/id'(id=${user.id})}"><span
-                                    class="glyphicon glyphicon-pencil"></span>Edit</a>
-                            <a th:href="@{'/deleteuser/id'(id=${user.id})}"><span
-                                    class="glyphicon glyphicon-remove"></span>Delete</a>
+                        <!--<td>-->
+                            <!--<a th:href="@{'/edituser/id'(id=${user.id})}"><span-->
+                                    <!--class="glyphicon glyphicon-pencil"></span>Edit</a>-->
+                            <!--<a th:href="@{'/deleteuser/id'(id=${user.id})}"><span-->
+                                    <!--class="glyphicon glyphicon-remove"></span>Delete</a>-->
 
-                        </td>
+                        <!--</td>-->
                     </tr>
                     </tbody>
                 </table>
@@ -149,8 +167,11 @@
     <br/>
     <br/>
     <div class="tab-content">
-        <a href="/createclient"><span
-                class="glyphicon glyphicon-user"></span>Add Client</a>
+        <a href="/createclient"
+                class="btn btn-success">Add Client</a>
+        <br/>
+        <br/>
+
         <div id="client" class="tab-pane fade in active">
             <table class="display" cellspacing="0" width="100%">
                 <span th:utext="${successMessage}" class="text-success"></span>
@@ -172,13 +193,13 @@
                     <td th:text="${client.email}">Washington</td>
                     <td>
 
-                        <a th:href="@{'/viewclient/id'(id=${client.id})}"><span
-                                class="glyphicon glyphicon-remove"></span>View</a>
+                        <a th:href="@{'/viewclient/id'(id=${client.id})}"
+                                class="btn btn-primary">View</a>
 
-                        <a th:href="@{'/editclient/id'(id=${client.id})}"><span
-                                class="glyphicon glyphicon-pencil"></span>Edit</a>
-                        <a th:href="@{'/deleteclient/id'(id=${client.id})}"><span
-                                class="glyphicon glyphicon-remove"></span>Delete</a>
+                        <a th:href="@{'/editclient/id'(id=${client.id})}"
+                                class="btn btn-warning">Edit</a>
+                        <a th:href="@{'/deleteclient/id'(id=${client.id})}"
+                                class="btn btn-danger">Delete</a>
 
                     </td>
                 </tr>
@@ -206,7 +227,7 @@
         <div class="col-sm-4">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <a href="/viewpendingappointments" th:utext="${acceptedRequisitionSize}"></a>
+                    <a href="/viewacceptedrequisitions" th:utext="${acceptedRequisitionSize}"></a>
                 </div>
             </div>
         </div>
@@ -215,7 +236,7 @@
 
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    <a href="/viewpendingappointments" th:utext="${declinedRequisitionSize}"></a>
+                    <a href="/viewdeclinedrequisitions" th:utext="${declinedRequisitionSize}"></a>
                 </div>
             </div>
         </div>
@@ -243,7 +264,7 @@
                         <th scope="col">Amount</th>
                         <th scope="col">Payee</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Manage</th>
+                        <!--<th scope="col">Manage</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -268,17 +289,17 @@
                         <td>
                             <span th:utext="${requisition.status}" class="text-success"></span>
                         </td>
-                        <td>
+                        <!--<td>-->
 
-                            <a th:href="@{'/viewrequisation/id'(id=${requisition.id})}"><span
-                                    class="glyphicon glyphicon-remove"></span>View</a>
+                            <!--<a th:href="@{'/viewrequisation/id'(id=${requisition.id})}"><span-->
+                                    <!--class="glyphicon glyphicon-remove"></span>View</a>-->
 
-                            <a th:href="@{'/editrequisation/id'(id=${requisition.id})}"><span
-                                    class="glyphicon glyphicon-pencil"></span>Edit</a>
-                            <a th:href="@{'/deleterequisation/id'(id=${requisition.id})}"><span
-                                    class="glyphicon glyphicon-remove"></span>Delete</a>
+                            <!--<a th:href="@{'/editrequisation/id'(id=${requisition.id})}"><span-->
+                                    <!--class="glyphicon glyphicon-pencil"></span>Edit</a>-->
+                            <!--<a th:href="@{'/deleterequisation/id'(id=${requisition.id})}"><span-->
+                                    <!--class="glyphicon glyphicon-remove"></span>Delete</a>-->
 
-                        </td>
+                        <!--</td>-->
                     </tr>
                     </tbody>
                 </table>
@@ -299,9 +320,9 @@
                         <div class="col-md-6 col-md-offset-3">
                             <div class="row">
 
-                                <form autocomplete="off"  th:action="@{/utils}"
-                                      method="get">
-                                    <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Add Account</button>
+                                <form style="align-content: stretch" autocomplete="off"  th:action="@{/utils}">
+                                    <button  class="btn btn-primary glyphicon glyphicon-plus">
+                                        Add Account</button>
                                 </form>
                             </div>
 
@@ -317,7 +338,7 @@
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Account Name</th>
-                                <th>Manager</th>
+                                <th>Manage</th>
                             </tr>
                             </thead>
                             <tr th:each="account : ${accountList}">
@@ -327,10 +348,10 @@
                                 <td th:text="${account.accountName}">Gender</td>
                                 <td>
 
-                                    <a th:href="${'/deleteaccount/' + account.id}" >Delete Account</a>
+                                    <a th:href="${'/deleteaccount/' + account.id}" class="btn btn-danger" >Delete Account</a>
 
-                                    <a th:href="@{'/client/transaction/id'(id=${account.id})}"><span
-                                            class="glyphicon glyphicon-remove"></span>Make Transaction</a>
+                                    <a th:href="@{'/client/transaction/id'(id=${account.id})}"
+                                            class="btn btn-success">Make Transaction</a>
 
                                 </td>
                             </tr>

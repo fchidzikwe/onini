@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en"
-      xmlns="http://www.w3.org/1999/xhtml">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <head>
         <title>Lexware || Accounts</title>
         <link href="css/registration.css"
@@ -11,89 +12,140 @@
         <link rel = "stylesheet" href = "bootstrap.css" />
     </head>
     <body>
+    <div class="bs-example" >
+        <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
 
-        <header class="jumbotron hero-spacer">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" data-target="#navbarCollapse"
+                            data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span> <span
+                            class="icon-bar"></span> <span class="icon-bar"></span> <span
+                            class="icon-bar"></span>
+                    </button>
+                    <a href="/home" class="navbar-brand">LEXWARE</a>
+                    <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
+                </div>
+
+                <!-- Collection of nav links and other content for toggling -->
+                <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+
+
+                        <li><a style="color: white" href="/logout"><span
+                                class="glyphicon glyphicon-log-out"></span>Logout </a></li>
+                    </ul>
+                </div>   <div sec:authorize="hasAuthority('ACCOUNTANT')" id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="/reportform"><span
+                            class="glyphicon glyphicon-cog"></span>Report</a></li>
+
+
+                    <li><a href="/logout"><span
+                            class="glyphicon glyphicon-user"></span>Logout </a></li>
+                </ul>
+            </div>
+
+
+
+
+            </div>
+        </nav>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+
+        <div class="jumbotron hero-spacer">
             <div align="center">
-
+                <span th:utext="${message}"></span>
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6 col-md-offset-3">
 
-                            <span th:utext="${successMessage}"></span>
-                            <form autocomplete="off" action="#" th:action="@{/client/transaction}"
-                                  th:object="${transaction}" method="post" class="form-horizontal"
-                                  role="form">
-
-                                <h3 >Accounts Registration</h3>
-                                <span th:utext="${message}"></span>
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <input type="hidden" th:field="*{account}"/>
-                                        <input type="hidden"  name ="accountId" th:value="${accountId}"/>
-                                    </div>
+                        <div class="col-sm-6 col-md-4 col-md-offset-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div align="center"><strong>Make Transaction</strong></div>
                                 </div>
+                                <div class="panel-body">
+                                    <span th:utext="${successMessage}"></span>
+                                    <form autocomplete="off" action="#" th:action="@{/client/transaction}"
+                                          th:object="${transaction}" method="post" class="form-horizontal">
 
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
-                                               class="validation-message"></label>
-                                        <input type="text" th:field="*{description}" placeholder="Description"
-                                               class="form-control"/>
-                                    </div>
+
+                              <fieldset>
+
+                                  <div class="row">
+                                      <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                  <div class="form-group">
+
+                                          <input type="hidden" th:field="*{account}"/>
+                                          <input type="hidden"  name ="accountId" th:value="${accountId}"/>
+
+                                  </div>
+
+                                  <div class="form-group">
+
+                                          <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                                                 class="validation-message"></label>
+                                          <input type="text" th:field="*{description}" placeholder="Description"
+                                                 class="form-control"/>
+
+                                  </div>
+
+                                  <div class="form-group">
+
+                                          <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
+                                                 class="validation-message"></label>
+
+                                          Deposit: <input type="number" th:field="*{amount}" placeholder=""
+                                                          class="form-control"/>
+
+
+                                  </div>
+
+
+
+
+                                  <div class="form-group">
+
+
+                                          <select name="transactionType" class="form-control">
+                                              <option>
+                                                  CHOOSE TRANSACTION TYPE
+                                              </option>
+                                              <option>
+                                                  DEPOSIT
+                                              </option>
+                                              <option>
+                                                  WITHDRAWAL
+                                              </option>
+                                          </select>
+                                  </div>
+
+
+
+                                  <div class="form-group">
+                                          <button type="submit" class="btn btn-primary btn-block">Make Transaction</button>
+                                  </div>
+                                      </div>
+                                  </div>
+                              </fieldset>
+
+                                    </form>
                                 </div>
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
-                                               class="validation-message"></label>
-
-                                            Deposit: <input type="number" th:field="*{amount}" placeholder=""
-                                                            class="form-control"/>
-
-                                    </div>
-                                </div>
-
-
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-
-                                        <select name="transactionType" class="form-control">
-                                            <option>
-                                                CHOOSE TRANSACTION TYPE
-                                            </option>
-                                            <option>
-                                                DEPOSIT
-                                            </option>
-                                            <option>
-                                                WITHDRAWAL
-                                            </option>
-                                        </select>
-
-                                    </div>
-
-
-                                </div>
-
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary btn-block">Make Transaction</button>
-                                    </div>
-                                </div>
-
-                            </form>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
 
 
             </div>
-        </header>
+        </div>
 
 
 

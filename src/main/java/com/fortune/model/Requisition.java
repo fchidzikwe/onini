@@ -35,6 +35,7 @@ public class Requisition {
     @OneToOne
     private User madeby;
 
+
     public Long getId() {
         return id;
     }
@@ -90,4 +91,6 @@ public class Requisition {
     public void setMadeby(User madeby) {
         this.madeby = madeby;
     }
+
+
 }

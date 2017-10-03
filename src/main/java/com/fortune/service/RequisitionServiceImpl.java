@@ -4,6 +4,8 @@ package com.fortune.service;
 import com.fortune.model.*;
 import com.fortune.repository.RequisitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,9 @@ public class RequisitionServiceImpl implements RequisitionService{
 
     @Autowired
     RequisitionRepository requisitionRepository;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public void save(Requisition requisition) {
@@ -47,6 +52,20 @@ public class RequisitionServiceImpl implements RequisitionService{
     @Override
     public List<Requisition> findRequisitionMadeByLawyer(User user) {
         return requisitionRepository.findRequisitionsByLawyer(user);
+    }
+
+    @Override
+    public List<Requisition> findRequisitionsByStatusAndLawyer(RequisitionStatus requisitionStatus) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+         User lawyer = userService.findUserByEmail(authentication.getName());
+        return requisitionRepository.findRequisitionByStatusAndMadeby(requisitionStatus, lawyer);
+    }
+
+    @Override
+    public List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus requisitionStatus) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User lawyer = userService.findUserByEmail(authentication.getName());
+        return requisitionRepository.findRequisitionByStatusIsNotAndMadeby(requisitionStatus, lawyer);
     }
 
     @Override

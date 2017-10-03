@@ -31,6 +31,9 @@ public class Case {
     @Column(name ="amount")
     private Double amount;
 
+    @Column(name = "requisitionmade")
+    private Boolean requisitionmade;
+
     public Double getAmount() {
         return amount;
     }
@@ -78,7 +81,12 @@ public class Case {
     public void setClient(Client client) {
         this.client = client;
     }
-    
-    
 
+    public Boolean getRequisitionmade() {
+        return requisitionmade;
+    }
+
+    public void setRequisitionmade(Boolean requisitionmade) {
+        this.requisitionmade = requisitionmade;
+    }
 }
