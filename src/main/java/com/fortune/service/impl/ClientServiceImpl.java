@@ -1,7 +1,8 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.Client;
 import com.fortune.repository.ClientRepository;
+import com.fortune.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

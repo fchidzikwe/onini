@@ -64,7 +64,6 @@ public class SearchController {
   @RequestMapping(value = "/getClients/", method = RequestMethod.GET)
   @ResponseBody
   public List<Client> getClientList(@RequestParam String lastName) {
-
     List<Client> clientList = clientService.findByLastNameLike(lastName);
     List<Client> arrayList = new ArrayList();
     arrayList.addAll(clientList);

@@ -1,15 +1,16 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.Client;
 import com.fortune.model.Transaction;
 import com.fortune.repository.TransactionRepository;
+import com.fortune.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TransactionServiceImpl implements TransactionService{
+public class TransactionServiceImpl implements TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
 

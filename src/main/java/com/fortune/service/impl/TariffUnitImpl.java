@@ -1,7 +1,8 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.TarrifUnit;
 import com.fortune.repository.TariffUintRepository;
+import com.fortune.service.TariffUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

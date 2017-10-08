@@ -1,7 +1,8 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.Role;
 import com.fortune.repository.RoleRepository;
+import com.fortune.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

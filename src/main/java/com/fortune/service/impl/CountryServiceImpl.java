@@ -1,7 +1,8 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.Country;
 import com.fortune.repository.CountryRepository;
+import com.fortune.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

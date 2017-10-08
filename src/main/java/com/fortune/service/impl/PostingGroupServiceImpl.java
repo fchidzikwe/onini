@@ -1,7 +1,8 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.PostingGroup;
 import com.fortune.repository.PostingGroupRepository;
+import com.fortune.service.PostingGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

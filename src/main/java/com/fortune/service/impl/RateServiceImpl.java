@@ -1,8 +1,9 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.Rate;
 import com.fortune.model.User;
 import com.fortune.repository.RateRepository;
+import com.fortune.service.RateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

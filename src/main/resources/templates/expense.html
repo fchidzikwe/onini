@@ -3,7 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <title>Lexware Matter</title>
+    <title>Lexware || Expense</title>
 
     <link href="css/registration.css"
           th:href="@{/css/registration.css}" rel="stylesheet"/>
@@ -89,11 +89,11 @@
                 <div class="col-sm-6 col-md-4 col-md-offset-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div align="center"><strong>Capture Case</strong></div>
+                            <div align="center"><strong>Capture Expense</strong></div>
                         </div>
                         <div class="panel-body">
-                                 <form autocomplete="off" action="#" th:action="@{/savecase}"
-                          th:object="${case}" method="post" class="form-horizontal">
+                                 <form autocomplete="off" action="#" th:action="@{/saveexpense}"
+                          th:object="${expense}" method="post" class="form-horizontal">
                                      <span th:utext="${successMessage}"></span>
 
                                      <fieldset>
@@ -102,30 +102,39 @@
                                                  <div class="form-group">
                                                          <input type="hidden" th:field="*{client}"/>
                                                          <input type="hidden"  name ="clientId" th:value="${clientId}"/>
-                                                     <label>VS: </label>
-                                                     <input type="text" th:field="*{versus}" placeholder="VS"
-                                                                class="form-control"/>
+                                                     <input type="hidden"  name ="caseId" th:value="${caseId}"/>
+
+
 
 
                                                  </div>
 
                                                  <div class="form-group">
-                                                     <label>Matter Name: </label>
-                                                         <select class="form-control" th:field="*{matter}">
-                                                             <option th:each="matter : ${matterList}"
-                                                                     th:value="${{matter}}"
-                                                                     th:text="${matter.name}">
-                                                                 Matter
+                                                     <label>Cost Name: </label>
+                                                         <select class="form-control" th:field="*{costs}">
+                                                             <option th:each="costs : ${costsList}"
+                                                                     th:value="${{costs}}"
+                                                                     th:text="${costs.name}">
+                                                                 Costs
                                                              </option>
                                                          </select>
                                                  </div>
-                                                 <div class="form-group">
-                                                        <label>Duration: </label>
-                                                         <input id="timespent" type="text"  th:field="*{timeSpent}" name="timeSpent"
+
+                                                     <div class="form-group">
+                                                         <label>price: </label>
+                                                         <input type="number"  th:field="*{price}" name="price"
                                                                 class="form-control"/>
                                                      </div>
 
-                                                 <div class="form-group">
+                                                     <div class="form-group">
+                                                         <div class="form-group">
+                                                             <label>Qnty: </label>
+                                                             <input id="quantity" type="number"  th:field="*{quantity}" name="quantity"
+                                                                    class="form-control"/>
+                                                         </div>
+
+                                                         <div class="form-group">
+
                                                      <div class="input-group">
                                                          <button type="submit" class="btn btn-primary btn-block">Save</button>
                                                      </div>

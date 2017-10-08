@@ -47,6 +47,9 @@ public class ConfigurationController {
   NationalityService nationalityService;
 
   @Autowired
+  CostsService costsService;
+
+  @Autowired
   PostingGroupService postingGroupService;
 
   @Autowired
@@ -163,6 +166,22 @@ public class ConfigurationController {
     redirectAttributes.addFlashAttribute("successMessage", matter.getName() +" Registred");
     return "redirect:/getmatterform";
   }
+
+
+    @RequestMapping(value = "/getcostsform", method = RequestMethod.GET)
+    public String getCostsForm(Model model){
+        List<Costs> costsList = costsService.findAllCosts();
+        model.addAttribute("costs", new Costs());
+        model.addAttribute("costsList",costsList);
+        return "costs";
+    }
+
+    @RequestMapping(value = "/addcosts", method = RequestMethod.POST)
+    public String registerCosts(@Valid Costs costs, BindingResult bindingResult, Model  model, RedirectAttributes redirectAttributes){
+        costsService.save(costs);
+        redirectAttributes.addFlashAttribute("successMessage", costs.getName() +" Registred");
+        return "redirect:/getcostsform";
+    }
 
 
   @RequestMapping(value = "/addtariff", method = RequestMethod.POST)

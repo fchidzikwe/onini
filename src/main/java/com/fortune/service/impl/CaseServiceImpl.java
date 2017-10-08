@@ -1,17 +1,19 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 
 import com.fortune.model.Case;
 import com.fortune.model.Client;
 import com.fortune.model.Matter;
 import com.fortune.repository.CaseRepository;
+import com.fortune.service.CaseService;
+import com.fortune.util.RateFormater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CaseServiceImpl implements  CaseService{
+public class CaseServiceImpl implements CaseService {
     @Autowired
     CaseRepository caseRepository;
 
@@ -47,6 +49,7 @@ public class CaseServiceImpl implements  CaseService{
 
     @Override
     public void save(Case aCase) {
+
         caseRepository.save(aCase);
     }
 

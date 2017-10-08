@@ -1,8 +1,10 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 
 import com.fortune.model.*;
 import com.fortune.repository.RequisitionRepository;
+import com.fortune.service.RequisitionService;
+import com.fortune.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RequisitionServiceImpl implements RequisitionService{
+public class RequisitionServiceImpl implements RequisitionService {
 
     @Autowired
     RequisitionRepository requisitionRepository;

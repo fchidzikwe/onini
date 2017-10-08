@@ -79,11 +79,8 @@ public class LoginController {
         List<Requisition> declinedRequisition = requisitionService.findRequisitionByRequisitionStatus(RequisitionStatus.DECLINED);
 
         //for lawyer
-
         List<Requisition> inboxReq = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING);
-
         model.addAttribute("inboxReqSize", "INBOX(" +inboxReq.size() + ")");
-
         List<Role> roleList = roleService.findAll();
         Role adminRole = roleService.findByRole("ADMIN");
         roleList.remove(adminRole);
@@ -105,14 +102,12 @@ public class LoginController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult bindingResult, Model  model, @RequestParam("dateRegistered") String dateRegistered){
-
         Date date = DateConveter.stringToDate(dateRegistered);
         user.setDateRegistered(date);
         user.setActive(1);
         userService.saveUser(user);
         model.addAttribute("successMessage", "User Registred");
         return "registration";
-
     }
 
     @ModelAttribute("user")

@@ -1,9 +1,10 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 import com.fortune.model.Role;
 import com.fortune.model.User;
 import com.fortune.repository.RoleRepository;
 import com.fortune.repository.UserRepository;
+import com.fortune.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

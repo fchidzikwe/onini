@@ -1,4 +1,4 @@
-package com.fortune.service;
+package com.fortune.service.impl;
 
 /**
  * @author fortune on 9/6/17
@@ -6,6 +6,7 @@ package com.fortune.service;
 
 import com.fortune.model.FacilityConfiguration;
 import com.fortune.repository.FacilityConfigurationRepository;
+import com.fortune.service.FacilityConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FacilityConfigurationServiceImpl implements FacilityConfigurationService{
+public class FacilityConfigurationServiceImpl implements FacilityConfigurationService {
 
     @Autowired
     FacilityConfigurationRepository facilityConfigurationRepository;

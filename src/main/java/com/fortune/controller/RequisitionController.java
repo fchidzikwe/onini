@@ -29,8 +29,6 @@ public class RequisitionController {
     @Autowired
     CaseService caseService;
 
-
-
     @Autowired
     UserService userService;
 
@@ -41,27 +39,20 @@ public class RequisitionController {
     @RequestMapping(value = "/getgrequistionform/caseId" ,method = RequestMethod.GET)
     public String getRequisitionForm(Model model, @RequestParam("caseId") Long caseId){
         Case clientCase = caseService.findCaseById(caseId);
-
         Client client =  clientCase.getClient();
         model.addAttribute("client", client);
         model.addAttribute("requisition", new Requisition());
         model.addAttribute("caseId",caseId );
-
         return "requisition";
     }
-
 
 
     @RequestMapping(value = "/viewinbox" ,method = RequestMethod.GET)
     public String viewInbox(Model model){
         List<Requisition> notpending = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING);
-
         Boolean notpend =true;
         model.addAttribute("notpend", notpend);
-
         model.addAttribute("list", notpending);
-
-
         return "requisitionlist";
     }
 
@@ -71,15 +62,11 @@ public class RequisitionController {
     public String makeRequisition(@Valid Requisition requisition, BindingResult bindingResult, Model model, @RequestParam("caseId") Long caseId ,
                                   @RequestParam("requisitionDate") String requisitionDate
     ){
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loggedInUser = userService.findUserByEmail(auth.getName());
-
         Case aCase = caseService.findCaseById(caseId);
         aCase.setRequisitionmade(Boolean.TRUE);
-
         Date dateOfRequisition = DateConveter.stringToDate(requisitionDate);
-
         requisition.setaCase(aCase);
         requisition.setRequisitionDate(dateOfRequisition);
         requisition.setMadeby(loggedInUser);
@@ -87,8 +74,6 @@ public class RequisitionController {
         requisitionService.save(requisition);
         model.addAttribute("requisition", new Requisition());
         model.addAttribute("caseId",caseId );
-
-
         return "redirect:/viewclient/id?id="+ aCase.getClient().getId();
     }
 
@@ -96,14 +81,10 @@ public class RequisitionController {
     public String viewPendingRequisition(Model model){
         Boolean pending = true;
         List<Requisition> pendingrequisitionList = requisitionService.findRequisitionByRequisitionStatus(RequisitionStatus.PENDING);
-
         model.addAttribute("list", pendingrequisitionList);
         model.addAttribute("pending", pending);
         return "requisitionlist";
-
     }
-
-
 
     @RequestMapping(value = "/viewacceptedrequisitions", method = RequestMethod.GET)
     public String viewAcceptedRequisition(Model model){
@@ -112,7 +93,6 @@ public class RequisitionController {
         model.addAttribute("list", acceptedrequisitionList);
         model.addAttribute("accepted", accepted);
         return "requisitionlist";
-
     }
 
     @RequestMapping(value = "/viewdeclinedrequisitions", method = RequestMethod.GET)
@@ -122,24 +102,19 @@ public class RequisitionController {
         model.addAttribute("list", declinedrequisitionList);
         model.addAttribute("declined", declined);
         return "requisitionlist";
-
     }
-
 
     @RequestMapping(value = "/acceptrequsition/id", method = RequestMethod.GET)
     public String acceptAppointment(Model model, @RequestParam(value = "id", required = true) Long id) {
         Requisition requisition = requisitionService.findByID(id);
         requisition.setStatus(RequisitionStatus.ACCEPTED);
         List<Transaction> transactionList = transactionService.findTransactionByClient(requisition.getaCase().getClient());
-
-
         Double balance =0.0;
         Double requestedAmount =requisition.getAmount();
         int t=0;
         for(Transaction transaction: transactionList){
             t= t+1;
-
-          balance =   transaction.getAmount() ;
+            balance =   transaction.getAmount() ;
             if(balance < requestedAmount && t< transactionList.size() ){
                 requestedAmount =    (requestedAmount-balance);
                 transaction.setAmount(0.0);
@@ -150,25 +125,12 @@ public class RequisitionController {
                 transactionService.save(transaction);
                 break;
             }
-
-//            if(t==transactionList.size() && balance < requestedAmount ){
-//                balance =  balance - requestedAmount;
-//                transaction.setAmount(balance);
-//                transactionService.save(transaction);
-//            }
-
         }
-
         requisitionService.save(requisition);
         Boolean accepted = true;
         model.addAttribute("accepted",accepted);
         return "redirect:/home";
     }
-
-
-
-
-
 
     @RequestMapping(value = "/declinerequsition/id", method = RequestMethod.GET)
     public String declineRequisition(Model model, @RequestParam(value = "id", required = true) Long id) {
@@ -194,8 +156,5 @@ public class RequisitionController {
         return "managerequisitionlist";
 
     }
-
-
-
 
 }

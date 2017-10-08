@@ -29,6 +29,9 @@ public class ClientController {
     CityService cityService;
 
     @Autowired
+    ExpenseService expenseService;
+
+    @Autowired
     ClientService clientService;
 
 
@@ -53,21 +56,17 @@ public class ClientController {
     @Autowired
     RequisitionService requisitionService;
 
-
-    
-  @Autowired
-  TransactionService transactionService;
-
+    @Autowired
+    TransactionService transactionService;
 
 
     @RequestMapping(value = "/createclient", method = RequestMethod.GET)
     public String getUserAddForm(Model model){
-
-
         model.addAttribute("cityList" , cityService.findAllcities());
         model.addAttribute("client", new Client());
         return "clientregistration";
     }
+
     @RequestMapping(value = "/createclient", method = RequestMethod.POST)
     public String addClient(Model model, @Valid Client client, BindingResult bindingResult){
         clientService.saveClient(client);
@@ -80,29 +79,11 @@ public class ClientController {
     }
 
 
-
     @RequestMapping(value = "/viewclient/id", method = RequestMethod.GET)
     public String viewClient(Model model,@RequestParam("id") Long id){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    User lawyer = userService.findUserByEmail(authentication.getName());
-
-
         Client client = clientService.findClientById(id);
         List<Case> clientCaseList = caseService.findAllCasesWithoutReqisitionAndClient(Boolean.FALSE,client);
-if(clientCaseList != null) {
-    clientCaseList.forEach(aCase -> {
-        Double amount = 0.0;
-        Rate lawyerRate = rateService.findByUser(lawyer);
-        if(lawyerRate!=null){
-            amount = lawyerRate.getAmount() / 60;
-        }
-         
-        aCase.setAmount(((15 / 100) * amount * aCase.getTimeSpent()) + amount * aCase.getTimeSpent());
-
-    });
-}
         model.addAttribute("client", client);
-
         model.addAttribute("clientid", id);
         model.addAttribute("clientCaseList", clientCaseList);
         return "clientview";
@@ -110,7 +91,6 @@ if(clientCaseList != null) {
 
     @RequestMapping(value = "/client/addaccount/id", method = RequestMethod.GET)
     public String addClientAccount(Model model,@RequestParam("id") Long clientId){
-
         Client client = clientService.findClientById(clientId);
         model.addAttribute("clientId", clientId);
         model.addAttribute("client", client);
@@ -121,9 +101,8 @@ if(clientCaseList != null) {
 
     @RequestMapping(value = "/client/addaccount", method = RequestMethod.POST)
     public String saveClientAccount(@Valid Account account, BindingResult bindingResult, Model model,@RequestParam("clientId") Long clientId){
-
         Client client = clientService.findClientById(clientId);
-         account.setClient(client);
+        account.setClient(client);
         accountService.save(account);
         model.addAttribute("successMessage", "account Added");
         return "accounts";
@@ -131,7 +110,6 @@ if(clientCaseList != null) {
 
     @RequestMapping(value = "/client/transaction/id", method = RequestMethod.GET)
     public String transactionForm(Model model,@RequestParam("id") Long accountId){
-
         Account account = accountService.findByID(accountId);
         model.addAttribute("transaction", new Transaction());
         model.addAttribute("accountId", accountId);
@@ -141,12 +119,8 @@ if(clientCaseList != null) {
     }
 
 
-
-
-        
     @RequestMapping(value = "/client/transaction", method = RequestMethod.POST)
     public String makeTransaction(@Valid Transaction transaction, BindingResult bindingResult,Model model,@RequestParam("accountId") Long accountId){
-
         Account account = accountService.findByID(accountId);
         transaction.setAccount(account);
         transactionService.save(transaction);
@@ -154,11 +128,8 @@ if(clientCaseList != null) {
         return "transaction";
     }
 
-
-
     @RequestMapping(value = "/addcase", method = RequestMethod.GET)
     public String captureCaseForm(Model model, @RequestParam("id")Long clientid){
-
         Client client = clientService.findClientById(clientid);
         List<Matter> matterList = matterService.findAllMatters();
         model.addAttribute("clientId", client.getId());
@@ -167,6 +138,19 @@ if(clientCaseList != null) {
         model.addAttribute("matterList", matterList);
         return "case";
     }
+
+    @RequestMapping(value = "/viewcase/caseId", method = RequestMethod.GET)
+    public String viewClientCase(Model model, @RequestParam("caseId")Long caseID){
+        Case aCase = caseService.findCaseById(caseID);
+        List<Expense> expenseList = expenseService.findAllByACase(aCase);
+        model.addAttribute("case", aCase);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> case amount:: "+aCase.getAmount());
+        model.addAttribute("caseId", aCase.getId());
+        model.addAttribute("expenseList", expenseList);
+        return "clientcaseview";
+    }
+
+
 
     @RequestMapping(value = "/addnewcase", method = RequestMethod.GET)
     public String captureTimeForm(Model model, @RequestParam("id")Long clientid){
@@ -180,20 +164,38 @@ if(clientCaseList != null) {
     }
 
 
-
     @RequestMapping(value = "/savecase", method = RequestMethod.POST)
     public String captureCase(@Valid Case aCase, BindingResult bindingResult, Model model, @RequestParam("clientId")Long clientId
-                         ,@RequestParam("timeSpent") String timeSpent
-    ){
-
+                         ,@RequestParam("timeSpent") String timeSpent){
         Client client = clientService.findClientById(clientId);
-        Long duration = RateFormater.convertToMinutes(timeSpent);
-        aCase.setClient(client);
-        aCase.setRequisitionmade(Boolean.FALSE);
-        aCase.setTimeSpent(duration);
-        caseService.save(aCase);
-        model.addAttribute("successMessage", "saved!");
-        return "redirect:/viewclient/id?id="+ aCase.getClient().getId();
+        Long durationInMinutes = RateFormater.convertToMinutes(timeSpent);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User lawyer = userService.findUserByEmail(authentication.getName());
+        Double amountInHours = 0.0;
+        Rate lawyerRate = rateService.findByUser(lawyer);
+
+        if(lawyerRate==null){
+            List<Matter> matterList = matterService.findAllMatters();
+            model.addAttribute("clientId", client.getId());
+            model.addAttribute("client", client);
+            model.addAttribute("case", new Case());
+            model.addAttribute("matterList", matterList);
+            model.addAttribute("successMessage", "Please Set Your Rate First!");
+            return "case";
+        }
+        else{
+            amountInHours = lawyerRate.getAmount();
+            Double amountCharged = (durationInMinutes / 60) * amountInHours;
+            Double VAT = 0.15 * amountCharged;
+            Double amountChargedVat = amountCharged + VAT;
+            aCase.setAmount(amountChargedVat);
+            aCase.setClient(client);
+            aCase.setRequisitionmade(Boolean.FALSE);
+            aCase.setTimeSpent(durationInMinutes);
+            caseService.save(aCase);
+            model.addAttribute("successMessage", "saved!");
+            return "redirect:/viewclient/id?id=" + aCase.getClient().getId();
+        }
     }
 
     @RequestMapping(value = "/charge", method = RequestMethod.GET)
@@ -201,75 +203,46 @@ if(clientCaseList != null) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User lawyer = userService.findUserByEmail(authentication.getName());
         Client client = clientService.findClientById(clientId);
-
         Case aCase = caseService.findAllCasesByClient(client).get(0);
-
         Rate rate = rateService.findByUser(lawyer);
-
         Double amount = rate.getAmount();
-
         Double bill = amount * (aCase.getTimeSpent()/60);
-
         model.addAttribute("bill", bill);
 
-        System.out.println(">>>>>>>>>>>>>>  amount is"+ bill);
-
     }
-
-
 
 
     @RequestMapping(value = "/rate", method = RequestMethod.GET)
     public String viewRate(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User lawyer = userService.findUserByEmail(authentication.getName());
-
         model.addAttribute("user", lawyer);
-
         model.addAttribute("lawyerId", lawyer.getId());
-
-        System.out.println(">>>>>>>>>>>>>>in get lawyer is "+ lawyer.getEmail());
-
         Rate rate = rateService.findByUser(lawyer);
         if(rate!=null){
             model.addAttribute("rate", rate);
-
         }
-
         else {
             model.addAttribute("rate", new Rate());
-
         }
-
-
         return "rate";
-
     }
 
 
     @RequestMapping(value = "/saverate", method = RequestMethod.POST)
-    public String saveRate(@Valid Rate rate, BindingResult bindingResult, Model model,@RequestParam("lawyerId") String lawyerId
-             ){
-
+    public String saveRate(@Valid Rate rate, BindingResult bindingResult, Model model,@RequestParam("lawyerId") String lawyerId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         User lawyer = userService.findUserByEmail(authentication.getName());
         Rate rate1 = rateService.findByUser(lawyer);
         if(rate1!=null) {
             rate1.setUser(lawyer);
             rateService.save(rate1);
         }
-
-
-
-       rate.setUser(lawyer);
-         rateService.save(rate);
+        rate.setUser(lawyer);
+        rateService.save(rate);
         model.addAttribute("successMessage", "Rate Saved!");
         return "rate";
     }
-
-
-
 
 
 }
