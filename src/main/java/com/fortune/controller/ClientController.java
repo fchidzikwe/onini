@@ -144,13 +144,11 @@ public class ClientController {
         Case aCase = caseService.findCaseById(caseID);
         List<Expense> expenseList = expenseService.findAllByACase(aCase);
         model.addAttribute("case", aCase);
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> case amount:: "+aCase.getAmount());
+        model.addAttribute("client", aCase.getClient());
         model.addAttribute("caseId", aCase.getId());
         model.addAttribute("expenseList", expenseList);
         return "clientcaseview";
     }
-
-
 
     @RequestMapping(value = "/addnewcase", method = RequestMethod.GET)
     public String captureTimeForm(Model model, @RequestParam("id")Long clientid){
@@ -163,7 +161,6 @@ public class ClientController {
         return "recorder";
     }
 
-
     @RequestMapping(value = "/savecase", method = RequestMethod.POST)
     public String captureCase(@Valid Case aCase, BindingResult bindingResult, Model model, @RequestParam("clientId")Long clientId
                          ,@RequestParam("timeSpent") String timeSpent){
@@ -173,7 +170,6 @@ public class ClientController {
         User lawyer = userService.findUserByEmail(authentication.getName());
         Double amountInHours = 0.0;
         Rate lawyerRate = rateService.findByUser(lawyer);
-
         if(lawyerRate==null){
             List<Matter> matterList = matterService.findAllMatters();
             model.addAttribute("clientId", client.getId());
@@ -208,7 +204,6 @@ public class ClientController {
         Double amount = rate.getAmount();
         Double bill = amount * (aCase.getTimeSpent()/60);
         model.addAttribute("bill", bill);
-
     }
 
 
@@ -228,7 +223,6 @@ public class ClientController {
         return "rate";
     }
 
-
     @RequestMapping(value = "/saverate", method = RequestMethod.POST)
     public String saveRate(@Valid Rate rate, BindingResult bindingResult, Model model,@RequestParam("lawyerId") String lawyerId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -243,7 +237,4 @@ public class ClientController {
         model.addAttribute("successMessage", "Rate Saved!");
         return "rate";
     }
-
-
 }
-

@@ -2,10 +2,7 @@ package com.fortune.controller;
 
 
 import com.fortune.model.*;
-import com.fortune.service.CaseService;
-import com.fortune.service.RequisitionService;
-import com.fortune.service.TransactionService;
-import com.fortune.service.UserService;
+import com.fortune.service.*;
 import com.fortune.util.DateConveter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,6 +25,10 @@ public class RequisitionController {
 
     @Autowired
     CaseService caseService;
+
+
+    @Autowired
+    ExpenseService expenseService;
 
     @Autowired
     UserService userService;
@@ -145,11 +146,26 @@ public class RequisitionController {
         Requisition requisition = requisitionService.findByID(id);
         Client client = requisition.getaCase().getClient();
         List<Transaction> transactionList = transactionService.findTransactionByClient(client);
+        Case aCase = requisition.getaCase();
+        List<Expense>  expenseList = expenseService.findAllByACase(aCase);
         Boolean pending = true;
        Double balance =0.0;
        for(Transaction transaction: transactionList){
            balance = balance + transaction.getAmount();
        }
+        expenseList.forEach(expense -> {
+            List<Costs> costsList = expense.getCosts();
+            costsList.forEach(costs -> {
+                expense.setCostName(costs.getName());
+            });
+        });
+        Double totalExpenseAmount =0.0;
+        for(Expense expense:expenseList){
+            Double expenseAmount = expense.getQuantity() * expense.getPrice();
+            totalExpenseAmount= totalExpenseAmount+ expenseAmount;
+        }
+        model.addAttribute("totalExpenseAmount", totalExpenseAmount);
+        model.addAttribute("expenseList", expenseList);
         model.addAttribute("pending", pending);
        model.addAttribute("balance", balance);
         model.addAttribute("list", requisition);

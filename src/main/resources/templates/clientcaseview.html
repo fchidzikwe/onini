@@ -56,44 +56,64 @@
         <div class = "container-fluid">
 
             <div class="row" th:object="${client}">
+                <div class="col-md-6">
+                    <table class="table table-striped" style="width:600px;">
+                        <tr>
+                            <th>
+                                Client
+                            </th>
+                            <td>
 
-                <table class="table table-striped" style="width:600px;">
+                                <span th:utext="${client.name}" class="text-success"></span>
+                                <span th:utext="${client.lastName}" class="text-success"></span>
 
-                    <tr>
-                        <th>
-                            Matter No
-                        </th>
-                        <td>
-                            <span th:utext="${case.id}" class="text-success"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Against
-                        </th>
-                        <td>
-                            <span th:utext="${case.versus}" class="text-success"></span>
-                        </td>
+                            </td>
 
-                    </tr>
-                    <tr>
-                        <th>
-                            Time Spent on Matter
-                        </th>
-                        <td>
-                            <span th:utext="${case.timeSpent}" class="text-success"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Amount Charged on Case
-                        </th>
-                        <td>
+                        </tr>
+
+
+                    </table>
+                </div>
+
+               <div class="col-md-6">
+                   <table class="table table-striped" style="width:600px;">
+
+                       <tr>
+                           <th>
+                               Matter No
+                           </th>
+                           <td>
+                               <span th:utext="${case.id}" class="text-success"></span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <th>
+                               Against
+                           </th>
+                           <td>
+                               <span th:utext="${case.versus}" class="text-success"></span>
+                           </td>
+
+                       </tr>
+                       <tr>
+                           <th>
+                               Time Spent on Matter
+                           </th>
+                           <td>
+                               <span th:utext="${case.timeSpent}" class="text-success"></span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <th>
+                               Amount Charged on Case
+                           </th>
+                           <td>
                         <span th:text="${case.amount}">
                         </span>
 
-                    </tr>
-                </table>
+                       </tr>
+                   </table>
+               </div>
             </div>
 
 

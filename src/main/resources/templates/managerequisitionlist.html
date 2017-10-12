@@ -67,7 +67,7 @@
 
     <div sec:authorize="hasAuthority('ACCOUNTANT')">
 
-        <table class="display" cellspacing="0" width="100%">
+        <table class="table table-stripped">
             <span th:utext="${successMessage}" class="text-success"></span>
             <caption>Manage Requisitions</caption>
             <thead>
@@ -125,6 +125,41 @@
             </tr>
 
             </tbody>
+        </table>
+
+
+
+        <table class="display" cellspacing="0" width="100%">
+            <caption>List of Expenses</caption>
+            <thead>
+
+            <tr>
+                <th><legend>TOTAL EXPENSE COSTS:  <span  th:text="${totalExpenseAmount}"></span></legend></th>
+
+
+            </tr>
+            <tr style="background-color: transparent">
+                <th scope="col">Expense Name</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Amount(VAT incl)</th>
+            </tr>
+
+
+
+            </thead>
+            <tbody>
+            <tr th:each="clientExpense : ${expenseList}">
+                <td  th:utext="${clientExpense.costName}" >Expense Name</td>
+                <td th:text="${clientExpense.price}">Price</td>
+                <td th:text="${clientExpense.quantity}">Quantity</td>
+                <td  th:text="${clientExpense?.quantity*clientExpense.price}">
+                </td>
+
+
+
+            </tbody>
+
         </table>
     </div>
     <br/>

@@ -27,8 +27,11 @@ public class Expense {
     private Case aCase;
 
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Costs> costs;
+
+    @Transient
+    private String costName;
 
     @Column(name = "price")
     private Double price;
@@ -94,5 +97,13 @@ public class Expense {
 
     public void setCosts(List<Costs> costs) {
         this.costs = costs;
+    }
+
+    public String getCostName() {
+        return costName;
+    }
+
+    public void setCostName(String costName) {
+        this.costName = costName;
     }
 }
