@@ -99,9 +99,9 @@
         <div id="home" class="tab-pane fade in active">
             <h3>ACTIVE USERS</h3>
             <div sec:authorize="hasAuthority('ADMIN')">
-                <p class="text-center">
+                <p>
                     <a href="/registration"
-                       class="btn btn-primary glyphicon glyphicon-user btn-block">Add User</a>
+                       class="btn btn-primary">Add User</a>
 
                 </p>
 
@@ -117,7 +117,6 @@
                         <th scope="col">Email</th>
                         <th scope="col">Active</th>
                         <th scope="col">Role</th>
-                        <!--<th scope="col">Manage</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -127,13 +126,6 @@
                         <td th:text="${user.email}">gwash</td>
                         <td th:text="${user.isActive}">Yes</td>
                         <td th:text="${user.roles}">Yes</td>
-                        <!--<td>-->
-                            <!--<a th:href="@{'/edituser/id'(id=${user.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-pencil"></span>Edit</a>-->
-                            <!--<a th:href="@{'/deleteuser/id'(id=${user.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-remove"></span>Delete</a>-->
-
-                        <!--</td>-->
                     </tr>
                     </tbody>
                 </table>
@@ -290,17 +282,7 @@
                         <td>
                             <span th:utext="${requisition.status}" class="text-success"></span>
                         </td>
-                        <!--<td>-->
 
-                            <!--<a th:href="@{'/viewrequisation/id'(id=${requisition.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-remove"></span>View</a>-->
-
-                            <!--<a th:href="@{'/editrequisation/id'(id=${requisition.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-pencil"></span>Edit</a>-->
-                            <!--<a th:href="@{'/deleterequisation/id'(id=${requisition.id})}"><span-->
-                                    <!--class="glyphicon glyphicon-remove"></span>Delete</a>-->
-
-                        <!--</td>-->
                     </tr>
                     </tbody>
                 </table>
@@ -321,8 +303,8 @@
                         <div class="col-md-6 col-md-offset-3">
                             <div class="row">
 
-                                <form style="align-content: stretch" autocomplete="off"  th:action="@{/utils}">
-                                    <button  class="btn btn-primary glyphicon glyphicon-plus">
+                                <form align="right" th:action="@{/utils}">
+                                    <button  class="btn btn-primary">
                                         Add Account</button>
                                 </form>
                             </div>

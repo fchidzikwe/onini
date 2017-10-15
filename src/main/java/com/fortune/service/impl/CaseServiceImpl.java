@@ -33,6 +33,11 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    public List<Case> findAllByMatter(Matter matter) {
+        return caseRepository.findAllByMatter(matter);
+    }
+
+    @Override
     public List<Case> findAllCasesWithoutReqisition(Boolean aBoolean) {
         return caseRepository.findCaseByRequisitionmade(aBoolean);
     }

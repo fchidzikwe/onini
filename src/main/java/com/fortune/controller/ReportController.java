@@ -1,13 +1,16 @@
 package com.fortune.controller;
 
 import com.fortune.model.Case;
+import com.fortune.model.Matter;
 import com.fortune.service.CaseService;
 import com.fortune.service.FacilityConfigurationService;
+import com.fortune.service.MatterService;
 import com.fortune.service.UserService;
 import com.fortune.util.ReportManager;
 import com.fortune.util.ReportName;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,8 +44,13 @@ public class ReportController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    MatterService matterService;
+
     @RequestMapping(value = "/reportform", method = RequestMethod.GET)
     public String getFormWorking(Model model) {
+
+        model.addAttribute("matterList", matterService.findAllMatters());
         return "reports";
     }
 
@@ -53,12 +61,18 @@ public class ReportController {
     public ModelAndView generatePdfReport(ModelAndView modelAndView, HttpServletResponse httpServletResponse,
 //                                          @RequestParam(value = "eventstatus", required = false) String status,
 //                                          @RequestParam(value = "purpose", required = false) String purpose,
-//                                          @RequestParam(value = "start", required = false) String startDate,
+                                          @RequestParam(value = "matter", required = false) Long matterId,
                                           @RequestParam(value = "reportType", required = false) String reportType
                                     /*    @RequestParam(value = "end", required = false) String endDate*/) throws IOException {
         JRDataSource jrDataSource;
+        Matter matter = null;
+        if(matterId!=null){
+           matter = matterService.findMatter(matterId);
+          
+        }
+        List<Case> caseList = caseService.findAllByMatter(matter);
+        
 
-        List<Case> caseList = caseService.findAllCases();
 
         if(reportType.equalsIgnoreCase("CSV")){
             StringBuilder sb = new StringBuilder();

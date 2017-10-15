@@ -15,6 +15,8 @@ public interface CaseService{
 
     List<Case> findAllCasesByClient(Client client);
 
+    List<Case> findAllByMatter(Matter matter);
+
     List<Case> findAllCasesWithoutReqisition(Boolean aBoolean);
 
     List<Case> findAllCasesWithoutReqisitionAndClient(Boolean  aBoolean, Client client);

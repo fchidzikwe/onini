@@ -7,10 +7,17 @@
 
     <link href="css/registration.css"
           th:href="@{/css/registration.css}" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- <link rel = "stylesheet" href = "bootstrap.css" />
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="css/cuppa-datepicker-styles.css" rel="stylesheet">
+    <script type="text/javascript" src="js/lib/moment.js"></script>
+    <script type="text/javascript" src="js/cuppa-calendar.js"></script>
 
 
 </head>
@@ -143,10 +150,22 @@
     </div>
 </div>
 
+
+
 <script>
-    $(document).ready(function () {
-        $('.date').datepicker({dateFormat: 'dd.mm.yy'});
+    $(document).ready(function(){
+        var date_input=$('input[name="requisitionDate"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+
+        date_input.datepicker({
+            format: 'dd-mm-yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        });
     });
+
+
 </script>
 
 </body>

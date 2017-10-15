@@ -13,6 +13,11 @@ public interface MatterService {
 
     List<Matter> findAllMatters();
 
+
+
+
+    Matter findMatter(Long aLong);
+
     Matter findMatter(String matter);
 
     Matter findMatterByDescription(String matter);
