@@ -12,9 +12,6 @@
         <script	src="/js/jquery.js"></script>
         <script	src="/js/jquery.dataTables.min.js"></script>
         <script	src="/js/bootstrap.min.js"></script>
-
-
-
     </head>
     <body>
 
@@ -44,9 +41,6 @@
                                         class="glyphicon glyphicon-log-out"></span>Logout </a></li>
                         </ul>
                     </div>
-
-
-
                 </div>
             </nav>
         </div>
@@ -54,10 +48,10 @@
         <br/>
         <br/>
         <div class = "container-fluid">
-
             <div class="row" th:object="${client}">
-                <div class="col-md-6">
-                    <table class="table table-striped" style="width:600px;">
+                <div class="col-md-6" style="float: left">
+                    <table class="table table-striped" style="width:600px;float: left">
+
                         <tr>
                             <th>
                                 Client
@@ -69,110 +63,230 @@
 
                             </td>
 
+
+                                    <tr>
+                                        <th> Add Attendance</th>
+
+                                        <td>
+                                            <form autocomplete="off"  th:action="@{/addattendance}"
+                                                  method="get">
+
+
+
+                                                <input type="hidden"  name ="id" th:value="${case.id}"/>
+                                                <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Add</button>
+                                            </form>
+                                        </td>
+
+                                        <td>
+                                            <form autocomplete="off"  th:action="@{/addnewattendance}"
+                                                  method="get">
+                                                <input type="hidden"  name ="id" th:value="${case.id}"/>
+                                                <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Record</button>
+                                            </form>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                </div>
+                <div class="col-mid-6" style="float: right">
+
+                    <table class="table table-striped" style="width:600px; float: right">
+
+                        <tr>
+                            <th>
+                                Case No
+                            </th>
+                            <td>
+                                <span th:utext="${case.id}" class="text-success"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Against
+                            </th>
+                            <td>
+                                <span th:utext="${case.versus}" class="text-success"></span>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th>
+                                Total Time Spent on Case
+                            </th>
+                            <td>
+                                <span th:utext="${case.timeSpent}" class="text-success"></span>
+                            </td>
                         </tr>
 
+                        <tr>
+                            <th>
+                               Expense (*to do)
+                            </th>
+                            <td>
+                        <span th:text="${expenseAmount}">
+                        </span>
 
-                    </table>
-                </div>
+                        </tr>
 
-               <div class="col-md-6">
-                   <table class="table table-striped" style="width:600px;">
+                        <tr>
+                            <th>
+                                Total Amount Charged on Case
+                            </th>
+                            <td>
 
-                       <tr>
-                           <th>
-                               Matter No
-                           </th>
-                           <td>
-                               <span th:utext="${case.id}" class="text-success"></span>
-                           </td>
-                       </tr>
-                       <tr>
-                           <th>
-                               Against
-                           </th>
-                           <td>
-                               <span th:utext="${case.versus}" class="text-success"></span>
-                           </td>
-
-                       </tr>
-                       <tr>
-                           <th>
-                               Time Spent on Matter
-                           </th>
-                           <td>
-                               <span th:utext="${case.timeSpent}" class="text-success"></span>
-                           </td>
-                       </tr>
-                       <tr>
-                           <th>
-                               Amount Charged on Case
-                           </th>
-                           <td>
                         <span th:text="${case.amount}">
                         </span>
 
-                       </tr>
-                   </table>
-               </div>
+                        </tr>
+                    </table>
+                </div>
+            </div>
             </div>
 
 
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#attendance">ATTENDANCE</a></li>
-            </ul>
             <br/>
 
 
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#attendance">ATTENDANCE</a></li>
+            <li><a data-toggle="tab" href="#expense"> EXPENSES</a></li>
+        </ul>
+            <br/>
+
             <div class="tab-content">
 
-                <a th:href="@{'/addexpense/caseId'(caseId=${case.id})}"
-                   class="btn btn-success">Add Expense
-                </a>
+
+
+
+
                 <br/>
                 <br/>
                 <br/>
 
-                <div id="client" class="tab-pane fade in active">
+                <div class="tab-content">
+                <div id="attendance" class="tab-pane fade in active">
+
                     <table class="display" cellspacing="0" width="100%">
                         <span th:utext="${successMessage}" class="text-success"></span>
-                        <caption>List of Expenses</caption>
+                        <caption>List of Client Attendance</caption>
                         <thead>
-                            <tr style="background-color: transparent">
-                                <th scope="col">Expense Name</th>
-                                <th scope="col">Unit Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total Amount(VAT incl)</th>
-                            </tr>
+                        <tr style="background-color: transparent">
+                            <th scope="col">Case Name</th>
+                            <th scope="col">Case Type</th>
+                            <th scope="col">Time Spend In Minutes</th>
+                            <th scope="col">VAT</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Amount(VAT incl)</th>
+                            <th scope="col">Manage</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="clientExpense : ${expenseList}">
-                                <td  th:utext="${clientExpense.id}" >Expense Name</td>
-                                <td th:text="${clientExpense.price}">Price</td>
-                                <td th:text="${clientExpense.quantity}">Quantity</td>
-                                <td  th:text="${(clientExpense?.quantity*clientExpense.price) + (0.15*(clientExpense?.quantity*clientExpense.price))}">
-                                </td>
+                        <tr th:each="attendance : ${attendanceList}">
+                            <td >
+                                <span th:utext="${attendance.aCase.client.name}" class="text-success"></span>
+                                <span th:utext="${attendance.aCase.client.lastName}" class="text-success"></span>
+                                <span th:utext="vs" class="text-success"></span>
+                                <span th:utext="${attendance.aCase.versus}" class="text-success"></span>
+                            </td>
+                            <td th:text="${attendance.aCase.matter.name}">George</td>
+                            <td th:text="${attendance.timeSpent}">Washington</td>
+                            <td th:text="${#numbers.formatDecimal((attendance?.Vat),0,2,'POINT')}"></td>
+                            <td th:text="${#numbers.formatDecimal((attendance?.amount - attendance?.Vat),0,2,'POINT')}"></td>
+                            <td  th:text="${#numbers.formatDecimal((attendance?.amount),0,2,'POINT')}">
+                            </td>
+                            <td>
+                                <a th:href="@{'/viewattendance/attendanceId'(attendanceId=${attendance.id})}"
+                                   class="btn btn-success">View Details
+                                </a>
+                                <!--<a th:href="@{'/addexpense/caseId'(caseId=${clientCase.id})}"-->
+                                <!--class="btn btn-success">Add Expense</a>-->
+                                <a th:href="@{'/editattendance/id'(id=${attendance.id})}"
+                                   class="btn btn-warning">Edit</a>
+                                <a th:href="@{'/deleteattendance/id'(id=${attendance.id})}"
+                                   class="btn btn-danger">Delete</a>
 
-
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
+                    <!--<table class="display" cellspacing="0" width="100%">-->
+                        <!--<span th:utext="${successMessage}" class="text-success"></span>-->
+                        <!--<caption>List of Expenses</caption>-->
+                        <!--<thead>-->
+                        <!--<tr style="background-color: transparent">-->
+                            <!--<th scope="col">Expense Name</th>-->
+                            <!--<th scope="col">Unit Price</th>-->
+                            <!--<th scope="col">Quantity</th>-->
+                            <!--<th scope="col">Total Amount</th>-->
+                            <!--<th scope="col">Manage</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr th:each="clientExpense : ${attendanceList}">-->
+                            <!--<td  th:utext="${clientExpense.costName}" >Expense Name</td>-->
+                            <!--<td th:text="${clientExpense.price}">Price</td>-->
+                            <!--<td th:text="${clientExpense.quantity}">Quantity</td>-->
+                            <!--<td  th:text="${clientExpense?.quantity*clientExpense.price }"></td>-->
+                            <!--<td>-->
+                                <!--<form method="POST" th:action="@{'/saverequisition/'+${clientExpense.id}}">-->
+                                    <!--<button type="submit" name="submit" value="value" class="btn btn-primary">Make Requisition</button></form>-->
 
+                            <!--</td>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+
+                </div>
+                    <div id ="expense" class="tab-pane fade">
+                       <div class="container">
+                           <a th:href="@{'/addexpense/caseId'(caseId=${case.id})}"
+                              class="btn btn-success">Add Expense
+                           </a>
+                           <br/>
+
+                           <table class="display" cellspacing="0" width="100%">
+                               <span th:utext="${successMessage}" class="text-success"></span>
+                               <caption>List of Expenses</caption>
+                               <thead>
+                               <tr style="background-color: transparent">
+                                   <th scope="col">Expense Name</th>
+                                   <th scope="col">Unit Price</th>
+                                   <th scope="col">Quantity</th>
+                                   <th scope="col">Total Amount</th>
+                                   <th scope="col">Manage</th>
+                               </tr>
+                               </thead>
+                               <tbody>
+                               <tr th:each="clientExpense : ${expenseList}">
+                                   <td  th:utext="${clientExpense.costName}" >Expense Name</td>
+                                   <td th:text="${clientExpense.price}">Price</td>
+                                   <td th:text="${clientExpense.quantity}">Quantity</td>
+                                   <td  th:text="${clientExpense?.quantity*clientExpense.price }"></td>
+                                   <td>
+                                       <form method="POST" th:action="@{'/saverequisition/'+${clientExpense.id}}">
+                                           <button type="submit" name="submit" value="value" class="btn btn-primary">Make Requisition</button></form>
+
+                                   </td>
+                               </tbody>
+                           </table>
+
+                       </div>
+
+
+                    </div>
                 </div>
 
                 <div id="requisition" class="tab-pane fade">
 
                 </div>
-
             </div>
 
 
-
-        </div>
-
         <div sec:authorize="hasAuthority('ACCOUNTANT')" class = "container-fluid">
-
             <div class="row" th:object="${requisition}">
-    <table class="table table-striped" style="width:600px;">
+    <table class="table table-striped" style="width:600px; ">
                     <tr>
                         <th>
                             Client
@@ -182,40 +296,32 @@
                             <span th:utext="${requisition.aCase.client.name}" class="text-success"></span>
                             <span th:utext="${requisition.aCase.client.lastName}" class="text-success"></span>
                             <label>Requisition amount:: </label> <span th:utext="${requisition.amount}" class="text-success"></span>
-
                         </td>
                         <th></th>
 
                         <td>
                             <form autocomplete="off"  th:action="@{/makedeposit}"
                                   method="get">
-
                                 <input type="hidden"  name ="id" th:value="${requisition.aCase.client.id}"/>
                                 <button type="submit" class="btn btn-primary glyphicon glyphicon-plus">Make Deposit</button>
                             </form>
                         </td>
                     </tr>
-
                 </table>
             </div>
-
-
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#attendance">ATTENDANCE</a></li>
+
             </ul>
             <br/>
-
-
             <div class="tab-content">
-
                 <div id="client" class="tab-pane fade in active">
                     <table class="display" cellspacing="0" width="100%">
-
                         <span th:utext="${successMessage}" class="text-success"></span>
                         <caption>Cases</caption>
                         <thead>
                         <tr style="background-color: transparent">
-                            <th scope="col">Case Name</th>>
+                            <th scope="col">Case Name</th>
                             <th scope="col">Case Type</th>
                             <th scope="col">Case Start</th>
                             <th scope="col">Case End</th>
@@ -223,7 +329,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="clientCase : ${clientAccountList}">
-                            <td >
+                            <td>
                                 <span th:utext="${clientAccount.client.name}" class="text-success"></span>
                                 <span th:utext="${clientCase.client.lastName}" class="text-success"></span>
                                 <span th:utext="vs" class="text-success"></span>
@@ -233,10 +339,6 @@
                             <td th:text="${clientCase.startTime}">Washington</td>
                             <td th:text="${clientCase.endTime}">Washington</td>
                             <td>
-
-                                <a th:href="@{'/getgrequistionform/caseId'(caseId=${clientCase.id})}"><span
-                                        class="glyphicon glyphicon-remove"></span>Make Requisition</a>
-
                                 <a th:href="@{'/editclient/id'(id=${clientCase.id})}"><span
                                         class="glyphicon glyphicon-pencil"></span>Edit</a>
                                 <a th:href="@{'/deleteclient/id'(id=${clientCase.id})}"><span
@@ -245,27 +347,16 @@
                         </tr>
                         </tbody>
                     </table>
-
-
                 </div>
-
                 <div id="requisition" class="tab-pane fade">
-
                 </div>
-
             </div>
-
-
-
         </div>
-
-
 
         <script>
             $(document).ready(function () {
                 $('table.display').DataTable();
             });
-
         </script>
     </body>
 </html>

@@ -59,6 +59,9 @@ public class ClientController {
     @Autowired
     TransactionService transactionService;
 
+    @Autowired
+    AttendanceService attendanceService;
+
 
     @RequestMapping(value = "/createclient", method = RequestMethod.GET)
     public String getUserAddForm(Model model){
@@ -82,12 +85,57 @@ public class ClientController {
     @RequestMapping(value = "/viewclient/id", method = RequestMethod.GET)
     public String viewClient(Model model,@RequestParam("id") Long id){
         Client client = clientService.findClientById(id);
-        List<Case> clientCaseList = caseService.findAllCasesWithoutReqisitionAndClient(Boolean.FALSE,client);
+        List<Case> clientCaseList = caseService.findAllCasesByClient(client);
+
+
+
+        for(Case aCase: clientCaseList){
+            List<Attendance> attendanceList = attendanceService.findAllByACase(aCase);
+            Double amount = aCase.getAmount();
+
+            Long timeSpent =0L;
+
+
+            for(Attendance attendance: attendanceList){
+                amount = amount + attendance.getAmount();
+                timeSpent= timeSpent+ attendance.getTimeSpent();
+            }
+
+            aCase.setAmount(amount);
+            aCase.setTimeSpent(timeSpent);
+
+        }
+
+
+//        clientCaseList.forEach(aCase -> {
+//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//            User lawyer = userService.findUserByEmail(auth.getName());
+//            Rate lawyerRate = rateService.findByUser(lawyer);
+//            Double amountInHours = lawyerRate.getAmount();
+//
+//          long durationInMinutes= aCase.getTimeSpent();
+//            Double amountCharged = ((double)durationInMinutes /(double) 60) * amountInHours;
+//            Double VAT = 0.15 * amountCharged;
+//            aCase.setVat(VAT);
+//
+//        });
+
         model.addAttribute("client", client);
         model.addAttribute("clientid", id);
         model.addAttribute("clientCaseList", clientCaseList);
         return "clientview";
     }
+
+    @RequestMapping(value = "/viewattendance/attendanceId", method = RequestMethod.GET)
+    public String viewClientAttendance(Model model,@RequestParam("attendanceId") Long attendanceId){
+        Attendance attendance = attendanceService.findById(attendanceId);
+        Client client = attendance.getaCase().getClient();
+        model.addAttribute("client", client);
+        model.addAttribute("clientid", client.getId());
+        model.addAttribute("attendance", attendance);
+        return "clientattendanceview";
+    }
+
 
     @RequestMapping(value = "/client/addaccount/id", method = RequestMethod.GET)
     public String addClientAccount(Model model,@RequestParam("id") Long clientId){
@@ -114,9 +162,12 @@ public class ClientController {
         model.addAttribute("transaction", new Transaction());
         model.addAttribute("accountId", accountId);
         model.addAttribute("account", account);
+        List<Case>  caseList = caseService.findAllCasesByClient(account.getClient());
+        model.addAttribute("caseList", caseList);
         model.addAttribute("message", "TRANSACTION FOR "+(account.getClient().getName()+" "+ account.getClient().getLastName()).toUpperCase());
         return "transaction";
     }
+
 
 
     @RequestMapping(value = "/client/transaction", method = RequestMethod.POST)
@@ -134,6 +185,8 @@ public class ClientController {
         List<Matter> matterList = matterService.findAllMatters();
         model.addAttribute("clientId", client.getId());
         model.addAttribute("client", client);
+
+        System.out.println("client found is -----"+client.getLastName());
         model.addAttribute("case", new Case());
         model.addAttribute("matterList", matterList);
         return "case";
@@ -142,56 +195,117 @@ public class ClientController {
     @RequestMapping(value = "/viewcase/caseId", method = RequestMethod.GET)
     public String viewClientCase(Model model, @RequestParam("caseId")Long caseID){
         Case aCase = caseService.findCaseById(caseID);
-        List<Expense> expenseList = expenseService.findAllByACase(aCase);
+        List<Expense> expenseList = expenseService.findAllByACaseAndRequisitionMade(aCase,Boolean.FALSE);
+
+       List<Attendance> attendanceList = attendanceService.findAllByACase(aCase);
+        attendanceList.forEach(attendance ->  {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User lawyer = userService.findUserByEmail(auth.getName());
+
+            Rate lawyerRate = rateService.findByUser(lawyer);
+            Double amountInHours = lawyerRate.getAmount();
+            long durationInMinutes= attendance.getTimeSpent();
+            Double amountCharged = ((double)durationInMinutes /(double) 60) * amountInHours;
+            Double VAT = 0.15 * amountCharged;
+            attendance.setVat(VAT);
+        });
+        Double amount =aCase.getAmount();
+        Long timeSpent =0L;
+        for( Attendance attendance: attendanceService.findAllByACase(aCase)){
+
+
+            amount = amount+ attendance.getAmount();
+            timeSpent = timeSpent+ attendance.getTimeSpent();
+        }
+
+        Double expenseAmount =0.0;
+        for(Expense expense: expenseList){
+            expenseAmount=expenseAmount + (expense.getQuantity()* expense.getPrice());
+        }
+        aCase.setTimeSpent(timeSpent);
+        aCase.setAmount(amount);
         model.addAttribute("case", aCase);
+        model.addAttribute("expenseAmount", expenseAmount);
         model.addAttribute("client", aCase.getClient());
+        model.addAttribute("attendanceList", attendanceList);
         model.addAttribute("caseId", aCase.getId());
         model.addAttribute("expenseList", expenseList);
         return "clientcaseview";
     }
 
-    @RequestMapping(value = "/addnewcase", method = RequestMethod.GET)
-    public String captureTimeForm(Model model, @RequestParam("id")Long clientid){
-        Client client = clientService.findClientById(clientid);
-        List<Matter> matterList = matterService.findAllMatters();
-        model.addAttribute("clientId", client.getId());
-        model.addAttribute("client", client);
-        model.addAttribute("case", new Case());
-        model.addAttribute("matterList", matterList);
+
+
+
+    @RequestMapping(value = "/addnewattendance", method = RequestMethod.GET)
+    public String captureTimeFormNewAttendance(Model model, @RequestParam("id")Long caseId){
+        Case aCase = caseService.findCaseById(caseId);
+        model.addAttribute("clientId", aCase.getClient().getId());
+        model.addAttribute("client", aCase.getClient());
+        model.addAttribute("aCase", aCase);
+        model.addAttribute("attendance", new Attendance());
         return "recorder";
     }
+    @RequestMapping(value = "/addattendance", method = RequestMethod.GET)
+    public String captureCaseFormAttendance(Model model, @RequestParam("id")Long caseId){
+        Case aCase = caseService.findCaseById(caseId);
 
-    @RequestMapping(value = "/savecase", method = RequestMethod.POST)
-    public String captureCase(@Valid Case aCase, BindingResult bindingResult, Model model, @RequestParam("clientId")Long clientId
-                         ,@RequestParam("timeSpent") String timeSpent){
-        Client client = clientService.findClientById(clientId);
+        model.addAttribute("clientId", aCase.getClient().getId());
+        model.addAttribute("client", aCase.getClient());
+        model.addAttribute("aCase", aCase);
+        model.addAttribute("attendance", new Attendance());
+        return "attendance";
+    }
+
+    @RequestMapping(value = "/saveattendance", method = RequestMethod.POST)
+    public String captureAttendance(@Valid Attendance attendance, BindingResult bindingResult, Model model
+            ,@RequestParam("timeSpent") String timeSpent, @RequestParam("caseId") Long caseId){
+
+        Case aCase = caseService.findCaseById(caseId);
+        Client client = aCase.getClient();
         Long durationInMinutes = RateFormater.convertToMinutes(timeSpent);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User lawyer = userService.findUserByEmail(authentication.getName());
         Double amountInHours = 0.0;
         Rate lawyerRate = rateService.findByUser(lawyer);
         if(lawyerRate==null){
-            List<Matter> matterList = matterService.findAllMatters();
-            model.addAttribute("clientId", client.getId());
-            model.addAttribute("client", client);
-            model.addAttribute("case", new Case());
-            model.addAttribute("matterList", matterList);
-            model.addAttribute("successMessage", "Please Set Your Rate First!");
-            return "case";
+            return populateLawyerCaseModel(model, client);
         }
         else{
             amountInHours = lawyerRate.getAmount();
-            Double amountCharged = (durationInMinutes / 60) * amountInHours;
+            Double amountCharged = ((double)durationInMinutes /(double) 60) * amountInHours;
             Double VAT = 0.15 * amountCharged;
             Double amountChargedVat = amountCharged + VAT;
-            aCase.setAmount(amountChargedVat);
-            aCase.setClient(client);
-            aCase.setRequisitionmade(Boolean.FALSE);
-            aCase.setTimeSpent(durationInMinutes);
-            caseService.save(aCase);
+            attendance.setAmount(amountChargedVat);
+
+//            aCase.setVat(VAT);
+            attendance.setTimeSpent(durationInMinutes);
+            attendance.setaCase(aCase);
+            attendanceService.save(attendance);
             model.addAttribute("successMessage", "saved!");
             return "redirect:/viewclient/id?id=" + aCase.getClient().getId();
         }
+    }
+
+    @RequestMapping(value = "/savecase", method = RequestMethod.POST)
+    public String captureCase(@Valid Case aCase, BindingResult bindingResult, Model model, @RequestParam("clientId")Long clientId
+                         ){
+        Client client = clientService.findClientById(clientId);
+
+            aCase.setClient(client);
+            caseService.save(aCase);
+            model.addAttribute("successMessage", " case saved!");
+            return "redirect:/viewclient/id?id=" + aCase.getClient().getId();
+
+    }
+
+    private String populateLawyerCaseModel(Model model, Client client) {
+        List<Matter> matterList = matterService.findAllMatters();
+        model.addAttribute("clientId", client.getId());
+        model.addAttribute("client", client);
+        model.addAttribute("case", new Case());
+        model.addAttribute("matterList", matterList);
+        model.addAttribute("successMessage", "Please Set Your Rate First!");
+        return "case";
     }
 
     @RequestMapping(value = "/charge", method = RequestMethod.GET)

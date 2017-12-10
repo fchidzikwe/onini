@@ -73,8 +73,6 @@
                                     <span th:utext="${successMessage}"></span>
                                     <form autocomplete="off" action="#" th:action="@{/client/transaction}"
                                           th:object="${transaction}" method="post" class="form-horizontal">
-
-
                               <fieldset>
 
                                   <div class="row">
@@ -103,7 +101,6 @@
                                           Deposit: <input type="number" th:field="*{amount}" placeholder=""
                                                           class="form-control"/>
 
-
                                   </div>
 
 
@@ -125,6 +122,16 @@
                                           </select>
                                   </div>
 
+                                          <div class="form-group ">
+
+                                                  <select class="form-control" th:field="*{aCase}">
+                                                      <option th:each="case : ${caseList}"
+                                                              th:value="${{case}}"
+                                                              th:text="${case.matter.name}+' vs '+${case.versus} ">
+                                                          Cinema
+                                                      </option>
+                                                  </select>
+                                          </div>
 
 
                                   <div class="form-group">

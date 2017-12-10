@@ -17,7 +17,13 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long>{
 
     List<Expense> findAllByACase(Case aCase);
 
+    List<Expense> findAllByACaseAndRequisitionmade(Case  aCase, Boolean aBoolean);
+
     List<Expense> findExpenseByLawyer(User user);
+
+    List<Expense> findExpenseByRequisitionmade(Boolean aBoolean);
+
+    List<Expense> findExpenseByRequisitionmadeAndClient(Boolean  aBoolean, Client client);
 
     List<Expense> findExpenseByPriceGreaterThan(Double price);
 

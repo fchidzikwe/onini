@@ -20,6 +20,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     ExpenseRepository expenseRepository;
 
     @Override
+    public Expense findOne(Long expenseId) {
+        return expenseRepository.findOne(expenseId);
+    }
+
+    @Override
     public void save(Expense expense) {
         expenseRepository.save(expense);
     }
@@ -40,6 +45,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public List<Expense> findAllByACaseAndRequisitionMade(Case aCase, Boolean aBoolean) {
+        return expenseRepository.findAllByACaseAndRequisitionmade(aCase,Boolean.FALSE);
+    }
+
+    @Override
     public List<Expense> findExpenseByLawyer(User user) {
         return expenseRepository.findExpenseByLawyer(user);
     }
@@ -53,4 +63,21 @@ public class ExpenseServiceImpl implements ExpenseService {
     public List<Expense> findExpenseByPriceGreaterThanAndLawyer(Double price, User lawyer) {
         return expenseRepository.findExpenseByPriceGreaterThanAndLawyer(price, lawyer);
     }
+
+    @Override
+    public List<Expense> findAllExpensesWithoutReqisition(Boolean aBoolean) {
+        return expenseRepository.findExpenseByRequisitionmade(aBoolean);
+    }
+
+    @Override
+    public List<Expense> findAllExepnseWithoutReqisitionAndClient(Boolean aBoolean, Client client) {
+        return expenseRepository.findExpenseByRequisitionmadeAndClient(aBoolean,client);
+    }
+
+    //    @Override
+//    public List<Case> findAllCasesWithoutReqisition(Boolean aBoolean) {
+//        return caseRepository.findCaseByRequisitionmade(aBoolean);
+//    }
+
+
 }

@@ -79,8 +79,8 @@ public class LoginController {
         List<Requisition> declinedRequisition = requisitionService.findRequisitionByRequisitionStatus(RequisitionStatus.DECLINED);
 
         //for lawyer
-        List<Requisition> inboxReq = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING);
-        model.addAttribute("inboxReqSize", "INBOX(" +inboxReq.size() + ")");
+       List<Requisition> inboxReq = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING,0);
+       model.addAttribute("inboxReqSize", "INBOX(" +inboxReq.size() + ")");
         List<Role> roleList = roleService.findAll();
         Role adminRole = roleService.findByRole("ADMIN");
         roleList.remove(adminRole);

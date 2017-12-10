@@ -22,6 +22,8 @@ public class CaseServiceImpl implements CaseService {
         return caseRepository.findAll();
     }
 
+
+
     @Override
     public List<Case> findAllCasesByMatter(Matter matter) {
         return caseRepository.findCaseByMatter(matter);
@@ -37,15 +39,6 @@ public class CaseServiceImpl implements CaseService {
         return caseRepository.findAllByMatter(matter);
     }
 
-    @Override
-    public List<Case> findAllCasesWithoutReqisition(Boolean aBoolean) {
-        return caseRepository.findCaseByRequisitionmade(aBoolean);
-    }
-
-    @Override
-    public List<Case> findAllCasesWithoutReqisitionAndClient(Boolean aBoolean, Client client) {
-        return caseRepository.findCaseByRequisitionmadeAndClient(aBoolean,client);
-    }
 
     @Override
     public Case findCaseById(Long id) {
@@ -54,6 +47,7 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public void save(Case aCase) {
+
 
         caseRepository.save(aCase);
     }

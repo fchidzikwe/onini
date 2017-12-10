@@ -43,6 +43,11 @@ public class Expense {
     @OneToOne
     private User lawyer;
 
+    private String description;
+
+    @Column(name = "requisitionmade")
+    private Boolean requisitionmade;
+
     public Long getId() {
         return id;
     }
@@ -83,6 +88,14 @@ public class Expense {
         this.quantity = quantity;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public User getLawyer() {
         return lawyer;
     }
@@ -100,10 +113,19 @@ public class Expense {
     }
 
     public String getCostName() {
-        return costName;
+
+        return costs.get(0).getName();
     }
 
     public void setCostName(String costName) {
         this.costName = costName;
+    }
+
+    public Boolean getRequisitionmade() {
+        return requisitionmade;
+    }
+
+    public void setRequisitionmade(Boolean requisitionmade) {
+        this.requisitionmade = requisitionmade;
     }
 }

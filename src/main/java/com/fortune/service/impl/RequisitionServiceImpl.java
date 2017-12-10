@@ -23,6 +23,7 @@ public class RequisitionServiceImpl implements RequisitionService {
 
     @Override
     public void save(Requisition requisition) {
+        requisition.setView(0);
         requisitionRepository.save(requisition);
     }
 
@@ -42,9 +43,11 @@ public class RequisitionServiceImpl implements RequisitionService {
     }
 
     @Override
-    public Requisition findByCase(Case aCase) {
-        return requisitionRepository.findRequisitionByACase(aCase);
+    public Requisition findByExpense(Expense expense) {
+        return requisitionRepository.findRequisitionByExpense(expense);
     }
+
+
 
     @Override
     public Requisition findByClient(Client client) {
@@ -64,10 +67,10 @@ public class RequisitionServiceImpl implements RequisitionService {
     }
 
     @Override
-    public List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus requisitionStatus) {
+    public List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus requisitionStatus, Integer read) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User lawyer = userService.findUserByEmail(authentication.getName());
-        return requisitionRepository.findRequisitionByStatusIsNotAndMadeby(requisitionStatus, lawyer);
+        return requisitionRepository.findRequisitionByStatusIsNotAndMadebyAndView(requisitionStatus, lawyer,read);
     }
 
     @Override

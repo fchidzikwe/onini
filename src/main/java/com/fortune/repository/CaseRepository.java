@@ -18,12 +18,13 @@ public interface CaseRepository extends JpaRepository<Case, Long> {
 
     List<Case> findCaseByMatter(Matter matter);
 
+
     @Query("select c from Case c WHERE " +
            " ((:matter is null) OR c.matter = :matter) ")
     List<Case> findAllByMatter(@Param("matter") Matter matter);
 
-    List<Case> findCaseByRequisitionmadeAndClient(Boolean  aBoolean, Client client);
+//   List<Case> findCaseByRequisitionmadeAndClient(Boolean  aBoolean, Client client);
 
 
-    List<Case> findCaseByRequisitionmade(Boolean  aBoolean);
+ //   List<Case> findCaseByRequisitionmade(Boolean  aBoolean);
 }

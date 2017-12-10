@@ -17,7 +17,7 @@ public class DateConveter {
 
 
     public static Date stringToDate (String dateInString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
             date = formatter.parse(dateInString);

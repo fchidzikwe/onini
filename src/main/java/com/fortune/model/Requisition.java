@@ -3,6 +3,7 @@ package com.fortune.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by fortune on 7/14/17.
@@ -16,17 +17,24 @@ public class Requisition {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToOne
+    private Expense expense;
+
+    @ManyToOne
+    private Case aCase;
+
     @Column(name = "requisitiondate")
     private Date requisitionDate;
 
-    @OneToOne
-    Case aCase;
 
     @Column(name = "amount")
     private Double amount;
 
     @Column(name = "payee")
     private String payee;
+
+    @Column(name = "purpose")
+    private String purpose;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -36,12 +44,31 @@ public class Requisition {
     private User madeby;
 
 
+    @Column(name = "view")
+    private Integer view;
+
+    public Integer getView() {
+        return view;
+    }
+
+    public void setView(Integer view) {
+        this.view = view;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Case getaCase() {
+        return aCase;
+    }
+
+    public void setaCase(Case aCase) {
+        this.aCase = aCase;
     }
 
     public Date getRequisitionDate() {
@@ -52,12 +79,20 @@ public class Requisition {
         this.requisitionDate = requisitionDate;
     }
 
-    public Case getaCase() {
-        return aCase;
+    public Expense getExpense() {
+        return expense;
     }
 
-    public void setaCase(Case aCase) {
-        this.aCase = aCase;
+    public void setExpense(Expense expense) {
+        this.expense = expense;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 
     public Double getAmount() {

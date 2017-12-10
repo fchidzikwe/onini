@@ -9,10 +9,13 @@ import java.util.List;
 
 public interface RequisitionRepository extends JpaRepository<Requisition, Long> {
 
-    @Query("select r from Requisition r where r.aCase =:case")
-    Requisition findRequisitionByACase(@Param("case") Case aCase);
+//    @Query("select r from Requisition r where r.aCase =:case")
+//    Requisition findRequisitionByE(@Param("case") Case aCase);
 
-    @Query("select r from Requisition r where r.aCase.client =:client")
+
+    Requisition findRequisitionByExpense(Expense expense);
+
+    @Query("select r from Requisition r where r.expense.client =:client")
     Requisition findRequisitionByClient(@Param("client") Client client);
 
     @Query("select r from Requisition r where r.madeby =:user")
@@ -26,5 +29,5 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
 
     List<Requisition> findRequisitionByStatusAndMadeby(RequisitionStatus status, User user);
 
-    List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus status, User user);
+    List<Requisition> findRequisitionByStatusIsNotAndMadebyAndView(RequisitionStatus status, User user, Integer read);
 }

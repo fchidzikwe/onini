@@ -104,7 +104,7 @@ public class ConfigurationController {
   @RequestMapping(value = "/addcity", method = RequestMethod.POST)
   public String addCity(RedirectAttributes redirectAttributes,@Valid City city, BindingResult bindingResult, Model model){
     cityService.saveCity(city);
-    redirectAttributes.addFlashAttribute("successMessage", "");
+    redirectAttributes.addFlashAttribute("successMessage", city.getName()+ " added Successfulty");
     return  "redirect:/cityform";
   }
 

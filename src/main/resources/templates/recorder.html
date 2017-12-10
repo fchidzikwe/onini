@@ -44,7 +44,7 @@
 <br/>
 <br/>
 <div class="jumbotron">
-    <form autocomplete="off"  th:action="@{/addcase}"
+    <form autocomplete="off"  th:action="@{/addattendance}"
           method="get">
 
         <div class="controls">
@@ -58,7 +58,7 @@
         <br/>
         <div id="time" class="stopwatch"></div>
         <br/>
-        <input type="hidden"  name ="id" th:value="${client.id}"/>
+        <input type="hidden"  name ="id" th:value="${aCase.id}"/>
         <div class="controls">
             <button type="submit" class="btn btn-primary glyphicon glyphicon-play">Submit</button>
         </div>

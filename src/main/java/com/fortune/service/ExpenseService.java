@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface ExpenseService {
 
+    Expense findOne(Long expenseId);
+
     void save(Expense expense);
 
     List<Expense> findAll();
@@ -20,9 +22,15 @@ public interface ExpenseService {
 
     List<Expense> findAllByACase(Case aCase);
 
+    List<Expense> findAllByACaseAndRequisitionMade(Case aCase, Boolean aBoolean);
+
     List<Expense> findExpenseByLawyer(User user);
 
     List<Expense> findExpenseByPriceGreaterThan(Double price);
 
     List<Expense> findExpenseByPriceGreaterThanAndLawyer(Double price,User lawyer);
+
+    List<Expense> findAllExpensesWithoutReqisition(Boolean aBoolean);
+
+    List<Expense> findAllExepnseWithoutReqisitionAndClient(Boolean  aBoolean, Client client);
 }

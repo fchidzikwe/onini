@@ -4,7 +4,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Lexware || Requsition</title>
-
     <link href="css/registration.css"
           th:href="@{/css/registration.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,11 +17,8 @@
     <link href="css/cuppa-datepicker-styles.css" rel="stylesheet">
     <script type="text/javascript" src="js/lib/moment.js"></script>
     <script type="text/javascript" src="js/cuppa-calendar.js"></script>
-
-
 </head>
 <body>
-
 <div class="bs-example" >
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top" style="background-color: #00008B">
 
@@ -38,19 +34,13 @@
                 <a style="color: white" href="/home" class="navbar-brand">LEXWARE</a>
                 <span th:utext="${userName}" class="navbar-brand glyphicon glyphicon-user"></span>
             </div>
-
             <!-- Collection of nav links and other content for toggling -->
             <div sec:authorize="hasAuthority('ADMIN')" id="navbarCollapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-
-
                     <li><a style="color: white" href="/logout"><span
                             class="glyphicon glyphicon-log-out"></span>Logout </a></li>
                 </ul>
             </div>
-
-
-
         </div>
     </nav>
 </div>
@@ -60,30 +50,19 @@
 
 <div class="jumbotron hero-spacer">
     <div align="center">
-
         <div class="container">
-
             <div class="row" th:object="${client}">
-
-
-
-
                 <table class="table table-striped" style="width:600px;">
                     <tr>
                         <th>
                             Client
                         </th>
                         <td>
-
                             <span th:utext="${client.name}" class="text-success"></span>
                             <span th:utext="${client.lastName}" class="text-success"></span>
-
                         </td>
                         <th></th>
-
-
                     </tr>
-
                 </table>
             </div>
             <div class="row">
@@ -94,53 +73,48 @@
                             <div align="center"><strong>Make Requisition</strong></div>
                         </div>
                         <div class="panel-body">
-
                                    <form autocomplete="off" action="#" th:action="@{/saverequisition}"
                           th:object="${requisition}" method="post" class="form-horizontal">
-
                         <span th:utext="${successMessage}"></span>
-
                         <fieldset>
                             <div class="row">
                                 <div class="col-sm-12 col-md-10  col-md-offset-1 ">
                                     <div class="form-group">
-
                                         <label>Requisation Date: </label>
-                                        <input type="date" th:field="*{requisitionDate}" name="requisitionDate"
+                                        <input  th:field="*{requisitionDate}" name="requisitionDate"
                                                placeholder="" class="form-control"/>
 
-                                        <input type="hidden" th:field="*{aCase}"/>
+                                        <input type="hidden" th:field="*{expense}"/>
                                         <input type="hidden"  name ="caseId" th:value="${caseId}"/>
-
+                                        <input type="hidden"  name ="expenseId" th:value="${expenseId}"/>
 
                                     </div>
-
                                     <div class="form-group">
                                         <label>Requisition Amount: </label>
                                         <input type="text" th:field="*{amount}"
                                                placeholder="US$0.00" class="form-control"/>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label>Purpose: </label>
+                                        <input type="text" th:field="*{purpose}"
+                                               placeholder="Purpose" class="form-control"/>
+                                    </div>
+
                                     <div class="form-group">
                                         <label>Payee: </label>
                                         <input type="text" th:field="*{payee}"
                                                placeholder="Payee" class="form-control"/>
                                     </div>
-
                                     <div class="form-group">
                                         <div class="input-group">
                                             <button type="submit" class="btn btn-primary btn-block">Submit Requisition</button>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
-
                         </fieldset>
-
-
                     </form>
-
                         </div>
                     </div>
                 </div>
@@ -149,9 +123,6 @@
         </div>
     </div>
 </div>
-
-
-
 <script>
     $(document).ready(function(){
         var date_input=$('input[name="requisitionDate"]'); //our date input has the name "date"
@@ -164,9 +135,6 @@
             autoclose: true,
         });
     });
-
-
 </script>
-
 </body>
 </html>

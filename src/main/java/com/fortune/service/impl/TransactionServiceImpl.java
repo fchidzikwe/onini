@@ -1,5 +1,6 @@
 package com.fortune.service.impl;
 
+import com.fortune.model.Case;
 import com.fortune.model.Client;
 import com.fortune.model.Transaction;
 import com.fortune.repository.TransactionRepository;
@@ -32,6 +33,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction findTransactionById(Long id) {
         return transactionRepository.findOne(id);
+    }
+
+    @Override
+    public Transaction findTransactionByCase(Case aCase) {
+        return transactionRepository.findTransactionByACase(aCase);
     }
 
     @Override

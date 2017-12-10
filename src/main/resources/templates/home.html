@@ -267,8 +267,8 @@
                             <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
                         </td>
                         <td>
-                            <span th:utext="${requisition.aCase.client.name}" class="text-success"></span>
-                            <span th:utext="${requisition.aCase.client.lastName}" class="text-success"></span>
+                            <span th:utext="${requisition.expense.client.name}" class="text-success"></span>
+                            <span th:utext="${requisition.expense.client.lastName}" class="text-success"></span>
                         </td>
                         <td>
                             <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
@@ -330,6 +330,7 @@
                                 <td th:text="${account.client.lastName}">Last Name</td>
                                 <td th:text="${account.accountName}">Gender</td>
                                 <td>
+
 
                                     <a th:href="${'/deleteaccount/' + account.id}" class="btn btn-danger" >Delete Account</a>
 

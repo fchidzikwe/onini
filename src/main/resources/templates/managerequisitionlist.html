@@ -75,7 +75,7 @@
                 <th scope="col">Lawyer</th>
                 <th scope="col">Client</th>
                 <th scope="col">Req Date</th>
-                <th scope="col">Amount Billed on Case</th>
+                <th scope="col">Expense Amount</th>
                 <th scope="col">Req Amount</th>
                 <th scope="col">AvailAcc Bal</th>
                 <th scope="col">Payee</th>
@@ -90,14 +90,14 @@
                     <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
                 </td>
                 <td>
-                    <span th:utext="${requisition.aCase.client.name}" class="text-success"></span>
-                    <span th:utext="${requisition.aCase.client.lastName}" class="text-success"></span>
+                    <span th:utext="${requisition.expense.client.name}" class="text-success"></span>
+                    <span th:utext="${requisition.expense.client.lastName}" class="text-success"></span>
                 </td>
                 <td>
                     <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
                 </td>
                 <td>
-                    <span th:utext="${requisition.aCase.amount}" class="text-success"></span>
+                    <span th:utext="${(requisition.expense.price)*requisition.expense.quantity}" class="text-success"></span>
                 </td>
                 <td>
                     <span th:utext="${requisition.amount}" class="text-success"></span>

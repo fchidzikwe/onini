@@ -24,6 +24,9 @@ public class Transaction {
     @Column(name = "balance")
     private Double balance;
 
+    @OneToOne
+    Case aCase;
+
     @NotNull(message = "Transaction type cannot be null")
     @Column(name = "transaction_type")
     @Enumerated(EnumType.STRING)
@@ -79,5 +82,13 @@ public class Transaction {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Case getaCase() {
+        return aCase;
+    }
+
+    public void setaCase(Case aCase) {
+        this.aCase = aCase;
     }
 }

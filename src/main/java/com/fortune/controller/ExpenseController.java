@@ -8,6 +8,8 @@ import com.fortune.service.CaseService;
 import com.fortune.service.ClientService;
 import com.fortune.service.CostsService;
 import com.fortune.service.ExpenseService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,8 @@ import java.util.List;
  */
 @Controller
 public class ExpenseController {
+
+    private Logger logger = LoggerFactory.getLogger(ExpenseController.class);
 
     @Autowired
     ExpenseService expenseService;
@@ -62,15 +66,11 @@ public class ExpenseController {
 
         Client client = clientService.findClientById(clientId);
         Case aCase = caseService.findCaseById(caseId);
-        Double caseAmount = aCase.getAmount();
         expense.setClient(client);
         expense.setaCase(aCase);
+        expense.setRequisitionmade(Boolean.FALSE);
         expenseService.save(expense);
-        Double expenseCost = expense.getPrice() * expense.getQuantity();
-        aCase.setAmount(caseAmount + expenseCost );
-        caseService.save(aCase);
         model.addAttribute("successMessage", "saved!");
-
         return "redirect:/viewcase/caseId?caseId="+ aCase.getId();
     }
 

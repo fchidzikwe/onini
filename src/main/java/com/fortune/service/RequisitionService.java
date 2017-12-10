@@ -14,7 +14,7 @@ public interface RequisitionService {
 
     List<Requisition> findAllRequisition();
 
-    Requisition findByCase(Case aCase);
+    Requisition findByExpense(Expense expense);
 
     Requisition findByClient(Client client);
 
@@ -22,7 +22,7 @@ public interface RequisitionService {
 
     List<Requisition> findRequisitionsByStatusAndLawyer(RequisitionStatus requisitionStatus);
 
-    List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus requisitionStatus);
+    List<Requisition> findRequisitionByStatusIsNotAndMadeby(RequisitionStatus requisitionStatus, Integer read);
 
     List<Requisition> findRequisitionByRequisitionStatus(RequisitionStatus requisitionStatus);
 

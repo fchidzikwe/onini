@@ -2,7 +2,6 @@ package com.fortune.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,6 +14,9 @@ public class Case {
 
     @Column(name = "versus")
     private String versus;
+
+    @OneToMany
+    private List<Attendance> attendanceList;
 
     @OneToOne
     @NotNull(message = "please select matter")
@@ -29,10 +31,8 @@ public class Case {
     private Long timeSpent;
 
     @Column(name ="amount")
-    private Double amount;
+    private Double amount = 0.0;
 
-    @Column(name = "requisitionmade")
-    private Boolean requisitionmade;
 
     public Double getAmount() {
         return amount;
@@ -82,11 +82,24 @@ public class Case {
         this.client = client;
     }
 
-    public Boolean getRequisitionmade() {
-        return requisitionmade;
+    public List<Attendance> getAttendanceList() {
+        return attendanceList;
     }
 
-    public void setRequisitionmade(Boolean requisitionmade) {
-        this.requisitionmade = requisitionmade;
+    public void setAttendanceList(List<Attendance> attendanceList) {
+        this.attendanceList = attendanceList;
+    }
+
+    @Override
+    public String toString() {
+        return "Case{" +
+                "id=" + id +
+                ", versus='" + versus + '\'' +
+                ", attendanceList=" + attendanceList +
+                ", matter=" + matter +
+                ", client=" + client +
+                ", timeSpent=" + timeSpent +
+                ", amount=" + amount +
+                '}';
     }
 }

@@ -87,8 +87,8 @@
                     <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
                 </td>
                 <td>
-                    <span th:utext="${requisition.aCase.client.name}" class="text-success"></span>
-                    <span th:utext="${requisition.aCase.client.lastName}" class="text-success"></span>
+                    <span th:utext="${requisition.expense.client.name}" class="text-success"></span>
+                    <span th:utext="${requisition.expense.client.lastName}" class="text-success"></span>
                 </td>
                 <td>
                     <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
@@ -148,11 +148,12 @@
                     <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
                 </td>
                 <td>
-                    <span th:utext="${requisition.aCase.client.name}" class="text-success"></span>
-                    <span th:utext="${requisition.aCase.client.lastName}" class="text-success"></span>
+                    <span th:utext="${requisition.expense.aCase.client.name}" class="text-success"></span>
+                    <span th:utext="${requisition.expense.aCase.client.lastName}" class="text-success"></span>
                 </td>
                 <td>
-                    <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
+
+                    <span th:text="${#dates.format(requisition.requisitionDate,'dd-MM-yyyy')}" class="text-success"></span>
                 </td>
                 <td>
                     <span th:utext="${requisition.amount}" class="text-success"></span>
