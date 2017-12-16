@@ -72,6 +72,12 @@ public class ClientController {
 
     @RequestMapping(value = "/createclient", method = RequestMethod.POST)
     public String addClient(Model model, @Valid Client client, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("cityList" , cityService.findAllcities());
+            model.addAttribute("client", client);
+            return "clientregistration";
+        }
         clientService.saveClient(client);
         model.addAttribute("user", new User());
         model.addAttribute("roleList", roleService.findAll());

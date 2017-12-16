@@ -102,6 +102,15 @@ public class LoginController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registerUser(@Valid User user, BindingResult bindingResult, Model  model, @RequestParam("dateRegistered") String dateRegistered){
+
+       if(bindingResult.hasErrors()){
+           List<Role> roleList = roleService.findAll();
+           Role adminRole = roleService.findByRole("ADMIN");
+           roleList.remove(adminRole);
+           model.addAttribute("user", user);
+           model.addAttribute("roleList", roleList);
+           return "registration";
+       }
         Date date = DateConveter.stringToDate(dateRegistered);
         user.setDateRegistered(date);
         user.setActive(1);
