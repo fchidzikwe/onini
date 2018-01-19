@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -60,6 +61,8 @@ public class LoginController {
         List<Role> roleList = roleService.findAll();
         Role adminRole = roleService.findByRole("ADMIN");
         roleList.remove(adminRole);
+        System.out.println("gender values"+ Gender.values().toString());
+        model.addAttribute("genderList", Gender.values());
         model.addAttribute("user", new User());
         model.addAttribute("roleList", roleList);
         return   "registration";
@@ -101,7 +104,9 @@ public class LoginController {
 
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registerUser(@Valid User user, BindingResult bindingResult, Model  model, @RequestParam("dateRegistered") String dateRegistered){
+    public String registerUser(@Valid User user,
+                               RedirectAttributes redirectAttributes,
+                               BindingResult bindingResult, Model  model, @RequestParam("dateRegistered") String dateRegistered){
 
        if(bindingResult.hasErrors()){
            List<Role> roleList = roleService.findAll();
@@ -115,8 +120,9 @@ public class LoginController {
         user.setDateRegistered(date);
         user.setActive(1);
         userService.saveUser(user);
-        model.addAttribute("successMessage", "User Registred");
-        return "registration";
+        redirectAttributes.addFlashAttribute("successMessage", "User Registred");
+        redirectAttributes.addFlashAttribute("css", "alert alert-success");
+        return "redirect:/login";
     }
 
     @ModelAttribute("user")

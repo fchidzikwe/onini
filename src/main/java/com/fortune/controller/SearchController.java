@@ -73,7 +73,7 @@ public class SearchController {
       c.setId(c.getId());
       c.setName(null);
       c.setLastName(null);
-      c.setMobile(null);
+      c.setContactNumber(null);
       c.setNationalID(null);
       clientList.add(c);
     }

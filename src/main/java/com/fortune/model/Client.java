@@ -30,51 +30,48 @@ public class Client {
   @NotEmpty(message = "*Please provide an email")
   private String email;
 
-
-  @Column(name = "gender")
-  @NotEmpty(message = "*Please provide an email")
-  private String gender;
-
-  @Column(name = "nationalID")
-  @NotEmpty(message = "*Please provide an email")
-  private String nationalID;
-
-  @Column(name = "skypeId")
-  @NotEmpty(message = "*Please provide an email")
-  private String skypeId;
+  @NotNull
+  private ClientType clientType;
 
 
   @Column(name = "residentialAddress")
   @NotEmpty(message = "*Please provide your residentialAddress")
-  private String residentialAddress;
-
+  private String address;
 
   @NotNull(message = "*Please provide your city")
   @OneToOne
   private City city;
 
   @Column(name = "name")
-  @NotEmpty(message = "*Please provide your name")
   private String name;
 
   @Column(name = "mobile")
   @NotEmpty(message = "*Please provide mobile number")
-  private String mobile;
+  private String contactNumber;
+
+
+
+
+  @Column(name = "first_name")
+  private String firstName;
 
   @Column(name = "last_name")
-  @NotEmpty(message = "*Please provide your last name")
   private String lastName;
+
+
+  @Column(name = "gender")
+  private String gender;
+
+  @Column(name = "nationalID")
+  private String nationalID;
+
+
+  @Column(name = "vatNumber")
+  private String vatNumber;
 
   @Column(name = "active")
   private int active;
 
-  public String getResidentialAddress() {
-        return residentialAddress;
-    }
-
-  public void setResidentialAddress(String residentialAddress) {
-        this.residentialAddress = residentialAddress;
-    }
 
   public City getCity() {
         return city;
@@ -100,16 +97,38 @@ public class Client {
     this.nationalID = nationalID;
   }
 
-  public String getSkypeId() {
-    return skypeId;
+  public String getAddress() {
+    return address;
   }
 
-  public void setSkypeId(String skypeId) {
-    this.skypeId = skypeId;
+  public void setAddress(String address) {
+    this.address = address;
   }
 
+  public String getContactNumber() {
+    return contactNumber;
+  }
 
+  public void setContactNumber(String contactNumber) {
+    this.contactNumber = contactNumber;
+  }
 
+  public String getVatNumber() {
+    return vatNumber;
+  }
+
+  public void setVatNumber(String vatNumber) {
+    this.vatNumber = vatNumber;
+  }
+
+  @Enumerated(EnumType.STRING)
+  public ClientType getClientType() {
+    return clientType;
+  }
+
+  public void setClientType(ClientType clientType) {
+    this.clientType = clientType;
+  }
 
   public Long getId() {
     return id;
@@ -121,7 +140,21 @@ public class Client {
 
 
   public String getName() {
-    return name;
+
+    if(getClientType().equals(ClientType.COMPANY)){
+      return name;
+    }else {
+      return getFirstName() + " " + getLastName();
+    }
+  }
+
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
   }
 
   public void setName(String name) {
@@ -140,13 +173,7 @@ public class Client {
     return email;
   }
 
-  public String getMobile() {
-    return mobile;
-  }
 
-  public void setMobile(String mobile) {
-    this.mobile = mobile;
-  }
 
   public void setEmail(String email) {
     this.email = email;
@@ -165,13 +192,25 @@ public class Client {
     }
   }
 
+
   @Override
   public String toString() {
-    return name +
-        " " + lastName ;
+    return "Client{" +
+            "id=" + id +
+            ", email='" + email + '\'' +
+            ", clientType=" + clientType +
+            ", address='" + address + '\'' +
+            ", city=" + city +
+            ", name='" + name + '\'' +
+            ", contactNumber='" + contactNumber + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", gender='" + gender + '\'' +
+            ", nationalID='" + nationalID + '\'' +
+            ", vatNumber='" + vatNumber + '\'' +
+            ", active=" + active +
+            '}';
   }
-
- 
 
   public void setActive(int active) {
     this.active = active;

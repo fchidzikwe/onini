@@ -1,20 +1,14 @@
 package com.fortune.model;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Created by fortune on 7/11/17.
@@ -37,24 +31,15 @@ public class User {
     private String email;
 
 
-    @Column(name = "gender")
-    @NotEmpty(message = "*Please provide an email")
-    private String gender;
+   private Gender gender;
 
     @Column(name = "nationalID")
     @NotEmpty(message = "*Please provide an email")
     private String nationalID;
 
-    @Column(name = "skypeId")
-    @NotEmpty(message = "*Please provide an email")
-    private String skypeId;
-
-    @Column(name = "cell")
-    @NotEmpty(message = "*Please provide an email")
-    private String cell;
-
 
     @Column(name = "date_registered")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateRegistered;
 
 
@@ -89,6 +74,14 @@ public class User {
     private int active;
 
 
+    @Enumerated(EnumType.STRING)
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
     public Date getDateRegistered() {
         return dateRegistered;
@@ -98,13 +91,7 @@ public class User {
         this.dateRegistered = dateRegistered;
     }
 
-    public String getGender() {
-        return gender;
-    }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
 
     public String getNationalID() {
         return nationalID;
@@ -112,22 +99,6 @@ public class User {
 
     public void setNationalID(String nationalID) {
         this.nationalID = nationalID;
-    }
-
-    public String getSkypeId() {
-        return skypeId;
-    }
-
-    public void setSkypeId(String skypeId) {
-        this.skypeId = skypeId;
-    }
-
-    public String getCell() {
-        return cell;
-    }
-
-    public void setCell(String cell) {
-        this.cell = cell;
     }
 
 
