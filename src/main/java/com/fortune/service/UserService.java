@@ -7,15 +7,21 @@ import com.fortune.model.User;
 import java.util.List;
 
 public interface UserService {
-  public User findUserByEmail(String email);
+   User findUserByEmail(String email);
 
-  public User findUserById(Long id);
+   User findUserById(Long id);
 
-  public void saveUser(User user);
+   void saveUser(User user);
 
-  public void deleteUser(User user);
+   void deleteUser(User user);
 
-  public List<User> findUsersByRole(Role role);
+  List<User> findUsersByRole(Role role);
 
-  public List<User> findAll();
+  List<User> findUsersByRoleAndName(Role role, String name);
+
+  List<User> findAll();
+
+    User loggedInuser();
+
+  List<User> findAllLawyers();
 }

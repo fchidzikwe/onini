@@ -7,6 +7,8 @@ import com.fortune.repository.UserRepository;
 import com.fortune.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +59,27 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public List<User> findUsersByRoleAndName(Role role, String name) {
+
+    String searchterm = "%"+name+"%";
+    return userRepository.findUsersByRoleAndName(role,searchterm);
+  }
+
+  @Override
   public List<User> findAll() {
     return userRepository.findAll();
+  }
+
+  @Override
+  public List<User> findAllLawyers() {
+    return null;
+  }
+
+  public User loggedInuser (){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User user =  findUserByEmail(authentication.getName());
+    return user;
+
   }
 
 }

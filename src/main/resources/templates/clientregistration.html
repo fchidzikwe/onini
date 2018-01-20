@@ -61,22 +61,39 @@
                     <form autocomplete="off" action="#" th:action="@{/createclient}"
                           th:object="${client}" method="post" class="form-horizontal"
                           role="form">
+                        <h3 style="text-align:left">CLIENT :  <span th:utext="${clientType}"></span></h3>
 
 
-                        <h3 style="text-align:left">CLIENT REGISTRATION</h3>
+                <div class="form-inline" >
+                    <div class="col-sm-9" >
 
+                        <input type="hidden" th:field="*{clientType}"/>
+                    </div>
+                </div>
+                        <br/>
 
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                                       class="validation-message"></label>
+                        <br/>
+                <div class="form-group" th:if="${company==1}">
+                            <div  class="col-sm-9">
+
                                 <input type="text" th:field="*{name}" placeholder="Name"
                                        class="form-control"/>
                                 <input type="hidden" th:field="*{id}"/>
                             </div>
                         </div>
 
-                        <div class="form-group">
+
+
+                        <div class="form-group" th:if="${company==0}">
+                            <div class="col-sm-9">
+                                <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+                                       class="validation-message"></label>
+                                <input type="text" th:field="*{firstName}"
+                                       placeholder="First Name" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group" th:if="${company==0}">
                             <div class="col-sm-9">
                                 <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
                                        class="validation-message"></label>
@@ -86,30 +103,35 @@
                         </div>
 
 
-                        <div class="form-group">
+                        <div class="form-group" th:if="${company==0}">
                             <div class="col-sm-9">
                                 <label th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"
-                                       class="validation-message"></label>
-                                <select  class="form-control" th:field="*{gender}">
-                                    <option value="">--SELECT GENDER--</option>
-                                    <option value="MALE">MALE</option>
-                                    <option value="FEMALE">FEMALE</option>
+                                       class="validation-message">Gender</label>
+
+                                <select  id ="gender" class="form-control" th:field="*{gender}">
+                                    <option value="">--Select Gender--</option>
+                                    <option th:each="gender : ${genderList}"
+                                            th:value="${{gender}}"
+                                            th:text="${gender}">
+                                        Cinema
+                                    </option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-sm-9">
-                                <label th:if="${#fields.hasErrors('residentialAddress')}" th:errors="*{residentialAddress}"
+                                <label th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
                                        class="validation-message"></label>
-                                <input type="text" th:field="*{residentialAddress}"
-                                       placeholder="Residental Adress" class="form-control"/>
+                                <input type="text" th:field="*{address}"
+                                       placeholder="Contact Adress" class="form-control"/>
                             </div>
                         </div>
 
                         <div class="form-group ">
                             <div class="col-sm-9">
                                 <select class="form-control" th:field="*{city}">
+                                    <option value="">--Select City</option>
                                     <option th:each="city : ${cityList}"
                                             th:value="${{city}}"
                                             th:text="${city.name}">
@@ -130,24 +152,15 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-9">
-                                <input type="text" th:field="*{mobile}" placeholder="Mobile"
+                                <input type="text" th:field="*{contactNumber}" placeholder="Contact Number"
                                        class="form-control"/> <label
-                                    th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"
-                                    class="validation-message"></label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-sm-9">
-                                <input type="text" th:field="*{skypeId}" placeholder="Skype ID"
-                                       class="form-control"/> <label
-                                    th:if="${#fields.hasErrors('skypeId')}" th:errors="*{skypeId}"
+                                    th:if="${#fields.hasErrors('contactNumber')}" th:errors="*{contactNumber}"
                                     class="validation-message"></label>
                             </div>
                         </div>
 
 
-                        <div class="form-group">
+                        <div class="form-group" th:if="${company==0}">
                             <div class="col-sm-9">
                                 <input type="text" th:field="*{nationalID}" placeholder="National ID"
                                        class="form-control"/> <label
@@ -155,15 +168,24 @@
                                     class="validation-message"></label>
                             </div>
                         </div>
+                        <div class="form-group" th:if="${company==1}">
+                            <div class="col-sm-9">
+                                <input type="text" th:field="*{vatNumber}" placeholder="Comapny Vat Number"
+                                       class="form-control"/> <label
+                                    th:if="${#fields.hasErrors('vatNumber')}" th:errors="*{vatNumber}"
+                                    class="validation-message"></label>
+                            </div>
+                        </div>
+
 
 
                         <div class="form-group">
                             <div class="col-sm-9">
-                                <button type="submit" style="float: left" class="btn btn-primary">Register User</button>
+                                <button type="submit" style="float: left" class="btn btn-primary">Register Client</button>
                                 <a href="/home"  style="float: right" type="submit" class="btn btn-danger">Back</a>
                             </div>
                         </div>
-                        <span th:utext="${successMessage}"></span>
+
                     </form>
                 </div>
             </div>

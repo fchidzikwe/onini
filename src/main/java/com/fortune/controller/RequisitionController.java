@@ -52,9 +52,16 @@ public class RequisitionController {
     @RequestMapping(value = "/viewinbox" ,method = RequestMethod.GET)
     public String viewInbox(Model model){
         List<Requisition> notpending = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING, 0);
+
+       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+       User user = userService.findUserByEmail(authentication.getName());
         Boolean notpend =true;
         model.addAttribute("notpend", notpend);
         model.addAttribute("list", notpending);
+        model.addAttribute("email", authentication.getName());
+        model.addAttribute("userName", user.getName() + " "+ user.getLastName());
+        model.addAttribute("messageFrom", userService.loggedInuser());
+        model.addAttribute("message", new Message());
         return "requisitionlist";
     }
 
@@ -149,22 +156,16 @@ public class RequisitionController {
 //            }
 //        }
        Case aCase = requisition.getaCase();
-        System.out.println(">>>>>>>>>>>>> case found "+aCase.getVersus());
         requisitionService.save(requisition);
        Transaction transaction = transactionService.findTransactionByCase(aCase);
 
        if(transaction!=null){
-           System.out.println("*********************req amount: "+requisition.getAmount());
            transaction.setAmount(transaction.getAmount() -requisition.getAmount() );
            transactionService.save(transaction);
        }
-        System.out.println("*********************req amount: "+requisition.getAmount());
-        System.out.println("******* case amount: "+ aCase.getAmount());
-        System.out.println("******* case: "+ aCase);
 
         aCase.setAmount(aCase.getAmount() + requisition.getAmount());
         caseService.save(aCase);
-
         Boolean accepted = true;
         model.addAttribute("accepted",accepted);
         return "redirect:/home";

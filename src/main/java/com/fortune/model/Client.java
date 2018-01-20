@@ -30,8 +30,14 @@ public class Client {
   @NotEmpty(message = "*Please provide an email")
   private String email;
 
+
+  private String cType;
+
   @NotNull
   private ClientType clientType;
+
+  @OneToOne
+  private User user;
 
 
   @Column(name = "residentialAddress")
@@ -48,9 +54,6 @@ public class Client {
   @Column(name = "mobile")
   @NotEmpty(message = "*Please provide mobile number")
   private String contactNumber;
-
-
-
 
   @Column(name = "first_name")
   private String firstName;
@@ -71,6 +74,17 @@ public class Client {
 
   @Column(name = "active")
   private int active;
+
+  @Transient
+  public String getcType() {
+
+    if(getClientType().equals(ClientType.COMPANY))
+      return "COMPANY";
+
+    else
+      return "INDIVIDUAL";
+  }
+
 
 
   public City getCity() {
@@ -141,11 +155,8 @@ public class Client {
 
   public String getName() {
 
-    if(getClientType().equals(ClientType.COMPANY)){
       return name;
-    }else {
-      return getFirstName() + " " + getLastName();
-    }
+
   }
 
 
@@ -173,7 +184,17 @@ public class Client {
     return email;
   }
 
+  public void setcType(String cType) {
+    this.cType = cType;
+  }
 
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
 
   public void setEmail(String email) {
     this.email = email;
@@ -191,6 +212,9 @@ public class Client {
       return "No";
     }
   }
+
+
+
 
 
   @Override

@@ -2,6 +2,7 @@ package com.fortune.repository;
 
 import com.fortune.model.Case;
 import com.fortune.model.Client;
+import com.fortune.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,8 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
     Client findByEmail(String email);
 
     List<Client> findAll();
-    
+
+    List<Client> findByUser(User user);
 
     List<Client> findByLastName(String lastName);
 

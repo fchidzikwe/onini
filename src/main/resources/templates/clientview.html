@@ -66,11 +66,18 @@
                             </th>
                             <td>
 
-                                <span th:utext="${client.name}" class="text-success"></span>
-                                <span th:utext="${client.lastName}" class="text-success"></span>
-
+                            <td  th:if="${client.cType=='INDIVIDUAL'}" >
+                                <span th:text="${client.firstName + ' ' +client.lastName  }"></span><span>    </span> <a th:href="@{'/getlawyers/clientId'(clientId=${client.id})}"style="float: right" class="btn btn-warning glyphicon glyphicon-share">Share</a>
                             </td>
 
+                            <!-- ELSE -->
+
+                            <td  th:if="${client.cType=='COMPANY'}" >
+                                <span th:text="${client.name}"></span> <a  th:href="@{'/getlawyers/clientId'(clientId=${client.id})}" style="float: right" class="btn btn-warning glyphicon glyphicon-share">Share</a>
+                            </td>
+
+
+                            
                         </tr>
 
 

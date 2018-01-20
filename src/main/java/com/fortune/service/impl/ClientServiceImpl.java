@@ -1,6 +1,7 @@
 package com.fortune.service.impl;
 
 import com.fortune.model.Client;
+import com.fortune.model.User;
 import com.fortune.repository.ClientRepository;
 import com.fortune.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client findClientByEmail(String email) {
         return clientRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<Client> findByUser(User user) {
+        return clientRepository.findByUser(user);
     }
 
     @Override

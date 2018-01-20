@@ -2,12 +2,15 @@ package com.fortune.service;
 
 
 import com.fortune.model.Client;
+import com.fortune.model.User;
 
 import java.util.List;
 
 public interface ClientService {
 
     Client findClientByEmail(String email);
+
+    List<Client> findByUser(User user);
 
      List<Client> findClientByLastName(String lastName);
 

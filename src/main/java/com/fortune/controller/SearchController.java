@@ -53,11 +53,8 @@ public class SearchController {
 
   @RequestMapping(value = "", method = RequestMethod.POST)
   public String callPojo(@ModelAttribute Client client, Model model) {
-    System.out.println("@@@@@@@@@@@@user passed in call user is: "+client);
     model.addAttribute("user", client);
-
     model.addAttribute("search", clientService.findByLastNameLike(client.getLastName()));
-
     return "searchuser";
   }
 

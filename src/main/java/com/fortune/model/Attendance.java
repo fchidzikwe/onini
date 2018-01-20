@@ -32,6 +32,9 @@ public class Attendance {
     @Column(name = "time")
     private Long timeSpent;
 
+    @Column(name = "rate")
+    private Double rate;
+
     @Column(name ="amount")
     private Double amount;
 
@@ -89,5 +92,13 @@ public class Attendance {
 
     public void setaCase(Case aCase) {
         this.aCase = aCase;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 }

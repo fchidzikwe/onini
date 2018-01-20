@@ -61,7 +61,6 @@ public class LoginController {
         List<Role> roleList = roleService.findAll();
         Role adminRole = roleService.findByRole("ADMIN");
         roleList.remove(adminRole);
-        System.out.println("gender values"+ Gender.values().toString());
         model.addAttribute("genderList", Gender.values());
         model.addAttribute("user", new User());
         model.addAttribute("roleList", roleList);
@@ -83,7 +82,7 @@ public class LoginController {
 
         //for lawyer
        List<Requisition> inboxReq = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING,0);
-       model.addAttribute("inboxReqSize", "INBOX(" +inboxReq.size() + ")");
+       model.addAttribute("inboxReqSize", "MESSAGES(" +inboxReq.size() + ")");
         List<Role> roleList = roleService.findAll();
         Role adminRole = roleService.findByRole("ADMIN");
         roleList.remove(adminRole);
@@ -92,15 +91,13 @@ public class LoginController {
         model.addAttribute("pendingRequisitionSize", "Pending Requisitions (" + pendingRequisition.size() + ")");
         model.addAttribute("acceptedRequisitionSize", "Accepted Requisitions (" + acceptedRequisition.size() + ")");
         model.addAttribute("declinedRequisitionSize", "Declined Requisitions (" + declinedRequisition.size() + ")");
-        model.addAttribute("clientList" , clientService.findAll());
+        model.addAttribute("clientList" , clientService.findByUser(lawyer));
         model.addAttribute("user", new User());
         model.addAttribute("accountList", accountService.findAllAccounts());
         model.addAttribute("roleList", roleList);
         model.addAttribute("userList", userService.findAll());
         return   "home";
     }
-
-
 
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -128,5 +125,16 @@ public class LoginController {
     @ModelAttribute("user")
     public User user(){
         return new User();
+    }
+
+    @ModelAttribute("user")
+    public User currentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(authentication.getName());
+        if(user==null) {
+            return new User();
+        }else {
+            return user;
+        }
     }
 }

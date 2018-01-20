@@ -55,7 +55,7 @@
 
                     <li><a style="color: white" href="/viewinbox"><span th:utext="${inboxReqSize}"
                             class="glyphicon glyphicon-envelope"  >
-                        ${inboxReqSize}
+
 
                     </span></a></li>
 
@@ -152,6 +152,7 @@
 
 <div sec:authorize="hasAuthority('LAWYER')" class="container">
 
+    <span th:utext="${successMessage}" class="text-success"></span>
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#client">CLIENT MODULE</a></li>
 
@@ -160,8 +161,11 @@
     <br/>
     <br/>
     <div class="tab-content">
-        <a href="/createclient"
-                class="btn btn-success">Add Client</a>
+        <a href="/createclient" style="float: left"
+                class="btn btn-success"> Register Individual</a>
+
+        <a href="/createclient/company" style="float: right"
+           class="btn btn-success">Register Company</a>
         <br/>
         <br/>
 
@@ -171,19 +175,33 @@
                 <caption>Clients</caption>
                 <thead>
                 <tr style="background-color: transparent">
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Mobile</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Client Type</th>
                     <th scope="col">Manage</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="client : ${clientList}">
-                    <td th:text="${client.name}">George</td>
-                    <td th:text="${client.lastName}">Washington</td>
-                    <td th:text="${client.mobile}">George</td>
+
+
+                    <td  th:if="${client.cType=='INDIVIDUAL'}" >
+                        <span th:text="${client.firstName + ' ' +client.lastName  }"></span>
+                    </td>
+
+                    <!-- ELSE -->
+
+                    <td  th:if="${client.cType=='COMPANY'}" >
+                        <span th:text="${client.name}"></span>
+                    </td>
+
+
+
+
+                    <td th:text="${client.contactNumber}">George</td>
                     <td th:text="${client.email}">Washington</td>
+                    <td th:text="${client.clientType}">Washington</td>
                     <td>
 
                         <a th:href="@{'/viewclient/id'(id=${client.id})}"
