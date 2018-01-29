@@ -10,6 +10,10 @@ public interface RequisitionService {
 
     Requisition findByID(Long id);
 
+    Long getLastRequisitionId();
+
+    void saveRequisitionWithoutChangingView(Requisition requisition);
+
     void delete(Requisition requisition);
 
     List<Requisition> findAllRequisition();
@@ -17,6 +21,8 @@ public interface RequisitionService {
     Requisition findByExpense(Expense expense);
 
     Requisition findByClient(Client client);
+
+    List<Requisition> findRequisitionByACase(Case aCase);
 
     List<Requisition> findRequisitionMadeByLawyer(User user);
 
@@ -26,5 +32,5 @@ public interface RequisitionService {
 
     List<Requisition> findRequisitionByRequisitionStatus(RequisitionStatus requisitionStatus);
 
-
+    List<Requisition> findRequisitionByStatusAndView(RequisitionStatus status, Integer view);
 }

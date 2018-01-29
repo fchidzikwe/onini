@@ -17,13 +17,13 @@
           th:href="@{/css/jquery-ui.css}" rel="stylesheet"/>
 
     <script	src="/js/jquery.js"></script>
-    <script	src="/jquery-ui-1.11.4/jquery-ui.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
+    <script src="/js/jquery-ui.js"></script>
 
 
 
     <script	src="/js/bootstrap.min.js"></script>
- <link rel = "stylesheet" href = "bootstrap.css" />
+    <link rel = "stylesheet" href = "bootstrap.css" />
 
 
 </head>
@@ -71,13 +71,13 @@
 
             <div class="row" th:if="${#strings.isEmpty(successMessage)}">
 
-                    <div th:class="${css} + 'alert-dismissible'" role="alert">
-                        <button type="button" class="close" data-dismiss="alert"
-                                aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <strong> <span th:utext="${successMessage}"></span></strong>
-                    </div>
+                <div th:class="${css} + 'alert-dismissible'" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong> <span th:utext="${successMessage}"></span></strong>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
@@ -168,7 +168,7 @@
                         <div class="form-group">
                             <div class="col-sm-9">
                                 <input type="text" th:field="*{nationalID}" placeholder="National ID"
-                                    id="nationalId"   class="form-control"/> <label
+                                       id="nationalId"   class="form-control"/> <label
                                     th:if="${#fields.hasErrors('nationalID')}" th:errors="*{nationalID}"
                                     class="validation-message"></label>
                             </div>

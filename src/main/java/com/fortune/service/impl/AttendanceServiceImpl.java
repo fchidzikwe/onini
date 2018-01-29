@@ -2,6 +2,8 @@ package com.fortune.service.impl;
 
 import com.fortune.model.Attendance;
 import com.fortune.model.Case;
+import com.fortune.model.Expense;
+import com.fortune.model.Requisition;
 import com.fortune.repository.AttendanceRepository;
 import com.fortune.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +33,10 @@ public class AttendanceServiceImpl implements AttendanceService{
     @Override
     public void save(Attendance attendance) {
         attendanceRepository.save(attendance);
+    }
+
+    @Override
+    public List<Requisition> getAllAttendanceExpenses(Attendance attendance) {
+        return attendanceRepository.getAllAttendanceExpenses(attendance);
     }
 }

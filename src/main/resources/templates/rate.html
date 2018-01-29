@@ -56,20 +56,25 @@
 <br/>
 <br/>
 <br/>
+<br/>
+<br/>
+<br/>
 
-<header class="jumbotron hero-spacer">
+<div class="jumbotron col-md-6 col-md-offset-3">
     <div align="center">
 
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     <form autocomplete="off" action="#" th:action="@{/saverate}"
                           th:object="${rate}" method="post" class="form-horizontal"
                           role="form">
-                        <!--     <h2 align="center">Registration Form</h2>-->
-
-                        <span th:utext="${successMessage}"></span>
                         <h3 style="text-align:left">What’s your rate per hour?</h3>
+
+                        <br/>
+                        <br/>
+                        <span th:utext="${successMessage}"></span>
+
                         <div class="form-group">
                             <div class="col-sm-9">
                                 <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
@@ -81,7 +86,7 @@
                                 <input type="hidden" th:field="*{user}" th:value="${user}"/>
                                  <input type="hidden"  name ="lawyerId" th:value="${lawyerId}"/>
                             </div>
-                        </div>  
+                        </div>
 
 
 
@@ -99,7 +104,7 @@
 
 
     </div>
-</header>
+</div>
 
 </body>
 </html>

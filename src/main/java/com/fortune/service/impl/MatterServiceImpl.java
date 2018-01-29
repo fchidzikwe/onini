@@ -32,6 +32,12 @@ public class MatterServiceImpl implements MatterService {
     }
 
     @Override
+    public List<Matter> findMatterByNameLike(String name) {
+        String searchTerm = "%"+name+"%";
+        return matterRepository.findMatterByNameLike(searchTerm);
+    }
+
+    @Override
     public Matter findMatter(Long aLong) {
         return matterRepository.findOne(aLong);
     }

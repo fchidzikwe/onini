@@ -28,8 +28,21 @@ public class RequisitionServiceImpl implements RequisitionService {
     }
 
     @Override
+    public void saveRequisitionWithoutChangingView(Requisition requisition) {
+        requisitionRepository.save(requisition);
+    }
+
+
+
+
+    @Override
     public Requisition findByID(Long id) {
         return requisitionRepository.findOne(id);
+    }
+
+    @Override
+    public Long getLastRequisitionId() {
+        return null;
     }
 
     @Override
@@ -55,6 +68,11 @@ public class RequisitionServiceImpl implements RequisitionService {
     }
 
     @Override
+    public List<Requisition> findRequisitionByACase(Case aCase) {
+        return requisitionRepository.findRequisitionByACase(aCase);
+    }
+
+    @Override
     public List<Requisition> findRequisitionMadeByLawyer(User user) {
         return requisitionRepository.findRequisitionsByLawyer(user);
     }
@@ -76,5 +94,10 @@ public class RequisitionServiceImpl implements RequisitionService {
     @Override
     public List<Requisition> findRequisitionByRequisitionStatus(RequisitionStatus requisitionStatus) {
         return requisitionRepository.findRequisitionByStatus(requisitionStatus);
+    }
+
+    @Override
+    public List<Requisition> findRequisitionByStatusAndView(RequisitionStatus status, Integer view) {
+        return requisitionRepository.findRequisitionByStatusAndView(status,view);
     }
 }

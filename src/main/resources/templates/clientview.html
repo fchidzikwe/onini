@@ -86,7 +86,7 @@
                 <div class="col-md-6">
                     <table class="table table-striped" style="width:600px;">
                         <tr>
-                            <th> Add Case</th>
+                            <th> Add Matter</th>
 
                             <td>
                                 <form autocomplete="off"  th:action="@{/addcase}"
@@ -105,9 +105,9 @@
 
             </div>
 
-
+            <span th:utext="${successMessage}" class="text-success"></span>
             <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#attendance">ATTENDANCE</a></li>
+                <li class="active"><a data-toggle="tab" href="#attendance">MATTERS</a></li>
             </ul>
             <br/>
 
@@ -116,19 +116,20 @@
 
                 <div id="client" class="tab-pane fade in active">
                     <table class="display" cellspacing="0" width="100%">
-                        <span th:utext="${successMessage}" class="text-success"></span>
                         <caption>List of Client Matters</caption>
                         <thead>
                             <tr style="background-color: transparent">
+                                <th scope="col">Case Number</th>
                                 <th scope="col">Case Name</th>
                                 <th scope="col">Case Type</th>
-                                <th scope="col">Time Spend In Minutes</th>
+                                <th scope="col">Time Spend In Hrs</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Manage</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="clientCase : ${clientCaseList}">
+                                <td th:text="${clientCase.caseNumber}">George</td>
                                 <td >
                                     <span th:utext="${clientCase.client.name}" class="text-success"></span>
                                     <span th:utext="${clientCase.client.lastName}" class="text-success"></span>
@@ -136,12 +137,11 @@
                                     <span th:utext="${clientCase.versus}" class="text-success"></span>
                                 </td>
                                 <td th:text="${clientCase.matter.name}">George</td>
-                                <td th:text="${clientCase.timeSpent}">Washington</td>
+                                <td th:text="${#numbers.formatDecimal((clientCase.timeSpent/60),0,2,'POINT')}">Washington</td>
                                 <!--<td th:text="${#numbers.formatDecimal((clientCase.Vat),0,2,'POINT')}"></td>-->
                                 <!--<td th:text="${#numbers.formatDecimal((clientCase.amount - clientCase.Vat),0,2,'POINT')}"></td>-->
                                 <td  th:text="${#numbers.formatDecimal((clientCase.amount),0,2,'POINT')}">
                                 </td>
-                                <td></td>
                                 <td>
                                     <a th:href="@{'/viewcase/caseId'(caseId=${clientCase.id})}"
                                        class="btn btn-success">View Details

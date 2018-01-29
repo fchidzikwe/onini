@@ -27,6 +27,9 @@ public class Requisition {
     private Date requisitionDate;
 
 
+    private String requisitionNumber;
+
+
     @Column(name = "amount")
     private Double amount;
 
@@ -43,6 +46,14 @@ public class Requisition {
     @OneToOne
     private User madeby;
 
+
+    public String getRequisitionNumber() {
+        return requisitionNumber;
+    }
+
+    public void setRequisitionNumber(String requisitionNumber) {
+        this.requisitionNumber = requisitionNumber;
+    }
 
     @Column(name = "view")
     private Integer view;

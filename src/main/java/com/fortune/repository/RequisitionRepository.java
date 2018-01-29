@@ -9,8 +9,10 @@ import java.util.List;
 
 public interface RequisitionRepository extends JpaRepository<Requisition, Long> {
 
-//    @Query("select r from Requisition r where r.aCase =:case")
-//    Requisition findRequisitionByE(@Param("case") Case aCase);
+
+
+
+
 
 
     Requisition findRequisitionByExpense(Expense expense);
@@ -24,10 +26,15 @@ public interface RequisitionRepository extends JpaRepository<Requisition, Long> 
     List<Requisition> findAll();
 
 
+    List<Requisition> findRequisitionByACase(Case aCase);
+
+
     @Query("select r from Requisition r where r.status =:status")
     List<Requisition>findRequisitionByStatus(@Param("status")RequisitionStatus status);
 
     List<Requisition> findRequisitionByStatusAndMadeby(RequisitionStatus status, User user);
+
+    List<Requisition> findRequisitionByStatusAndView(RequisitionStatus status, Integer integer);
 
     List<Requisition> findRequisitionByStatusIsNotAndMadebyAndView(RequisitionStatus status, User user, Integer read);
 }

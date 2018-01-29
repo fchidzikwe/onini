@@ -51,7 +51,54 @@ public class MessageController {
         model.addAttribute("messageFrom", userService.loggedInuser());
         model.addAttribute("message", new Message());
         return "requisitionlist";
+    }
 
+
+
+    @GetMapping("/readmessage/id")
+    public  String readMessage( Model model, @RequestParam(value = "id") Long messageId){
+        Message message = messageService.findById(messageId);
+        message.setRead(1);
+        messageService.save(message);
+        List<Requisition> notpending = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.ACCEPTED, 0);
+        User user = userService.loggedInuser();
+        Boolean notpend =true;
+        model.addAttribute("notpend", notpend);
+        model.addAttribute("list", notpending);
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("userName", user.getName() + " "+ user.getLastName());
+        model.addAttribute("messageFrom", userService.loggedInuser());
+        model.addAttribute("message", new Message());
+        return "redirect:/viewinbox";
+    }
+
+
+
+    @RequestMapping(value = "/viewinbox" ,method = RequestMethod.GET)
+    public String viewInbox(Model model){
+        List<Requisition> notpending = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING, 0);
+
+        List<Requisition> readReq = requisitionService.findRequisitionByStatusAndView(RequisitionStatus.ACCEPTED, 1);
+        //get all messages to logged in user
+        User user = userService.loggedInuser();
+        List<Message> unreadmessages = messageService.findByMessageToAndRead(user,0);
+        List<Message> readmessages = messageService.findByMessageToAndRead(user,1);
+        Boolean notpend =true;
+
+
+        System.out.println("************ read messages "+readmessages.size());
+        model.addAttribute("readmessageList", readmessages);
+        model.addAttribute("messageList", unreadmessages);
+        model.addAttribute("messageListSize", unreadmessages.size());
+        model.addAttribute("notpend", notpend);
+        model.addAttribute("readRequisitions", readReq);
+        model.addAttribute("list", notpending);
+        model.addAttribute("requisitionListSize", notpending.size());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("userName", user.getName() + " "+ user.getLastName());
+        model.addAttribute("messageFrom", userService.loggedInuser());
+        model.addAttribute("message", new Message());
+        return "requisitionlist";
     }
 
 

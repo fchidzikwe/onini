@@ -4,6 +4,7 @@ import com.fortune.model.*;
 import com.fortune.service.*;
 import com.fortune.util.DateConveter;
 import com.fortune.util.RateFormater;
+import com.fortune.util.SystemUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,13 +12,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +28,9 @@ public class ClientController {
 
     @Autowired
     CityService cityService;
+
+    @Autowired
+    SystemUtils systemUtils;
 
     @Autowired
     ExpenseService expenseService;
@@ -112,40 +114,23 @@ public class ClientController {
     public String viewClient(Model model,@RequestParam("id") Long id){
         Client client = clientService.findClientById(id);
         List<Case> clientCaseList = caseService.findAllCasesByClient(client);
-
-
-
         for(Case aCase: clientCaseList){
             List<Attendance> attendanceList = attendanceService.findAllByACase(aCase);
             Double amount = aCase.getAmount();
-
             Long timeSpent =0L;
-
-
             for(Attendance attendance: attendanceList){
                 amount = amount + attendance.getAmount();
                 timeSpent= timeSpent+ attendance.getTimeSpent();
             }
 
+            List<Requisition> requisitionList = requisitionService.findRequisitionByACase(aCase);
+            for(Requisition requisition: requisitionList){
+                amount = amount + requisition.getAmount();
+            }
+
             aCase.setAmount(amount);
             aCase.setTimeSpent(timeSpent);
-
         }
-
-
-//        clientCaseList.forEach(aCase -> {
-//            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//            User lawyer = userService.findUserByEmail(auth.getName());
-//            Rate lawyerRate = rateService.findByUser(lawyer);
-//            Double amountInHours = lawyerRate.getAmount();
-//
-//          long durationInMinutes= aCase.getTimeSpent();
-//            Double amountCharged = ((double)durationInMinutes /(double) 60) * amountInHours;
-//            Double VAT = 0.15 * amountCharged;
-//            aCase.setVat(VAT);
-//
-//        });
-
         model.addAttribute("client", client);
         model.addAttribute("clientid", id);
         model.addAttribute("clientCaseList", clientCaseList);
@@ -155,9 +140,19 @@ public class ClientController {
     @RequestMapping(value = "/viewattendance/attendanceId", method = RequestMethod.GET)
     public String viewClientAttendance(Model model,@RequestParam("attendanceId") Long attendanceId){
         Attendance attendance = attendanceService.findById(attendanceId);
+        List<Requisition> expenseList = requisitionService.findRequisitionByACase(attendance.getaCase());
+
+        List<Requisition> newRequisitionList = new ArrayList<>();
+        for(Requisition requisition:expenseList){
+            if(requisition.getStatus().equals(RequisitionStatus.ACCEPTED)){
+                newRequisitionList.add(requisition);
+            }
+
+        }
         Client client = attendance.getaCase().getClient();
         model.addAttribute("client", client);
         model.addAttribute("clientid", client.getId());
+        model.addAttribute("expenseList",newRequisitionList);
         model.addAttribute("attendance", attendance);
         return "clientattendanceview";
     }
@@ -216,22 +211,13 @@ public class ClientController {
         return "case";
     }
 
-
-
-
-
     @RequestMapping(value = "/getlawyers/clientId", method = RequestMethod.GET)
     public String getLawyers(Model model, @RequestParam("clientId")Long clientId){
-
        Role role = roleService.findByRole("LAWYER");
        Client client = clientService.findClientById(clientId);
-
        List<User> lawyers = userService.findUsersByRole(role);
-
-        System.out.println("************8 lawyers found : "+lawyers.size());
        model.addAttribute("lawyerList", lawyers);
         model.addAttribute("client", client);
-
         return "lawyerList";
     }
 
@@ -254,27 +240,51 @@ public class ClientController {
     @RequestMapping(value = "/viewcase/caseId", method = RequestMethod.GET)
     public String viewClientCase(Model model, @RequestParam("caseId")Long caseID){
         Case aCase = caseService.findCaseById(caseID);
-        List<Expense> expenseList = expenseService.findAllByACaseAndRequisitionMade(aCase,Boolean.FALSE);
+        List<Expense> expenseList = expenseService.findAllByClientAndRequisitionmade(aCase.getClient(),Boolean.FALSE);
 
        List<Attendance> attendanceList = attendanceService.findAllByACase(aCase);
+        Double amount =0.0;
         attendanceList.forEach(attendance ->  {
+
+            List<Requisition> expenses = attendanceService.getAllAttendanceExpenses(attendance);
+
+
+            Double tE = 0.0;
+            for(Requisition  expense: expenses){
+
+                if(expense.getStatus().equals(RequisitionStatus.ACCEPTED)){
+                    tE = tE + expense.getAmount();
+                }
+
+            }
+
+            attendance.setTotalExpenseAmount(tE);
+
             Double amountInHours = attendance.getRate();
             long durationInMinutes= attendance.getTimeSpent();
             Double amountCharged = ((double)durationInMinutes /(double) 60) * amountInHours;
             Double VAT = 0.15 * amountCharged;
             attendance.setVat(VAT);
         });
-        Double amount =aCase.getAmount();
+        if(aCase!=null){
+            amount =aCase.getAmount();
+        }
         Long timeSpent =0L;
         for( Attendance attendance: attendanceService.findAllByACase(aCase)){
             amount = amount+ attendance.getAmount();
             timeSpent = timeSpent+ attendance.getTimeSpent();
         }
 
+        List<Requisition> requisitionList= requisitionService.findRequisitionByACase(aCase);
         Double expenseAmount =0.0;
-        for(Expense expense: expenseList){
-            expenseAmount=expenseAmount + (expense.getQuantity()* expense.getPrice());
+
+        for(Requisition requisition: requisitionList){
+           if(requisition.getStatus().equals(RequisitionStatus.ACCEPTED)){
+               expenseAmount=expenseAmount + (requisition.getAmount());
+           }
         }
+
+        timeSpent = timeSpent/60;
         aCase.setTimeSpent(timeSpent);
         aCase.setAmount(amount);
         model.addAttribute("case", aCase);
@@ -282,7 +292,7 @@ public class ClientController {
         model.addAttribute("client", aCase.getClient());
         model.addAttribute("attendanceList", attendanceList);
         model.addAttribute("caseId", aCase.getId());
-        model.addAttribute("expenseList", expenseList);
+       model.addAttribute("expenseList", expenseList);
         return "clientcaseview";
     }
 
@@ -339,13 +349,19 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/savecase", method = RequestMethod.POST)
-    public String captureCase(@Valid Case aCase, BindingResult bindingResult, Model model, @RequestParam("clientId")Long clientId
+    public String captureCase(@Valid Case aCase, BindingResult bindingResult, RedirectAttributes model, @RequestParam("clientId")Long clientId,
+                              @RequestParam("matterId")Long matterId
                          ){
         Client client = clientService.findClientById(clientId);
 
+        Matter matter = matterService.findMatter(matterId);
+
+        aCase.setCaseNumber(systemUtils.generateSystemNumbers("", getLastCaseNumber()));
+
+            aCase.setMatter(matter);
             aCase.setClient(client);
             caseService.save(aCase);
-            model.addAttribute("successMessage", " case saved!");
+            model.addFlashAttribute("successMessage", " case saved suceesfully!");
             return "redirect:/viewclient/id?id=" + aCase.getClient().getId();
 
     }
@@ -407,6 +423,31 @@ public class ClientController {
             rateService.save(rate);
             redirectAttributes.addFlashAttribute("successMessage", "Rate Saved!");
             return "redirect:/home";
+        }
+    }
+
+
+
+    @GetMapping("/getAllMatters/{name}") @ResponseBody
+    public List<Matter> getLawyers(@PathVariable(value = "name")String name){
+        List<Matter> matterList = matterService.findMatterByNameLike(name);
+        return matterList;
+    }
+
+
+    public Long getLastCaseNumber() {
+
+        List<Case> caseList = caseService.findAllCases();
+        if(caseList==null){
+            return 1L;
+        }
+        else {
+            if(caseList.size()==0){
+                return 0L;
+            }else{
+                return caseList.get(caseList.size()-1).getId();
+            }
+
         }
     }
 }

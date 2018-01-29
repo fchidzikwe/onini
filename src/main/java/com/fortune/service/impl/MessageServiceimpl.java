@@ -27,6 +27,11 @@ public class MessageServiceimpl implements MessageService {
     }
 
     @Override
+    public Message findById(Long id) {
+        return messageRepository.findOne(id);
+    }
+
+    @Override
     public List<Message> findByReaded(Integer readed) {
         return messageRepository.findByReaded(readed);
     }
@@ -42,8 +47,18 @@ public class MessageServiceimpl implements MessageService {
     }
 
     @Override
+    public List<Message> findByMessageToAndRead(User user, Integer readed) {
+        return messageRepository.findByMessageToAndReaded(user,readed);
+    }
+
+    @Override
     public void saveMessage(Message message) {
         message.setRead(0);
+        messageRepository.save(message);
+    }
+
+    @Override
+    public void save(Message message) {
         messageRepository.save(message);
     }
 

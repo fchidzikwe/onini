@@ -40,14 +40,15 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<Expense> findAllByACase(Case aCase) {
-        return expenseRepository.findAllByACase(aCase);
+    public List<Expense> findAllByClientAndRequisitionmade(Client client, Boolean aBoolean) {
+        return expenseRepository.findAllByClientAndRequisitionmade(client,aBoolean);
     }
 
-    @Override
-    public List<Expense> findAllByACaseAndRequisitionMade(Case aCase, Boolean aBoolean) {
-        return expenseRepository.findAllByACaseAndRequisitionmade(aCase,Boolean.FALSE);
-    }
+//
+//    @Override
+//    public List<Expense> findAllByACaseAndRequisitionMade(Case aCase, Boolean aBoolean) {
+//        return expenseRepository.findAllByACaseAndRequisitionmade(aCase,Boolean.FALSE);
+//    }
 
     @Override
     public List<Expense> findExpenseByLawyer(User user) {

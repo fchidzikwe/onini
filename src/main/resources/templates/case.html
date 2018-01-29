@@ -7,16 +7,20 @@
 
     <link href="css/registration.css"
           th:href="@{/css/registration.css}" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-ui.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <link rel = "stylesheet" href = "bootstrap.css" />
+
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery.dataTables.min.css}"/>
+    <meta charset='utf-8' content="Cory Sanoy" name="Author"/>
 
 
 </head>
@@ -106,25 +110,15 @@
                                                     <label>VS: </label>
                                                     <input type="text" th:field="*{versus}" placeholder="VS"
                                                            class="form-control"/>
-
-
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label>Matter Name: </label>
-                                                    <select class="form-control" th:field="*{matter}">
-                                                        <option th:each="matter : ${matterList}"
-                                                                th:value="${{matter}}"
-                                                                th:text="${matter.name}">
-                                                            Matter
-                                                        </option>
-                                                    </select>
+                                                    <label>Matter Type: </label>
+                                                    <input type="hidden" th:field="*{matter}" />
+                                                    <input type="hidden" name="matterId" id="matterId" />
+                                                    <input type="text" class="form-control" id="matterName" >
+
                                                 </div>
-                                                <!--<div class="form-group">-->
-                                                    <!--<label>Duration: </label>-->
-                                                    <!--<input id="timespent" type="text"  th:field="*{timeSpent}" name="timeSpent"-->
-                                                           <!--class="form-control"/>-->
-                                                <!--</div>-->
 
                                                 <div class="form-group">
                                                     <div class="input-group">
@@ -149,18 +143,47 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
 
 
-<script>
+    $("#matterName").autocomplete({
 
-    var timeSpent = sessionStorage.getItem("time");
-    console.log("recored passed time is "+ timeSpent);
-    document.getElementById("timespent").value = timeSpent;
+        source: function (request, response) {
+            $.ajax({
+                dataType: "json",
+                url: "/getAllMatters/" + request.term,
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 3,
+        focus: function (event, ui) {
+            // prevent autocomplete from updating the textbox
+            event.preventDefault();
+            // manually update the textbox
+            $(this).val(ui.item.name + " " + ui.item.description);
+        },
+
+        select: function (event, ui) {
+            // prevent autocomplete from updating the textbox
+            event.preventDefault();
+            // manually update the textbox and hidden field
+            $(this).val(ui.item.name + " " + ui.item.description);
+
+            $("#matterId").val(ui.item.id);
+            $("#matterName").text(ui.item.name + " " + ui.item.description);
+        }
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+
+        return $("<li>")
+            .data("item.autocomplete", item).append("<a>" + item.name + " "+ item.description+"</a>")
+            .appendTo(ul);
+    }
+
 </script>
-<script>
-    $('#timespent').datetimepicker({
-        format: 'HH:mm:ss'
-    });
-</script>
+
+
+
 </body>
 </html>

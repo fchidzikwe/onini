@@ -14,7 +14,7 @@ public interface MatterService {
     List<Matter> findAllMatters();
 
 
-
+    List<Matter> findMatterByNameLike(String name);
 
     Matter findMatter(Long aLong);
 

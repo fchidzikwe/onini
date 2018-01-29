@@ -504,6 +504,7 @@
                 <th scope="col">Lawyer</th>
                 <th scope="col">Client</th>
                 <th scope="col">Requisation Date</th>
+                <th scope="col">Purpose</th>
                 <th scope="col">Requistion Amount</th>
                 <th scope="col">Payee</th>
                 <th scope="col">Status</th>
@@ -522,6 +523,9 @@
                 </td>
                 <td>
                     <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
+                </td>
+                <td>
+                    <span th:utext="${requisition.purpose}" class="text-success"></span>
                 </td>
                 <td>
                     <span th:utext="${requisition.amount}" class="text-success"></span>
@@ -654,8 +658,10 @@
                             <aside class="lg-side">
                                 <div class="container-fluid">
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a data-toggle="tab" href="#requisition">Requsitions <span class="label label-danger pull-right">2</span></a></li>
-                                        <li><a data-toggle="tab" href="#message">Messages<span class="label label-danger pull-right">9</span></a></li>
+                                        <li class="active"><a data-toggle="tab" href="#requisition">Pending Requsitions <span class="label label-danger pull-right" th:utext="${requisitionListSize}"></span></a></li>
+                                        <li><a data-toggle="tab" href="#message">Inbox<span class="label label-danger pull-right" th:utext="${messageListSize}"></span></a></li>
+                                        <li><a data-toggle="tab" href="#readmessage">Read<span class="label label-danger pull-right" ></span></a></li>
+                                        <li><a data-toggle="tab" href="#readrequisition">Read Requisitions<span class="label label-danger pull-right" ></span></a></li>
                                     </ul>
                                     <div class="tab-content">
                                         <div id="requisition" class="tab-pane fade in active">
@@ -666,7 +672,7 @@
                                                 <tr style="background-color: transparent">
                                                     <th scope="col">Lawyer</th>
                                                     <th scope="col">Client</th>
-                                                    <th scope="col">Requisation Date</th>
+                                                    <th scope="col">Purpose</th>
                                                     <th scope="col">Requistion Amount</th>
                                                     <th scope="col">Payee</th>
                                                     <th scope="col">Status</th>
@@ -686,6 +692,9 @@
                                                     <td>
 
                                                         <span th:text="${#dates.format(requisition.requisitionDate,'dd-MM-yyyy')}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${requisition.purpose}" class="text-success"></span>
                                                     </td>
                                                     <td>
                                                         <span th:utext="${requisition.amount}" class="text-success"></span>
@@ -726,7 +735,134 @@
                                         </div>
                                         <div id="message" class="tab-pane fade">
 
+                                            <table class="display" cellspacing="0" width="100%">
 
+                                                <caption>Messages</caption>
+                                                <thead>
+                                                <tr style="background-color: transparent">
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">Subject</th>
+                                                    <th scope="col">Content</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="message : ${messageList}">
+                                                    <td>
+                                                        <span th:utext="${message.messageFrom}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${message.header}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${message.text}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <a th:if="${message.readed==0}" th:href="@{'/readmessage/id'(id=${message.id})}"
+                                                           class="btn  btn-primary btn-sm">
+                                                            Mark as Read
+                                                        </a>
+                                                    </td>
+
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+
+                                        <div id="readmessage" class="tab-pane fade">
+
+                                            <table class="display" cellspacing="0" width="100%">
+
+                                                <caption>Messages</caption>
+                                                <thead>
+                                                <tr style="background-color: transparent">
+                                                    <th scope="col">From</th>
+                                                    <th scope="col">Subject</th>
+                                                    <th scope="col">Content</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="message : ${readmessageList}">
+                                                    <td>
+                                                        <span th:utext="${message.messageFrom}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${message.header}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${message.text}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <a th:if="${notread}" th:href="@{'/readmessage/id'(id=${message.id})}"
+                                                           class="btn  btn-primary btn-sm">
+                                                            Mark as Read
+                                                        </a>
+                                                    </td>
+
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+
+                                        <div id="readrequisition" class="tab-pane fade">
+                                            <table class="display" cellspacing="0" width="100%">
+                                                <caption>Requisitions</caption>
+                                                <thead>
+                                                <tr style="background-color: transparent">
+                                                    <th scope="col">Lawyer</th>
+                                                    <th scope="col">Client</th>
+                                                    <th scope="col">Requisation Date</th>
+                                                    <th scope="col">Purpose</th>
+                                                    <th scope="col">Requistion Amount</th>
+                                                    <th scope="col">Payee</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Manage</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="requisition : ${readRequisitions}">
+                                                    <td>
+                                                        <span th:utext="${requisition.madeby.name}" class="text-success"></span>
+                                                        <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${requisition.expense.aCase.client.name}" class="text-success"></span>
+                                                        <span th:utext="${requisition.expense.aCase.client.lastName}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+
+                                                        <span th:text="${#dates.format(requisition.requisitionDate,'dd-MM-yyyy')}" class="text-success"></span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span th:utext="${requisition.purpose}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${requisition.amount}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${requisition.payee}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span th:utext="${requisition.status}" class="text-success"></span>
+                                                    </td>
+                                                    <td>
+                                                        <a th:if="${requisition.view==0}" th:href="@{'/readrequsition/id'(id=${requisition.id})}"
+                                                           class="btn  btn-primary btn-sm">
+                                                            Mark as Read
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

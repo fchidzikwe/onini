@@ -1,13 +1,7 @@
 package com.fortune.controller;
 
-import com.fortune.model.Case;
-import com.fortune.model.Client;
-import com.fortune.model.Costs;
-import com.fortune.model.Expense;
-import com.fortune.service.CaseService;
-import com.fortune.service.ClientService;
-import com.fortune.service.CostsService;
-import com.fortune.service.ExpenseService;
+import com.fortune.model.*;
+import com.fortune.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +35,22 @@ public class ExpenseController {
     @Autowired
     CaseService caseService;
 
+    @Autowired
+    private AttendanceService attendanceService;
+
+    @Autowired
+    UserService userService;
 
 
-    @RequestMapping(value = "/addexpense/caseId", method = RequestMethod.GET)
-    public String captureExpenseForm(Model model, @RequestParam("caseId")Long caseId){
-        Case aCase = caseService.findCaseById(caseId);
+    @RequestMapping(value = "/addexpense/attendanceId", method = RequestMethod.GET)
+    public String captureExpenseForm(Model model, @RequestParam("attendanceId")Long attendanceId){
+        Attendance attendance = attendanceService.findById(attendanceId);
+        Case aCase = attendance.getaCase();
         Client client = aCase.getClient();
+
+        System.out.println("************* attendance id passed::::"+attendanceId);
         List<Costs> costsList = costsService.findAllCosts();
-        model.addAttribute("caseId", aCase.getId());
+        model.addAttribute("attendanceId", attendanceId);
         model.addAttribute("clientId", client.getId());
         model.addAttribute("client", client);
         model.addAttribute("expense", new Expense());
@@ -62,16 +64,18 @@ public class ExpenseController {
     @RequestMapping(value = "/saveexpense", method = RequestMethod.POST)
     public String captureExepnse(@Valid Expense expense, BindingResult bindingResult,
                                  Model model, @RequestParam("clientId")Long clientId,
-                                 @RequestParam("caseId")Long caseId){
+                                 @RequestParam("attendanceId")Long attendanceId){
+
 
         Client client = clientService.findClientById(clientId);
-        Case aCase = caseService.findCaseById(caseId);
+        Attendance attendance = attendanceService.findById(attendanceId);
         expense.setClient(client);
-        expense.setaCase(aCase);
+        expense.setLawyer(userService.loggedInuser());
+        expense.setAttendance(attendance);
         expense.setRequisitionmade(Boolean.FALSE);
         expenseService.save(expense);
         model.addAttribute("successMessage", "saved!");
-        return "redirect:/viewcase/caseId?caseId="+ aCase.getId();
+        return "redirect:/viewcase/caseId?caseId="+ attendance.getaCase().getId();
     }
 
 }

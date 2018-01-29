@@ -14,6 +14,8 @@ public interface MatterRepository extends JpaRepository<Matter, Long> {
 
     List<Matter> findMatterByName(String name);
 
+    List<Matter> findMatterByNameLike(String name);
+
 
     Matter findByName(String name);
 

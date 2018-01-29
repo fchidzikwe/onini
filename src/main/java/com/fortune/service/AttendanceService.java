@@ -2,6 +2,8 @@ package com.fortune.service;
 
 import com.fortune.model.Attendance;
 import com.fortune.model.Case;
+import com.fortune.model.Expense;
+import com.fortune.model.Requisition;
 
 import java.util.List;
 
@@ -15,5 +17,7 @@ public interface AttendanceService {
     List<Attendance> findAllByACase(Case aCase);
 
     void save(Attendance attendance);
+
+    List<Requisition> getAllAttendanceExpenses(Attendance attendance);
 
 }

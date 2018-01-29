@@ -1,7 +1,9 @@
 package com.fortune.model;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -25,6 +27,11 @@ public class Attendance {
     @ManyToOne
     private Case aCase;
 
+    @Transient
+    private Double hoursSpent;
+
+    @Transient
+    private Double totalExpenseAmount;
 
     @Transient
     private Double Vat;
@@ -37,6 +44,7 @@ public class Attendance {
 
     @Column(name ="amount")
     private Double amount;
+
 
     public Double getAmount() {
         return amount;
@@ -100,5 +108,23 @@ public class Attendance {
 
     public void setRate(Double rate) {
         this.rate = rate;
+    }
+
+    public Double getTotalExpenseAmount() {
+        return totalExpenseAmount;
+    }
+
+    public void setTotalExpenseAmount(Double totalExpenseAmount) {
+        this.totalExpenseAmount = totalExpenseAmount;
+    }
+
+    public void setHoursSpent(Double hoursSpent) {
+        this.hoursSpent = hoursSpent;
+    }
+
+    public Double getHoursSpent() {
+
+        DecimalFormat df = new DecimalFormat("#.##");
+         return Double.valueOf(df.format((double) timeSpent/ 60));
     }
 }

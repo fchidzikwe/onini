@@ -121,7 +121,7 @@
 
                         <tr>
                             <th>
-                               Expense (*to do)
+                               Expenses
                             </th>
                             <td>
                         <span th:text="${expenseAmount}">
@@ -150,17 +150,12 @@
 
 
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#attendance">ATTENDANCE</a></li>
+            <li class="active"><a data-toggle="tab" href="#attendance">ATTENDANCES</a></li>
             <li><a data-toggle="tab" href="#expense"> EXPENSES</a></li>
         </ul>
             <br/>
 
             <div class="tab-content">
-
-
-
-
-
                 <br/>
                 <br/>
                 <br/>
@@ -168,83 +163,63 @@
                 <div class="tab-content">
                 <div id="attendance" class="tab-pane fade in active">
 
-                    <table class="display" cellspacing="0" width="100%">
-                        <span th:utext="${successMessage}" class="text-success"></span>
-                        <caption>List of Client Attendance</caption>
-                        <thead>
-                        <tr style="background-color: transparent">
-                            <th scope="col">Case Name</th>
-                            <th scope="col">Case Type</th>
-                            <th scope="col">Time Spend In Minutes</th>
-                            <th scope="col">VAT</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Amount(VAT incl)</th>
-                            <th scope="col">Manage</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="attendance : ${attendanceList}">
-                            <td >
-                                <span th:utext="${attendance.aCase.client.name}" class="text-success"></span>
-                                <span th:utext="${attendance.aCase.client.lastName}" class="text-success"></span>
-                                <span th:utext="vs" class="text-success"></span>
-                                <span th:utext="${attendance.aCase.versus}" class="text-success"></span>
-                            </td>
-                            <td th:text="${attendance.aCase.matter.name}">George</td>
-                            <td th:text="${attendance.timeSpent}">Washington</td>
-                            <td th:text="${#numbers.formatDecimal((attendance?.Vat),0,2,'POINT')}"></td>
-                            <td th:text="${#numbers.formatDecimal((attendance?.amount - attendance?.Vat),0,2,'POINT')}"></td>
-                            <td  th:text="${#numbers.formatDecimal((attendance?.amount),0,2,'POINT')}">
-                            </td>
-                            <td>
-                                <a th:href="@{'/viewattendance/attendanceId'(attendanceId=${attendance.id})}"
-                                   class="btn btn-success">View Details
-                                </a>
-                                <!--<a th:href="@{'/addexpense/caseId'(caseId=${clientCase.id})}"-->
-                                <!--class="btn btn-success">Add Expense</a>-->
-                                <a th:href="@{'/editattendance/id'(id=${attendance.id})}"
-                                   class="btn btn-warning">Edit</a>
-                                <a th:href="@{'/deleteattendance/id'(id=${attendance.id})}"
-                                   class="btn btn-danger">Delete</a>
+                   <div class="container-fluid">
+                       <table class="display" cellspacing="0" width="100%">
+                           <span th:utext="${successMessage}" class="text-success"></span>
+                           <caption>List of Client Attendance</caption>
+                           <thead>
+                           <tr style="background-color: transparent">
+                               <th scope="col">Case Name</th>
+                               <th scope="col">Case Type</th>
+                               <th scope="col">Hours billed</th>
+                               <th scope="col">Amount</th>
+                               <th scope="col">VAT</th>
+                               <th scope="col">Expenses</th>
+                               <th scope="col">Amount(VAT incl)</th>
+                               <th scope="col">Total</th>
+                               <th scope="col">Manage</th>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           <tr th:each="attendance : ${attendanceList}">
+                               <td >
+                                   <span th:utext="${attendance.aCase.client.name}" class="text-success"></span>
+                                   <span th:utext="${attendance.aCase.client.lastName}" class="text-success"></span>
+                                   <span th:utext="vs" class="text-success"></span>
+                                   <span th:utext="${attendance.aCase.versus}" class="text-success"></span>
+                               </td>
+                               <td th:text="${attendance.aCase.matter.name}">George</td>
+                               <td th:text="${attendance.hoursSpent}">Washington</td>
+                               <td th:text="${#numbers.formatDecimal((attendance?.amount - attendance?.Vat),0,2,'POINT')}"></td>
+                               <td th:text="${#numbers.formatDecimal((attendance?.Vat),0,2,'POINT')}"></td>
+                               <td th:text="${attendance.totalExpenseAmount}">Washington</td>
 
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                               <td  th:text="${#numbers.formatDecimal((attendance?.amount),0,2,'POINT')}">
+                               </td>
+                               <td  th:text="${#numbers.formatDecimal((attendance.totalExpenseAmount + attendance?.amount),0,2,'POINT')}">
+                               </td>
+                               <td>
+                                   <a th:href="@{'/viewattendance/attendanceId'(attendanceId=${attendance.id})}"
+                                      class="btn btn-success">View Details
+                                   </a>
+                                   <!--<a th:href="@{'/addexpense/caseId'(caseId=${clientCase.id})}"-->
+                                   <!--class="btn btn-success">Add Expense</a>-->
+                                   <a th:href="@{'/editattendance/id'(id=${attendance.id})}"
+                                      class="btn btn-warning">Edit</a>
+                                   <a th:href="@{'/deleteattendance/id'(id=${attendance.id})}"
+                                      class="btn btn-danger">Delete</a>
 
-                    <!--<table class="display" cellspacing="0" width="100%">-->
-                        <!--<span th:utext="${successMessage}" class="text-success"></span>-->
-                        <!--<caption>List of Expenses</caption>-->
-                        <!--<thead>-->
-                        <!--<tr style="background-color: transparent">-->
-                            <!--<th scope="col">Expense Name</th>-->
-                            <!--<th scope="col">Unit Price</th>-->
-                            <!--<th scope="col">Quantity</th>-->
-                            <!--<th scope="col">Total Amount</th>-->
-                            <!--<th scope="col">Manage</th>-->
-                        <!--</tr>-->
-                        <!--</thead>-->
-                        <!--<tbody>-->
-                        <!--<tr th:each="clientExpense : ${attendanceList}">-->
-                            <!--<td  th:utext="${clientExpense.costName}" >Expense Name</td>-->
-                            <!--<td th:text="${clientExpense.price}">Price</td>-->
-                            <!--<td th:text="${clientExpense.quantity}">Quantity</td>-->
-                            <!--<td  th:text="${clientExpense?.quantity*clientExpense.price }"></td>-->
-                            <!--<td>-->
-                                <!--<form method="POST" th:action="@{'/saverequisition/'+${clientExpense.id}}">-->
-                                    <!--<button type="submit" name="submit" value="value" class="btn btn-primary">Make Requisition</button></form>-->
+                               </td>
+                           </tr>
+                           </tbody>
+                       </table>
+                   </div>
 
-                            <!--</td>-->
-                        <!--</tbody>-->
-                    <!--</table>-->
 
                 </div>
                     <div id ="expense" class="tab-pane fade">
-                       <div class="container">
-                           <a th:href="@{'/addexpense/caseId'(caseId=${case.id})}"
-                              class="btn btn-success">Add Expense
-                           </a>
-                           <br/>
+                       <div class="container-fluid">
+
 
                            <table class="display" cellspacing="0" width="100%">
                                <span th:utext="${successMessage}" class="text-success"></span>
@@ -252,6 +227,7 @@
                                <thead>
                                <tr style="background-color: transparent">
                                    <th scope="col">Expense Name</th>
+                                   <th scope="col">Description</th>
                                    <th scope="col">Unit Price</th>
                                    <th scope="col">Quantity</th>
                                    <th scope="col">Total Amount</th>
@@ -261,6 +237,7 @@
                                <tbody>
                                <tr th:each="clientExpense : ${expenseList}">
                                    <td  th:utext="${clientExpense.costName}" >Expense Name</td>
+                                   <td  th:utext="${clientExpense.description}" >Expense Name</td>
                                    <td th:text="${clientExpense.price}">Price</td>
                                    <td th:text="${clientExpense.quantity}">Quantity</td>
                                    <td  th:text="${clientExpense?.quantity*clientExpense.price }"></td>

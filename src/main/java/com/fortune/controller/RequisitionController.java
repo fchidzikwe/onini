@@ -4,6 +4,7 @@ package com.fortune.controller;
 import com.fortune.model.*;
 import com.fortune.service.*;
 import com.fortune.util.DateConveter;
+import com.fortune.util.SystemUtils;
 import org.apache.regexp.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,13 +16,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import javax.validation.Valid;
 import java.util.*;
 
 @Controller
-public class RequisitionController {
+ class RequisitionController {
     @Autowired
     RequisitionService requisitionService;
+
+    @Autowired
+    SystemUtils systemUtils;
 
     @Autowired
     CaseService caseService;
@@ -49,28 +54,12 @@ public class RequisitionController {
     }
 
 
-    @RequestMapping(value = "/viewinbox" ,method = RequestMethod.GET)
-    public String viewInbox(Model model){
-        List<Requisition> notpending = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING, 0);
-
-       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-       User user = userService.findUserByEmail(authentication.getName());
-        Boolean notpend =true;
-        model.addAttribute("notpend", notpend);
-        model.addAttribute("list", notpending);
-        model.addAttribute("email", authentication.getName());
-        model.addAttribute("userName", user.getName() + " "+ user.getLastName());
-        model.addAttribute("messageFrom", userService.loggedInuser());
-        model.addAttribute("message", new Message());
-        return "requisitionlist";
-    }
 
     @RequestMapping(value = "/readrequsition/id" ,method = RequestMethod.GET)
     public String readInbox(Model model, @RequestParam("id") long requisitionId, RedirectAttributes redirectAttributes){
         Requisition requisition = requisitionService.findByID(requisitionId);
         requisition.setView(1);
-        requisitionService.save(requisition);
-
+        requisitionService.saveRequisitionWithoutChangingView(requisition);
         List<Requisition> notpending = requisitionService.findRequisitionByStatusIsNotAndMadeby(RequisitionStatus.PENDING, 0);
         Boolean notpend =true;
         redirectAttributes.addFlashAttribute("notpend", notpend);
@@ -86,25 +75,34 @@ public class RequisitionController {
                                   @PathVariable("expenseId") Long expenseId
 
     ){
+        Expense expense = expenseService.findOne(expenseId);
+        createRequisitionModel(model,requisition, expense);
+        requisitionService.save(requisition);
+        return "redirect:/viewclient/id?id="+ expense.getAttendance().getaCase().getClient().getId();
+    }
+
+    private void createRequisitionModel(Model model,Requisition requisition, Expense expense) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User loggedInUser = userService.findUserByEmail(auth.getName());
-        Expense expense = expenseService.findOne(expenseId);
-        Case aCase = expense.getaCase();
+
+
+        Case aCase = expense.getAttendance().getaCase();
         expense.setRequisitionmade(Boolean.TRUE);
         requisition.setRequisitionDate(new Date());
-        requisition.setaCase(expense.getaCase());
+        requisition.setaCase(expense.getAttendance().getaCase());
         requisition.setMadeby(loggedInUser);
         requisition.setExpense(expense);
         requisition.setStatus(RequisitionStatus.PENDING);
         requisition.setAmount(expense.getPrice()* expense.getQuantity());
         requisition.setPurpose(expense.getDescription());
+        requisition.setRequisitionNumber(systemUtils.generateSystemNumbers("RQ",getLastRequisitionNumber()));
         requisition.setPayee(expense.getClient().getName() + " "+expense.getClient().getLastName());
-        requisitionService.save(requisition);
-
         model.addAttribute("requisition", new Requisition());
         model.addAttribute("caseId",aCase.getId() );
-        return "redirect:/viewclient/id?id="+ aCase.getClient().getId();
     }
+
+
 
     @RequestMapping(value = "/viewpendingrequisitions", method = RequestMethod.GET)
     public String viewPendingRequisition(Model model){
@@ -137,24 +135,6 @@ public class RequisitionController {
     public String acceptAppointment(Model model, @RequestParam(value = "id", required = true) Long id) {
         Requisition requisition = requisitionService.findByID(id);
         requisition.setStatus(RequisitionStatus.ACCEPTED);
-//        List<Transaction> transactionList = transactionService.findTransactionByClient(requisition.getExpense().getClient());
-//        Double balance =0.0;
-//        Double requestedAmount =requisition.getAmount();
-//        int t=0;
-//        for(Transaction transaction: transactionList){
-//            t= t+1;
-//            balance =   transaction.getAmount() ;
-//            if(balance < requestedAmount && t< transactionList.size() ){
-//                requestedAmount =    (requestedAmount-balance);
-//                transaction.setAmount(0.0);
-//                transactionService.save(transaction);
-//            }else{
-//                balance =  balance - requestedAmount;
-//                transaction.setAmount(balance);
-//                transactionService.save(transaction);
-//                break;
-//            }
-//        }
        Case aCase = requisition.getaCase();
         requisitionService.save(requisition);
        Transaction transaction = transactionService.findTransactionByCase(aCase);
@@ -187,36 +167,12 @@ public class RequisitionController {
         Case  aCase = requisition.getaCase();
 
         Transaction transaction = transactionService.findTransactionByCase(aCase);
-     //   List<Transaction> transactionList = transactionService.findTransactionByClient(client);
-//        Case aCase = requisition.getaCase();
-//        List<Expense>  expenseList = expenseService.findAllByACase(aCase);
-//        Boolean pending = true;
-//       Double balance =0.0;
-//       for(Transaction transaction: transactionList){
-//           balance = balance + transaction.getAmount();
-//       }
-//        expenseList.forEach(expense -> {
-//            List<Costs> costsList = expense.getCosts();
-//            costsList.forEach(costs -> {
-//                expense.setCostName(costs.getName());
-//            });
-//        });
-//        Double totalExpenseAmount =0.0;
-//        for(Expense expense:expenseList){
-//            Double expenseAmount = expense.getQuantity() * expense.getPrice();
-//            totalExpenseAmount= totalExpenseAmount+ expenseAmount;
-//        }
 
         Boolean pending = true;
          Double balance =0.0;
-//       for(Transaction transaction: transactionList){
-//           balance = balance + transaction.getAmount();
-//       }
         if(transaction!=null){
             balance = transaction.getAmount();
         }
-
-
        Expense expense = requisition.getExpense();
         List<Costs> costsList = expense.getCosts();
             costsList.forEach(costs -> {
@@ -234,4 +190,18 @@ public class RequisitionController {
 
     }
 
+    public Long getLastRequisitionNumber() {
+
+        List<Requisition> requisitionList = requisitionService.findAllRequisition();
+        if(requisitionList==null){
+            return 1L;
+        }
+        else {
+            if(requisitionList.size()==0){
+                return 1L;
+            }else {
+                return requisitionList.get(requisitionList.size() - 1).getId();
+            }
+        }
+    }
 }

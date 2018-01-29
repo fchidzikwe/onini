@@ -269,9 +269,11 @@
                     <caption>Requisitions</caption>
                     <thead>
                     <tr style="background-color: transparent">
+                        <th scope="col">Number</th>
                         <th scope="col">Lawyer</th>
                         <th scope="col">Client</th>
                         <th scope="col">Requisation Date</th>
+                        <th scope="col">Purpose</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Payee</th>
                         <th scope="col">Status</th>
@@ -280,6 +282,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="requisition : ${allRequisutions}">
+                        <td>
+                            <span th:utext="${requisition.requisitionNumber}" class="text-success"></span>
+                        </td>
                         <td>
                             <span th:utext="${requisition.madeby.name}" class="text-success"></span>
                             <span th:utext="${requisition.madeby.lastName}" class="text-success"></span>
@@ -291,6 +296,11 @@
                         <td>
                             <span th:utext="${requisition.requisitionDate}" class="text-success"></span>
                         </td>
+
+                        <td>
+                            <span th:utext="${requisition.purpose}" class="text-success"></span>
+                        </td>
+
                         <td>
                             <span th:utext="${requisition.amount}" class="text-success"></span>
                         </td>

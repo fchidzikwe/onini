@@ -79,7 +79,6 @@
                 <div class="col-md-6">
                     <table class="table table-striped" style="width:600px;">
                         <tr>
-                            <th> Add Matter</th>
 
                             <td>
 
@@ -109,30 +108,33 @@
                 <div id="client" class="tab-pane fade in active">
 
 
-                    <table class="display" cellspacing="0" width="100%">
-                    <span th:utext="${successMessage}" class="text-success"></span>
-                    <caption>List of Expenses</caption>
-                    <thead>
-                    <tr style="background-color: transparent">
-                    <th scope="col">Expense Name</th>
-                    <th scope="col">Unit Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total Amount</th>
-                    <th scope="col">Manage</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="clientExpense : ${attendanceList}">
-                    <td  th:utext="${clientExpense.costName}" >Expense Name</td>
-                    <td th:text="${clientExpense.price}">Price</td>
-                    <td th:text="${clientExpense.quantity}">Quantity</td>
-                    <td  th:text="${clientExpense?.quantity*clientExpense.price }"></td>
-                    <td>
-                    <form method="POST" th:action="@{'/saverequisition/'+${clientExpense.id}}">
-                    <button type="submit" name="submit" value="value" class="btn btn-primary">Make Requisition</button></form>
 
-                    </td>
-                    </tbody>
+
+                    <table class="display" cellspacing="0" width="100%">
+                        <span th:utext="${successMessage}" class="text-success"></span>
+
+                        <a th:href="@{'/addexpense/attendanceId'(attendanceId=${attendance.id})}"
+                           class="btn btn-success">Add Expense
+                        </a>
+                        <caption>List of Expenses</caption>
+                        <thead>
+                        <tr style="background-color: transparent">
+                            <th scope="col">Expense Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Unit Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="clientExpense : ${expenseList}">
+                            <td  th:utext="${clientExpense.expense.costName}" >Expense Name</td>
+                            <td  th:utext="${clientExpense.expense.description}" >Expense Name</td>
+                            <td th:text="${clientExpense.expense.price}">Price</td>
+                            <td th:text="${clientExpense.expense.quantity}">Quantity</td>
+                            <td  th:text="${clientExpense?.expense.quantity*clientExpense.expense.price }"></td>
+
+                        </tbody>
                     </table>
 
 

@@ -20,9 +20,9 @@ public interface ExpenseService {
 
     List<Expense> findAllByClient(Client client);
 
-    List<Expense> findAllByACase(Case aCase);
+    List<Expense> findAllByClientAndRequisitionmade(Client client, Boolean aBoolean);
 
-    List<Expense> findAllByACaseAndRequisitionMade(Case aCase, Boolean aBoolean);
+  // List<Expense> findAllByACaseAndRequisitionMade(Case aCase, Boolean aBoolean);
 
     List<Expense> findExpenseByLawyer(User user);
 

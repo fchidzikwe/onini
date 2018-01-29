@@ -15,8 +15,13 @@ public class Case {
     @Column(name = "versus")
     private String versus;
 
+
+    private String caseNumber;
+
     @OneToMany
     private List<Attendance> attendanceList;
+
+
 
     @OneToOne
     @NotNull(message = "please select matter")
@@ -89,6 +94,16 @@ public class Case {
     public void setAttendanceList(List<Attendance> attendanceList) {
         this.attendanceList = attendanceList;
     }
+
+
+    public String getCaseNumber() {
+        return caseNumber;
+    }
+
+    public void setCaseNumber(String caseNumber) {
+        this.caseNumber = caseNumber;
+    }
+
 
     @Override
     public String toString() {

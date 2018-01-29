@@ -23,8 +23,8 @@ public class Expense {
 
     @NotNull(message = "case cannot be null")
     @OneToOne
-    @JoinColumn(name = "acase_acase_id")
-    private Case aCase;
+    private Attendance attendance;
+
 
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -64,12 +64,12 @@ public class Expense {
         this.client = client;
     }
 
-    public Case getaCase() {
-        return aCase;
+    public Attendance getAttendance() {
+        return attendance;
     }
 
-    public void setaCase(Case aCase) {
-        this.aCase = aCase;
+    public void setAttendance(Attendance attendance) {
+        this.attendance = attendance;
     }
 
     public Double getPrice() {
