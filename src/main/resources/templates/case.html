@@ -78,16 +78,11 @@
                                 Client
                             </th>
                             <td>
-
                                 <span th:utext="${client.name}" class="text-success"></span>
                                 <span th:utext="${client.lastName}" class="text-success"></span>
-
                             </td>
                             <th></th>
-
-
                         </tr>
-
                     </table>
                 </div>
                 <div class="row">
@@ -100,7 +95,6 @@
                                 <form autocomplete="off" action="#" th:action="@{/savecase}"
                                       th:object="${case}" method="post" class="form-horizontal">
                                     <span th:utext="${successMessage}"></span>
-
                                     <fieldset>
                                         <div class="row">
                                             <div class="col-sm-12 col-md-10  col-md-offset-1 ">
@@ -111,25 +105,19 @@
                                                     <input type="text" th:field="*{versus}" placeholder="VS"
                                                            class="form-control"/>
                                                 </div>
-
                                                 <div class="form-group">
                                                     <label>Matter Type: </label>
                                                     <input type="hidden" th:field="*{matter}" />
                                                     <input type="hidden" name="matterId" id="matterId" />
                                                     <input type="text" class="form-control" id="matterName" >
-
                                                 </div>
-
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <button type="submit" class="btn btn-primary btn-block">Save</button>
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
-
                                     </fieldset>
                                 </form>
                             </div>
